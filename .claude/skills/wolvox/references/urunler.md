@@ -50,6 +50,13 @@ AKINSOFT her programa 3–4 harfli bir kod ve sürüm numarası veriyor. Sondaki
 
 - **Wolvox 6 / 7 / 8 / 9:** Klasik masaüstü sürümler. Sahada hâlâ çok sayıda Wolvox 7 ve 8 kurulumu var.
 - **WOLVOX 26 (güncel nesil):** "Yeni nesil ERP". En büyük değişiklik **esnek modül ve kullanıcı lisansı**: işletme sadece ihtiyaç duyduğu modülleri alıyor ve her modül için kullanıcı sayısını ayrı belirliyor. Wolvox 9'dan 26'ya geçişte masaüstü kısayolları silinip yeniden oluşturuluyor. Bulut tarafı **WolvoxCloud** adıyla anılıyor (wolvox.com).
+- **Sürüm numaraları (ERP):**
+  - 8.25.07 (01/2024) → 9.02.01 (07/2024) → 9.03.01 (11/2024) → 9.04.01 (06/2025, WolvoxAI) → 9.05.01 (10/2025) → **26.02.01 (12/2025)** → 26.03.01 (03/2026) → 26.04.01 (08/2026).
+  - 26.02.01'den itibaren program dosyasının adı `werp9.exe` yerine **`werp.exe`**.
+  - Sürüm notlarının özeti: `bilgibankasi-ozetleri.md` → "WOLVOX ERP sürüm geçmişi" (Bilgi Bankası 3767, 3817, 3873, 3883, 3935, 3970, 3987, 4017, 4083).
+- **Wolvox 9 lisansı modül bazlı:** Kullanıcıya modül atanmazsa kullanıcı o modülü göremez; SYSDBA/sa'ya da atama yapılmalı (Bilgi Bankası 3826).
+  - Güncelleme paketi (WOL9 GP) bazı mobil uygulamalar için zorunlu: Reporter, Fiyat Gör, DepoMaster, Restoran Mobil iOS.
+  - SDK, Mobil Satış ve Restoran Mobil Android için zorunlu değil (Bilgi Bankası 3868).
 - **Yıllık hizmet paketi:** Yasal güncellemeler, yeni sürümler, hata düzeltmeleri ve yeni entegrasyonlar için yıllık ödenen bir paket gerekiyor. Kaynaklarda iki farklı adla geçiyor: **WOL UP** (wolvox.com) ve **WOLVOX GP** (lisans sistemi sayfası). Güncel adı kullanıcıya teyit ettir.
 - Wolvox 9 ile yeni lisans alan müşterilere ilk e-dönüşüm kontör alımında 300 ek kontör kampanyası yapılmıştı (e-Fatura, e-Arşiv, e-İrsaliye, e-Müstahsil). Kampanyalar değişir, güncelliğini kontrol et.
 
