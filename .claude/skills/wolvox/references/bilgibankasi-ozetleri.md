@@ -595,3 +595,212 @@ Menü yolları Wolvox 8/9 masaüstü içindir. WOLVOX 26/WolvoxCloud farkları i
     ```
     SQL 2019+'da ayrıca `C:\AKINSOFT\Wolvox9\Utils\Wolvox7Udf_mssql.dll` dosyası SQL Server'ın `...\MSSQL\Binn` klasörüne kopyalanır.
   - **[4034] "TRY_CONVERT" hatası:** SQL Server **2012+** ve veritabanı **compatibility level en az 2012 (110)** olmalı.
+
+## Hızlı Satış, yazarkasa (ÖKC), terazi, yazıcı
+
+### Hızlı Satış
+Ayarların çoğu **Yetkili → Özel Tanımlar → Özel Ayarlar** altında (Satış-İade 1–4, Genel Ayarlar 2, Entegrasyon Ayarları sekmeleri). İki arayüz var: **Basit Görünüm** ve **Normal Görünüm**. Sağ üstteki üç çizgi simgesi tasarım moduna geçirir.
+- **[1487] / [2418] Yardım dosyası:**
+  - Menüler: Yetkili (oturumu kapat, şirket seçimi), İşlemler (satış ekranı, fiyat gör, yazdır…).
+  - İlk kullanımda ödeme türü seçimi, stok listesi kısayolları ve kullanıcı ayarları yapılır.
+  - ERP ile tam entegre.
+- **[1456] "Geçersiz kapalı fatura işlem türü":** Tasarım modunda ödeme butonlarını "Yok" yap, programı kapat-aç, ödeme türlerini yeniden tanımla.
+- **[1480] Değişim:**
+  1. Satış ekranı → Ek İşlemler → **Değişim İşlemi** → fişi bul → ürünü **"Seç"** → Tamam.
+  2. Satıştaki ödeme türünü seç. Değişen ürün kırmızı görünür; yerine alınan ürün eklenir.
+  - Fark pozitifse tahsil edilir, negatifse müşteriye ödenir.
+- **[1645] Para üstü hesaplama penceresi:** Genel Görünüm → "Nakit ödemelerde hesaplama penceresini aç". [2367] Ödeme ekranı için: Satış-İade → "Satış işlemini kaydederken ödeme ekranını göster".
+- **[1842] Satış ekranında cari bakiyesi:** Genel Ayarlar → "Satış ekranında cari bakiyesini göster".
+- **Uyarılar ve kontroller:**
+  - [1844] fiyatı olmayan ürün uyarısı
+  - [1856] alış fiyatının altında satış uyarısı (Satış-İade 1)
+- **[1857] Aynı ürünü tek satırda birleştirmek:** Satış-İade 2 → "Stok arama formunda aynı stok varsa" = **Stokları birleştir**. Barkod okutmada birleştirme için ayrı bir ayar var.
+- **[1858] Cariye özel fiyat:**
+  - Cari kartı → Hesap Bilgileri → **"Kullanılacak stok fiyatı"** (kaçıncı satış fiyatı).
+  - Hızlı Satış → Satış-İade 4 → "Cari değişiminde stok fiyatını" = **Değiştir**.
+- **[2023] Müşteri ekranı:** Özel Ayarlar → Müşteri Ekranı. İkinci monitör (monitör no seçilir) veya COM portlu cihazlar (Hugin FLY 385/485, Possify DynamicPos…).
+  - **[2219] Web tabanlı müşteri ekranı:** Tarayıcıda açılır. Dosyalar program dizinindeki `MUSTERI_EKRANI` klasöründe (`index.html` satış, `idle.html` bekleme). Tanıtım görselleri `slideimages` klasörüne konur (yaklaşık 800×400).
+  - **[3175] VCF müşteri ekranı script paketi:** Yetkili → Özel Tanımlar → Script Paket İşlemleri → Paket Yükle.
+- **[2366] Ek barkodla arama:** Stok arama (F6) → Seçenekler → "Gelişmiş aramayı kullan" + "Stok ek barkod arama".
+- **[2368] / [3543] Fiş tasarımı:** Yazdır → Aktif Raporu Tasarla → metin alanı ekle → parametre olarak "Ödeme Durumu", "Para Üstü", "Kalan Tutar" veya "Ödeme Toplamı" bağlanır.
+- **[3588] Fişi yeniden yazdırmak:**
+  1. Satış-İade → "Son … satış fişini sakla".
+  2. Satış ekranını kapat-aç, Ek İşlemler → Kısayollar → **"Son Satış Fiş Logları"**.
+- **[3595] Basamak ayracını kaldırmak** (POS tarzı giriş, 2500 → 25,00): Özel Ayarlar → Genel Ayarlar'daki basamak ayracı seçeneği.
+- **[3584] Para simgesini tutarın soluna almak:** ERP'de Genel Ayarlar → Parasal Ayarlar, sonra Hızlı Satış ayarları.
+- **[3635] Çekmece açma:** Entegrasyon Ayarları → Çekmece Ayarları → "Satış öncesi/sonrası çekmece aç" (nakit veya tüm işlemler) + çekmece yazıcısı. Ek İşlemler → Kısayollar'a "Çekmece Aç" eklenir.
+- **[733] Buton font ve renkleri** (8.03.01+): Butona sağ tık → Tasarla → "Tasarımı Aktif Et". "Tasarımı Hafızaya Al" ile başka butonlara kopyalanır. Hazır stil dosyası: `...\HizliSatis\Settings\Ini\<kullanıcı>\ButtonStyle.ini`.
+- **[2685] Otomatik e-Fatura:**
+  1. Kontrol Paneli → Şirket → e-Devlet → Otomatik e-Fatura Gönderimi.
+  2. Hızlı Satış → Satış-İade → Genel Ayarlar 2 → gönderim şekli: **Kuyruğa Ekle** (30 dk aralık), **Hemen Gönder** veya **Kullanıcı Onaylı**.
+- **[1585] Depozito** ve **[1041] petrol/toptancı sistemleri** için `WOLVOX ERP Ön Muhasebe` ve `Genel bilgiler` bölümlerine bak.
+
+### Yeni nesil yazarkasa (YNÖKC) ve POS entegrasyonları
+- **Lisans:** Tüm YNÖKC entegrasyonları ERP'de **"Yazarkasa – Pos – Terazi"** lisansı ister. Bazı cihazlarda (ör. [3570] Hugin T300) müşteri panelinden **yıllık ÖKC eşleşme ücreti** ödenir.
+- **Programlar:** Hızlı Satış ve Restoran. Cihaz ayarları **WOLVOX Market Otomasyonu** programında yapılır: yeni nesil ÖKC → cihaz → Ayarla.
+- **Ortak ayarlar:**
+  - **Fiş limiti:** bu tutarın üstünde fatura kesilmesi gerekir.
+  - **Bağlantı:** IP/port veya seri port/COM ve hız.
+  - **Aktif kasiyer:** 4 kasiyerden biri ve şifresi.
+  - **Ödeme eşleştirmeleri:** cihazdaki ödeme tipleri ↔ Wolvox ödeme türleri.
+  - "Cihaza ürünün diğer birimlerini gönder", EFT-POS kullanımı.
+- **Desteklenen cihazlar ve makaleleri:**
+  - inPOS M120 [489]
+  - Hugin VX675 USB [491], FT202 ve FP300 [582], T300 [3570]
+  - Olivetti MX915 [583]
+  - Ingenico iWE280 [762], iDE280 [2282]
+  - Beko 300TR [843]: Token X Store'da entegratör olarak "AKINSOFT Wolvox" seçilir, entegrasyon paketi alınır.
+  - Profilo S900 [2311]
+  - NBA Fiscal Box [2648] ([2660] Azerice)
+  - NPos YN500 [3113]
+  - Yurtdışı: Almanya TSE [3129] ve Avusturya RKSV [3266] **Fiskaltrust** üzerinden.
+- **Sorunlar:**
+  - [1818] **Satıştan sonra cihazdan fiş çıkmıyor:** Kontrol Paneli → Şirket Kayıt → e-Devlet → **"Yeni nesil yazarkasa kullan"**. Şube sistemi varsa şube kaydında da YNÖKC ayarı yapılır.
+  - [3544] Beko 300TR "Cihazda önceki satış tamamlanmamış": Beko'nun ArExternalTest aracıyla cihaza bağlanıp açık satış kapatılır.
+  - [2257] / [3571] Hugin "MatchEx Device": Cihazda harici donanım entegrasyonu tanımlı değil, servise başvurulur.
+- **[3261] / [3263] Restoran + Ingenico iWE280/Move5000 mobil ödeme (TSM):**
+  - Bir bilgisayar **TSM server** olur (açık port, kullanıcı/şifre AKINSOFT'tan). Masa ve paket adisyonları TSM'e gönderilir.
+  - TSM için **sabit IP** gerekir. Yoksa No-IP gibi dinamik DNS kullanılır, alan adı entegrasyon formundaki "statik IP" alanına yazılır.
+- **[296] Eski nesil yazarkasalar:**
+  - IBM Entry, Sharp ER-A495T, Inter MPOS 2001, Hugin POS: ERP ile offline.
+  - Hugin 425 TX, Olivetti OL 7000: ERP ile offline, Restoran/Hızlı Satış ile online.
+  - [326] Hugin POS + Restoran: Menü → Program Ayarları → Yazarkasa Entegrasyonu → Hugin data dizini, 4 haneli kasiyer no.
+- **[301] Yazarkasadan satış alırken "Cari bulunamadı":**
+  - Kodu "Genel" olan genel müşteri carisi olmalı ve Özel Ayarlar → Fatura Ayarları → Fatura Genel → **Genel Müşteri Cari Kodu** seçili olmalı.
+  - Oluşturmak için: "Hızlı Satış Kullan" işaretle → yeni satış faturası → Yeni Fatura.
+- **[3586]** Market Otomasyonu'nda son kullanılan menüyü açılışta açmak için Ayarlar'da bir seçenek var. [2365] Manuel veri gönderimi için "Dosya sistemini kullan".
+
+### Elektronik terazi
+- **[223] Barkodlu tartım:**
+  - Desteklenen modeller: CAS CL5000, CAS LP-1 / LP1000N, Densi (ACOM/NDP/Nets), Aclass LS2X, Digi SM100, Baster ELT-15/30.
+  - Tartılı ürünün stok kartına terazi barkodunun **ilk 7 hanesi** yazılır (ör. `2907022`). Kalan haneler tartımda ağırlıkla üretilir.
+- **Market Otomasyonu üzerinden aktarım:**
+  - **[362] CAS CL5000:** CL-Works v2.70.5+ gerekir, `MAINDATA.mdb` seçilir → Tek/Tüm Stok Aktar → CL-Works'ten teraziye gönderilir. [3587] Aktarılacak fiyat no seçilebilir.
+  - **[365] Densi:** Nets programında File → DB Open ile data oluşturulur, Market Otomasyonu'nda yolu seçilir (parola `814050`), NDP ile bağlanıp stok aktarılır.
+  - **[375] Aclass:** `Aclasplu.txt` oluşturulur, Aclass programında açılıp PLU gönderilir (terazi IP'si).
+
+### Yazıcı sorunları
+- **[25] "Range check error"** / **[61] "Printer index out of range":**
+  - Program varsayılan yazıcıda otomatik form boyutu oluşturmaya çalışıyor, yazıcı sürücüsü bozuk.
+  - Sürücüyü kaldırıp yeniden kur. Önizleme yapmadan `.arp` dizaynını aç, sayfa boyutunu **Custom → A4** yap ve kaydet.
+- **[153] "System Error Code 5 – Erişim engellendi"** (yazdırırken): Dizaynda sayfa boyutu Custom kalmış. Formun gerçek boyutunu (veya Default) seç.
+- **[1011] "System Error Code 87":** Yazıcı kapalı veya dizaynda yazıcı seçilmemiş.
+- **[1510] "Printer selected is not valid":** Varsayılan yazıcı yok, çevrimdışı veya sürücü uyumsuz.
+- **[19] / [743] Etiket yazıcıları:** Argox için Bartender/Argobar, Zebra için Zebra Designer Pro ile `.prn` hazırlanır (kılavuzlar makalelerde). [43] Epson LX-300+ "Tear Off" ayarı font tuşu kombinasyonuyla yapılır.
+
+### PDA
+- **[293] Restoran PDA (eski Windows Mobile):** En az 320×240, Windows Mobile 5/6 veya CE 5, dokunmatik ve Wi-Fi. .NET Compact Framework 2.0/3.5 kurulur. Güncel PDA uygulamaları Android/iOS'tur (`sektorel-programlar.md`).
+
+## Sektörel programlar
+
+### WOLVOX Restoran
+- **[710] / [3687] Garson ve PDA:**
+  - Garson, ERP'de **cari** olarak açılır: Cari Tanımları → **Özel Bilgiler 2** → "Garson" işaretle + **PDA şifresi** (garson ekranı girişinde de kullanılır, her garsona ayrı). Yetkiler: Restoran → Menü → Yetkili → Garson Yetkilendirme.
+  - **Android PDA:**
+    1. Restoran program ayarlarında "Bu bilgisayar PDA server olarak kullanılacak" işaretlenir.
+    2. Cihazda `http://<sunucu-ip>:<PDA port + 1>/MOBIL/index.html` açılıp APK indirilir (ör. PDA portu 4500 ise 4501).
+  - [1500] PDA'dan sipariş mutfak yazıcısına veya mutfak ekranına gider, adisyon yazdırılabilir.
+- **Web tabanlı ekranlar** (aynı port mantığı, PDA portu + 1):
+  - [1164] **Sıramatik:** Program Ayarları → Müşteri Ekranı → "Web tabanlı sıramatik kullan" → `http://<ip>:<port>/SIRAMATIK/index.html`.
+  - [3494] **Mutfak ekranı:** "Web tabanlı mutfak ekranını kullan" + Yazıcı Tanımları'nda mutfak yazıcısı olarak **`MUTFAKEKRANI_1`** seçilir. "Mutfağa yazdır" ile ekrana düşer.
+- **[2266] Masa krokisi:** Program Ayarları → Görünüm → Masa Yerleşimi = **Kroki** → kroki resmi → Dizayn Modu'nda şekil ekle → nesneye masa bağla. [2138] "Basit masa görünümü" de var.
+- **[3657] Şubelere tanım kopyalama:** Masa butonları ve grupları, kroki, adisyon butonları, süreli masa tarifeleri, otomatik üretim ve tüketim ayarları.
+- **[3680] Otomatik üretim/tüketim:** Menü → Tanımlar → Otomatik Üretim → Stok Otomatik Üretim Ayarları (reçete). Fiş başına ve kişi başına otomatik tüketilecek ürünler (masa, paket satış 1/2).
+- **Diğer tanımlar ve adisyon ekranı:**
+  - [3673] Menü tanımları (Menü → Tanımlar → Stok Detayları → Menü Tanımları)
+  - [3682] Stok bazında veya tüm ürünler için açıklama tanımları
+  - [3684] Dönüşüm tanımları
+  - [3658] Hızlı adisyon ekranına ERP stok gruplarından toplu aktarım
+- **[1147] Kurye için ayrı fiyat:** Stok 2 + ERP'de gelişmiş satış fiyatı sistemi. Kuryeye özel fiyat listesi tanımlanır.
+- **[1644] Hesap kapatma:**
+  - Hızlı tutar butonları (5/10/20/50/100).
+  - Oranlı bölme (1/2, 1/3, 1/X), ürün ve miktar bazında bölerek ödeme.
+- **[3611] Kurye gün sonu:** Menü → Ekranlar → Kurye Gün Sonu Raporu. Paket satışlar kuryeye göre listelenir, açık fişler kapatılır, **para teslimi** kaydedilir.
+- **[3612] Dışarıdan alınan ürün:** Ekstra → "Dışarıdan Alış". Kasa seçimi Program Ayarları → Ekstra-İndirim'de yapılır.
+- **[1327] Gün sonu depo sayımı:** Farklı depolar (ör. içecek deposu) günlük sayılır. Satışla karşılaştırılır, açık veya fazla **sorumlu personelin carisine** işlenebilir.
+- **Kart ve kredi sistemleri** (Disko-Bar-Kulüp giriş altyapısı):
+  - [1428] **Kantin sistemi:** limitli öğrenci kartı. Program Ayarları → Disko-Bar-Kulüp Giriş → Ekle → Kredi → "Kredili giriş fişi oluştur".
+  - [2065] Kredili kart (Menü → Kredili Kart → Kredili Kart İşlemleri).
+  - [462] Sosyal tesis (turnike ve harcama kredisi).
+  - [141] Ön ödemeli sistem (belirli ürünü süreli veya adetli ücretsiz ya da indirimli kullandırma, abonelik).
+  - [740] Devlet yurdu yemekhane (ERP'de ek işlem türleri, restoranda saat aralığına göre sabit tutarla otomatik kapatma).
+- **[1641] Telegram onayı:**
+  - Yetkisi olmayan garson veya kullanıcı için indirim, ürün iptali, fiş tipi değişikliği, ikram/ödenmez ve adisyon iptali işlemlerinde yetkiliden Telegram üzerinden onay istenir.
+  - **@BotFather** ile bot oluşturulur. Bot, **işletme yetkilisinin telefonunda** oluşturulmalı.
+- **[3666] Otel ↔ Restoran entegrasyonu:** Restoranda kapanan hesap konaklayan misafirin folyosuna işlenir. Otelde gelir/ödeme tanımları **501'den başlayan hesap kodlarıyla** yapılır (500'e kadarı sistemde). Restoran → Program Ayarları → Otel → departman ayarları.
+- **[2185] QR Menü:**
+  - `qrmenuapp.akinsoft.com.tr` üzerinde kategori ve ürün tanımlanır, Sistem → Şubeler'de QR linki alınır.
+  - Restoran entegrasyonuyla QR menüden sipariş alınabilir.
+- **Sorunlar:**
+  - [1028] Adisyon no **-1** ve "Toplu satışın yapılacağı adisyonlar" penceresi: Şube kodunda `-` veya `_` karakteri var, kaldır.
+  - [2054] İptal raporunda "hatalı giriş" iptalleri görünmüyor: Kullanıcıdan "mutfağa yazdırılmayan hatalı girişleri direkt sil" yetkisini kaldır.
+  - [1671] Caller-ID bildirimi birden çok kez çıkıyor: `C:\AKINSOFT\CallerIdServer1\Setting.ini` içindeki `IPNO=` satırına bu bilgisayarın IP'sini yaz.
+  - [1128] Son kullanma tarihi takibi: Seri-Lot modülü (lot/parti izleme, "partiler parçalanabilir").
+  - [1042] Marş sistemi ayarları ekran görüntülerinde.
+
+### WOLVOX Otel ve Otel 5
+Otel 5, WOLVOX Otel'den ayrı ve daha basit bir üründür. Kendi Firebird veritabanı (`AKINSOFT\Otel 5\Database_FB`), lisansı (Yardım → Lisans) ve güncellemesi (Yardım → Program Sürümünü Kontrol Et) vardır.
+- **[715] / [716] Anlık kimlik bildirimi (AKBS/KBS):** Yetkili → Özel Ayarlar → Anlık Kimlik Bildirimi → "E.G.M anlık bildirim sistemini kullan" → **AKBS uygulamasını çalıştır** → EGM kullanıcı bilgileri. İşletme önce EGM kılavuzuna göre KBS'ye kaydolur.
+- **[319] / [496] Kimlik ve pasaport tarama:** Plustek TR821 (kimlik/ehliyet), OpticSlim 550 (pasaport). Otel 4/5'te sadece TR821 destekleniyor.
+- **[705] / [2105] HotelRunner ve online rezervasyon:** **WOLVOX Veri Transfer** programı ve ilgili lisans gerekir. `ssleay32.dll` ve `libeay32.dll` dosyaları System32 (32 bit) veya SysWOW64 (64 bit) klasörüne konur.
+- **[3549] / [3551] Konaklama vergisi (%2):**
+  - Genel Ayarlar → Folio (Otel 5'te Rezervasyon ayarları) → "Konaklama vergi sistemini kullan" (+ "oda ücretine dahil et"). Genel Muhasebe kodu da buradan girilir.
+  - **Dahil** örneği (750 TL, %8 KDV): ara toplam 681,82, KDV 54,55, konaklama vergisi 13,64, toplam 750.
+  - **Hariç** örneği: ara toplam 694,44, KDV 55,56, konaklama vergisi 13,89, toplam 763,89.
+  - ERP tarafı için script paketi var ([3561]).
+- **[3418] / [3416] e-Fatura:**
+  - WOLVOX Otel: Genel Ayarlar → Folio → otomatik gönderim türü (Kullanma / Kuyruğa Ekle / Hemen Gönder / Kullanıcı Onaylı).
+  - Otel 5: Genel Ayarlar → Firma Bilgileri → e-Devlet + e-Fatura Ayarları → entegratör ve kullanıcı bilgileri → bağlantı testi.
+  - [3420] Otel 5 kamu faturası: IBAN Firma İletişim'e, cari "Kamu Kurumu", Harcama Birimi VKN (?) alanına.
+  - [3665] Otelden kesilen fatura **otelden** iptal edilir: Fatura İşlemleri → Kesilmiş Faturalar → Ft.İptal.
+- **[1457] Check-out yapılmış rezervasyonu silmek:** Folio → **Check Out İptal** → folio hareketlerini seç → Seçili Folio Hareketlerini Sil → rezervasyon → **Check In İptal** → sil.
+- **[1735] Kale Kilit:** Özel Ayarlar → "Kale Kilit (Embedded)… aktif et". `...\Wolvox8\KaleKilit\KaleKilit.exe` ayarları Kale firmasından alınır.
+- **[1871] / [1910] Oda temizlik durumu:** Resepsiyon → Ön Büro → Oda Listesi (Rack) → sağ tık; Rack Ekran; Odalar Yönetimi → House Keeping. Otel 5'te Rezervasyon → Otel Raporu.
+- **[1317] Pansiyon tipleri:** BB (oda+kahvaltı), HB (+akşam), FB (+öğle+akşam), AI (her şey dahil), UAI (ultra her şey dahil).
+- **[568] Kontrol ve dönem kayıtları:** Çocuk yaş grupları; dönem bazlı gecelik ücret (kişi başı veya oda).
+- **Otel 5 diğer:**
+  - [1904] Vadesi gelen çek hatırlatması
+  - [1912] Oda özellikleri
+  - [1913] Zorunlu misafir alanları
+  - [3813] Otel raporunda boş oda dolu görünüyor: rapor giriş zamanı rezervasyon çıkışıyla çakışıyor
+  - [4049] **TGA Tesis Künye** raporu (5.06.14+, uyruk ve ay bazında)
+  - [3417] "Invalid BLR at offset 16": `WolvoxUDF7.dll` + `UDF_TRUP.DLL` Firebird `UDF` klasörüne konur
+  - [3678] Yedek: Yetkili → Veritabanı İşlemleri veya `Database_FB` kopyası
+- **[1433] WOLVOX 8 Otel yardım dosyası:** Çok kullanıcılı, Firebird veya MSSQL, mükerrer rezervasyon kontrolü, voucher, günübirlik girişler, folyoya göre faturalama.
+
+### WOLVOX İnsan Kaynakları
+- **[99] Başlangıç sırası:**
+  1. Tanımlar → **İşyeri Tanımları**
+  2. **Vardiya** planları (sabah/akşam/gece/tatil)
+  3. Aylık **çalışma planları**
+  4. **Yasal sabitler** (webden veya varsayılanlardan)
+  5. Personel kayıtları
+  6. Cihazdan giriş-çıkış verileri
+- **[106] Personel puantajda görünmüyor:** Personel kartı → SSK Bilgileri → **SSK Başlama Tarihi** ve **İşe Giriş Tarihi (SSK)** boş.
+- **[3260] 2022 bordro değişiklikleri:** AGİ kaldırıldı. Asgari ücrete kadar olan kısım gelir ve damga vergisinden istisna. Normal ve asgari ücret GV matrahları ayrı kümülatif izlenir. Emeklilerden SGDP kesilir.
+- **[3633] EYT (15510 sayılı kanun):** İK 8.16.01+. Tanımlar → Teşvik Tanımları → Kanun No 15510 → Kaydet. Sonra personel → SGK Bilgileri → Kanun No.
+- **[376] Huzur hakkı bordrosu:** Gelir ve damga vergisi kesilir, SGK kesilmez. Makalede İşyeri tanımıyla başlayan adımlar var.
+- **[709] Magic Pass 20656 parmak izi "Sınıf kaydedilmemiş":** Programı bir kez yönetici olarak çalıştır.
+- **[2679] 360 derece performans değerlendirme:** Web tarayıcıdan puanlama, ast/üst/eşit grupları. [2141] Gelişmiş iş başvuru: Genel Ayarlar → "Gelişmiş iş başvuru özelliklerini kullan" → özellik tanımlarını departmanlarla eşle.
+
+### WOLVOX Genel Muhasebe ve Beyanname
+- **[1672]** GM'yi kullanmak için Kontrol Paneli → Şirket Kayıt İşlemleri → **"Muhasebe Tipi" = Genel Muhasebe** olmalı. ERP, İK, e-Defter, Demirbaş ve Beyanname ile entegre.
+- **[1415] Fiş sıralama:** Fiş İşlemleri → Fiş Sıralama → ay seç → aylık sırala → başlangıç numarası. **e-Defter kullanıcıları** bir önceki ay gönderilen son fiş numarasından devam etmeli.
+- **[1653] Aylık KDV tahakkuku:** 391 (hesaplanan) ile 191 (indirilecek) mahsubu. Fark 360 (ödenecek) veya 190 (devreden) hesabına gider.
+- **[2234] Dövizli muhasebe:** Genel Ayarlar → "Dövizli muhasebe kullan" → Diğer İşlemler → Döviz Tanımları (Merkez Bankası kodlarıyla USD, EUR) → hesap planında "Döviz hesabı".
+- **[3652] Stok takibi:** "Stok takibi yap" → Stok Tanımları → hesap planında "Stok kodu".
+- **[2669] KDV listelerinde tutar yok (elle fiş girilmiş):** B formu konusu hesap satırlarında (153, 600, 601, 610, 770…) Evrak No, B Formu ve Firma Kodu dolu olmalı. 191/391 satırlarında B Formu boş, Firma Kodu dolu olmalı (BA/BS için).
+- **[2026] Yevmiye defterinde "Incorrect syntax near":** Rapordaki fiş açıklama ayarlarında (?) ayraç karakterini düzelt.
+- **[578] / [1527] Beyanname:** GM, İşletme Defteri ve İK'dan veri alır. KDV1/KDV2, muhtasar gibi beyannameler otomatik veya elle hazırlanır, XML ve e-beyanname oluşturulur.
+  - [2071] XML kontrolü için GİB'in güncel `UygulamaHazirlamaKilavuzu.zip` dosyası Beyanname klasöründeki `BeyannameKontrol` klasörüne açılır.
+  - [93] KDV1'de bütün matrah tek satırda toplanıyor: Hesap planında **her KDV oranı için ayrı alt hesap** açılmalı, formüller doğru olmalı.
+
+### MRP II ve Demirbaş
+- **[270] Online İş Merkezi** ("Online İş Merkezi" lisansı gerekir):
+  - Kontrol Paneli'nde Online İş Merkezi ayarları → "Online iş merkezi sistemi kullan" + **web servis portu** → Kontrol Paneli'ni yeniden başlat → kullanıcı yetkisi ver.
+  - Operatör tarayıcıdan iş emrini başlatır, durdurur ve bitirir.
+- **[770] / [754] / [1583]:**
+  - İş merkezleri: personel yetkisi iş merkezi veya makine bazında verilir.
+  - Makine duruş tanımları ve duruş girişleri: etkilenen makinelerin iş emirlerine yansır.
+- **[1646] Makine bakım raporu:** Makine tanımında bakım hareketleri girilir. Uyarıcı/Hatırlatıcı → MRP Makine Bakım → "Makine bakımlarını otomatik kontrol et". Toplu güncelleme "Bilgi Güncelle" ile yapılır.
+- **[1508] Demirbaş:** Sabit kıymet envanteri, amortisman, yeniden değerleme, zimmet. Çalışması için **Genel Muhasebe veya İşletme Defteri** kurulu olmalı.
