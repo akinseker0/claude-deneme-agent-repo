@@ -1,0 +1,11 @@
+# Wolvox / Firebird veritabanı ve yedek dosyaları: gerçek şirket verisi içerir, repoya girmemeli
+*.fdb
+*.FDB
+*.fbk
+*.FBK
+*.gdb
+*.GDB
+*.mdb
+*.bak
+AS_YEDEK/
+DATABASE_FB/
