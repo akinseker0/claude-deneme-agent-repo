@@ -2,7 +2,9 @@
 """AKINSOFT Bilgi Bankası yerel önbellek aracı (sadece Python standart kütüphanesi).
 
 Makalelerin tam metni telif nedeniyle repoya konmaz. Bu araç onları kullanıcının
-kendi bilgisayarında .cache/bilgibankasi/ altına indirir (klasör .gitignore'da).
+kendi bilgisayarında ~/.cache/wolvox-bilgibankasi/ altına indirir (repo dışında).
+Klasör kullanıcı başına tektir: repo klonu, --add-dir, ~/.claude bağlantısı veya
+plugin, hangi yolla çalıştırılırsa çalıştırılsın aynı önbellek kullanılır.
 Makale listesi: skill klasöründeki references/bilgibankasi-dizini.json
 
 Araç skill klasöründe durur ki skill başka bir projeye bağlandığında da çalışsın.
@@ -28,9 +30,8 @@ from pathlib import Path
 
 BASE = "https://bilgibankasi.akinsoft.net"
 SKILL_DIR = Path(__file__).resolve().parent.parent  # .claude/skills/wolvox
-# Önbellek skill klasörünün üç üstüne iner: repo içinde <repo>/.cache, ~/.claude/skills/wolvox
-# altına kopyalanmışsa ~/.cache. Symlink/junction ile bağlandıysa resolve() gerçek repoyu verir.
-CACHE = SKILL_DIR.parents[2] / ".cache" / "bilgibankasi"
+# Kurulum yolundan bağımsız, kullanıcı başına tek önbellek (plugin güncellemesinde de silinmez).
+CACHE = Path.home() / ".cache" / "wolvox-bilgibankasi"
 INDEX_JSON = SKILL_DIR / "references" / "bilgibankasi-dizini.json"
 DELAY = 0.5  # sunucuyu yormamak için istekler arası bekleme (sn)
 

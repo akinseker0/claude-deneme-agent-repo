@@ -26,7 +26,7 @@ Bu skill `references/` klasöründeki konu dosyalarından oluşur. Soruya uyan d
 | `references/video-ozetleri.md` | **Eğitim videolarının altyazılarından çıkarılmış özetler**: Kontrol Paneli, ERP modülleri, Hızlı Satış, Restoran, yazarkasa/terazi entegrasyonları, İK, Otel, MRP II, Mobil Satış, WolvoxCloud (104 dakikalık resmi eğitim dahil). Kaynak `{YouTube ID}`. Önce `Grep` ile ara |
 | `references/kaynaklar.md` | Kaynak listesi, PDF'ler, bayi kaynakları ve işlenme durumu |
 
-**Tam metin aracı** (`scripts/bilgibankasi.py`, yalnız Python 3 standart kütüphanesi). Özette ayrıntı yoksa makalenin tamamını oku. Ağ erişimi gerekir. Metin repo kökündeki `.cache/` klasörüne (skill kopyalanarak kurulduysa `~/.cache/`) iner ve repoya girmez:
+**Tam metin aracı** (`scripts/bilgibankasi.py`, yalnız Python 3 standart kütüphanesi). Özette ayrıntı yoksa makalenin tamamını oku. Ağ erişimi gerekir. Metin kullanıcının `~/.cache/wolvox-bilgibankasi/` klasörüne iner (repoya girmez). Bu klasör tüm oturumlarda ortaktır; bir kez inen makale tekrar indirilmez:
 
 ```bash
 python "${CLAUDE_SKILL_DIR}/scripts/bilgibankasi.py" baslik "devir"   # başlıkta ara (dizinden, ağ gerekmez)

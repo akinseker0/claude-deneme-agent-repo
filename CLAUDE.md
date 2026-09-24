@@ -12,5 +12,5 @@ Bu repo kod değil, bir Claude Code agent'ı ve onun bilgi tabanını barındır
 - Doğrulanmamış bilgiyi "doğrulanmadı" veya "bayi kaynağına göre" diye işaretle. Tablo adı, SDK fonksiyonu veya menü yolu uydurma.
 - Bir kaynağı okuyup işlediğinde `.claude/skills/wolvox/references/kaynaklar.md` içindeki durumunu güncelle.
 - AKINSOFT dokümanlarını birebir kopyalama; kendi cümlelerinle özetle ve linkini ver.
-- Makale tam metinleri repoya girmez. `python tools/bilgibankasi.py oku <no>` ile yerel `.cache/` klasörüne iner. Özetler `references/bilgibankasi-ozetleri.md` dosyasında.
+- Makale tam metinleri repoya girmez. `python tools/bilgibankasi.py oku <no>` ile kullanıcının `~/.cache/wolvox-bilgibankasi/` klasörüne iner (repo dışında). Özetler `references/bilgibankasi-ozetleri.md` dosyasında.
 - Repo herkese açık (public). Veritabanı dosyalarını (`*.fdb` vb.), müşteri verisini, şifre veya lisans bilgisini asla commit'leme. Şema (DDL) eklenebilir, veri eklenemez.

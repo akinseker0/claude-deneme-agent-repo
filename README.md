@@ -133,14 +133,14 @@ Agent'ın kalıcı hafızası yok, bilgisi `references/` dosyalarından gelir. Y
 AKINSOFT makalelerinin tam metni telif nedeniyle repoya konmadı. Özetler `bilgibankasi-ozetleri.md` dosyasında. Tam metne ihtiyaç olursa kendi bilgisayarında şunları çalıştır (Python 3, ek paket gerekmez, internet gerekir). `tools/bilgibankasi.py` bir kısayoldur; asıl araç `.claude/skills/wolvox/scripts/bilgibankasi.py`:
 
 ```bash
-python tools/bilgibankasi.py indir               # 1411 makaleyi .cache/bilgibankasi/ altına indirir (~15 dk, bir kez)
+python tools/bilgibankasi.py indir               # 1411 makaleyi ~/.cache/wolvox-bilgibankasi/ altına indirir (~15 dk, bir kez)
 python tools/bilgibankasi.py oku 3845            # tek makaleyi göster
 python tools/bilgibankasi.py baslik "e-fatura"   # başlıkta ara
 python tools/bilgibankasi.py ara "sysas.ask"     # tam metinlerde ara
 python tools/bilgibankasi.py dizin               # yeni makaleler için dizini yenile
 ```
 
-`.cache/` klasörü `.gitignore`'da, commit'lenmez. Skill `~/.claude/skills/` altına bağlantıyla kurulduysa önbellek yine bu repodaki `.cache/` klasörüne iner; kopyalanarak kurulduysa `~/.cache/bilgibankasi/`, plugin olarak kurulduysa `~/.claude/plugins/cache/wolvox-uzmani/wolvox/.cache/` altına iner.
+Önbellek repo dışında, kullanıcının `~/.cache/wolvox-bilgibankasi/` klasöründedir (Windows'ta `C:\Users\<ad>\.cache\wolvox-bilgibankasi`). Tüm makaleler yaklaşık 25-30 MB tutar. Klasör kullanıcı başına tektir: repo klonundan, başka bir projeden ya da plugin'den hangi oturumda çalıştırılırsa çalıştırılsın aynı yer kullanılır. Bu yüzden bir kez indirmek yeterli. `oku` yalnız istenen makaleyi indirir; `ara` yalnız inmiş makalelerde arar, tam metin araması için önce bir kez `indir` çalıştır. Bulut oturumları (claude.ai/code) başka bir makinede çalıştığı için bu önbelleği görmez.
 
 ## Durum ve bilinen eksikler (2026-09-24)
 
