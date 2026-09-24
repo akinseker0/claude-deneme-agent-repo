@@ -804,3 +804,157 @@ Otel 5, WOLVOX Otel'den ayrı ve daha basit bir üründür. Kendi Firebird verit
   - Makine duruş tanımları ve duruş girişleri: etkilenen makinelerin iş emirlerine yansır.
 - **[1646] Makine bakım raporu:** Makine tanımında bakım hareketleri girilir. Uyarıcı/Hatırlatıcı → MRP Makine Bakım → "Makine bakımlarını otomatik kontrol et". Toplu güncelleme "Bilgi Güncelle" ile yapılır.
 - **[1508] Demirbaş:** Sabit kıymet envanteri, amortisman, yeniden değerleme, zimmet. Çalışması için **Genel Muhasebe veya İşletme Defteri** kurulu olmalı.
+
+## Entegrasyon programları: WebConnect, Web Entegrasyon, Veri Transferi, Mobil Satış
+
+### WOLVOX WebConnect (tarayıcıdan ERP)
+- **[1526] Bağlantı:**
+  - "Yetkili" ya da "Kullanıcı" olarak girilir. Kullanıcı girişi için Kontrol Paneli → Kullanıcı Yetkilendirme → personel ve şirket seçilir → Program Kullanım Yetkileri'nde **WebConnect** işaretlenir.
+  - WebConnect'te "Port Ayarları → Çalışma Portu" (örnekte 8888) kontrol edilir. Dışarıdan erişilecekse port modemde açılır.
+  - Tarayıcıya `http://<sabit-ip>:<port>` yazılır → kullanıcı girişi → şirket seçimi.
+- **[689] / [753] Servis sayfaları (en az 8.02.03, e-Ticaret sitesine eklenebilir):**
+  - Garanti sorgulama: `<ip>:<port>/$/start?value=wgrntsrg`
+  - Servis durumu sorgulama: `…?value=wsrvdrmsrg`
+  - Servis ürün kaydı: `…?value=wsrvkayit`
+- **[541] Servis randevusunu WebConnect'ten izleme:**
+  - Önce Kontrol Paneli'nde kullanıcı oluşturulup yetkilendirilir.
+  - Kullanıcı için cari kart açılır. Özel Bilgiler 2'de "servis personeli" işaretlenir. Özel Bilgiler 1'de "Wolvox kullanıcısı" seçilir.
+  - Servis randevu kaydında bu kişi "servis işlemleri personeli" olarak eklenir.
+- **[750] Android'de barkod:** "WConnect Barcode.apk" kurulur. Stok ekleme ekranındaki kamera kutucuğuyla barkod okutulur. WebConnect tarafında ayar gerekmez.
+- **[2123] Mobil yazıcı çıktısı:** Dotmatrix formatlı `.arp` hazırlanır ve WebConnect klasöründeki `DefDesign` altına konur (ör. `...\Wolvox8\WMobil\DefDesign`). İndirilen dosya Android'deki "Mobil Printer" uygulamasıyla açılıp basılır.
+- **[3606] Müşteri imzası (8.07.04+):** Sipariş ve servis randevu formlarında imza alınır. Çıktıda görünmesi için ERP tasarımına resim alanı eklenir:
+  - parametre "Sipariş İmzası" / "Servis İmzası"
+  - Otomatik boyut, Ortalama ve Sığdır: "var"
+  - Veri tabanı: **Dosya 2**
+- **[3821] 9.02.01:** Sipariş ve teklife not alanı, servis randevusuna kamera veya dosya eki, garanti bitiş tarihi, envanterde termin miktarı, CRM özel alanları eklendi.
+- **[2355]** WebConnect ile Mobil Satış Android arasındaki farkları bir tablo olarak veriyor (tablo resimde).
+
+### WOLVOX Web Entegrasyon (ERP ↔ AKINSOFT e-Ticaret)
+- **[2207] Kurulum ve bağlantı:**
+  - Program Installer'dan kurulur. Girişte **Kontrol Paneli yetkili kullanıcı adı ve şifresi** istenir.
+  - e-Ticaret panelinde Kullanıcılar → Yöneticiler → Yeni Ekle → **"Muhasebe Kullanıcısı"** oluşturulur ve tüm yetkiler verilir. Bu kullanıcıyla panele girilemez. Kurulumda verilen normal kullanıcı API kullanıcısına çevrilmez.
+  - e-Ticaret panelinde Entegrasyonlar → Ticari Program Yönetimi'nde senkronizasyon modu seçilir:
+    - **Tam:** ERP'deki bütün stok işlemleri siteye akar.
+    - **Kısmi:** Stok iki tarafta aynı kodla ayrı ayrı açılır. Yalnız işaretlenen alanlar (fiyat, miktar…) güncellenir.
+    - **Yok:** Bağlantı olmaz.
+  - Web Entegrasyon → Ayarlar → Genel → Web Sitesi Ayarları: Site adresi **`http://` ile** yazılır (`https` yazılmaz). Muhasebe kullanıcısı bilgileri girilir → **Test Et**.
+  - Test Et hataları:
+    - "Sunucu ile bağlantı kurulamadı" → adres https girilmiş.
+    - "Kullanıcı Bulunamadı" → muhasebe kullanıcısı bilgileri yanlış.
+    - "Öncelikle Senkronizasyon işaretlenmelidir" → panelde senkronizasyon seçilmemiş.
+  - Ürünün ve grubunun gönderilmesi için ERP'de **"Webde Görünsün"** işaretli olmalı.
+- **[3039] Stok ayarları:**
+  - Açıklama bilgisi: Özel Ayarlar-1 özellik detayları.
+  - Resim ve dosyalar: Stok 2'de "Dosya" altında eklenir, "Web'de Görünsün" işaretli olmalı.
+  - Alt stoklarda aynı rengin resmi bütün bedenlere gönderilebilir.
+  - Miktar gönderiminde termin/bloke dahil edilebilir (Stok 2 ve Sipariş gerekir).
+  - Gelişmiş iskonto gönderimi: ERP genel ayarlarında açılır, e-Ticaret'te Kampanya modülü gerekir.
+  - "Varsayılan ve diğer birim fiyat sistemi" ile "Birimler ve fiyatları gönder" birlikte kullanılamaz.
+  - Diğer gönderimler: alternatif ürünler (ilgili ürün olarak), e-Ticaret özellik tanımları, ek kategoriler (Özel Ayarlar 2), lot (e-Ticaret'te Kumaş modülü gerekir), depo envanteri ("hangi mağazada").
+  - Stokta döviz tanımlıysa yalnız döviz fiyatı gönderilebilir. Bu durumda TL fiyatı gitmez.
+  - Uyumlu marka ve modeller de gönderilebilir.
+  - Özellik filtresinde görünme şartı: özellik en az 3 üründe girilmiş olmalı ve en az 2 farklı değer almalı.
+- **[3067] Stok alan eşleştirme:** Stok özel alanları e-Ticaret alanlarına eşlenir. Özel alanın veri tipi hedef alana uymalı:
+  - Ek Bilgi 1 ↔ Açıklama
+  - desi
+  - Hızlı Kargo, Ücretsiz Kargo, Sitede Gösterme: **Var/Yok**
+  - Kargolama süresi: **Tam sayı**
+  - SEO alanları
+  - Gösterilecek üye tipi: Metin. Değerler "Bayi", "Müşteri" veya "Bayi ve Müşteri" ([2680]).
+  - Birimler: Metin, "Diğer Birimler" ile aynı yazım. Bütün stoklarda geçerlidir, temel birim kullanılamaz.
+  - Garanti süresi: Çoktan seçmeli, değerler ay cinsinden.
+- **[2211] Kategori eşleştirme:** Varsayılan kategori Grup > Ara Grup > Alt Grup'tur (3 seviye). Daha derin ağaç için "Stok Kategori Eşleştirme" kullanılır: ilk 3 seviye grup alanları, sonrası özel alanlar. Bu açıksa grup alanlarından kategori oluşturulmaz.
+- **[2321] Ürünü birden fazla kategoride gösterme (ERP s8.17.01+):** Stok kartında Özel Ayarlar 2 → Kategori Bilgileri'ne ek kategoriler girilir. Adlar grup tanımlarıyla birebir aynı yazılmalı.
+- **[3065] Sipariş kayıt ayarları:**
+  - Alınan Sipariş sayacı ayrı seçilebilir.
+  - **"Yeni siparişi direkt fatura olarak kaydet"** (Sipariş modülü yoksa): fatura, e-Fatura ve e-Arşiv sayaçları seçilir.
+  - Siparişler "Beklemede" durumuyla gelebilir.
+  - ERP'de olmayan ürün için iki seçenek: "Siparişi kaydetme" (uyarı verir; ürün aynı kod ve adla açılıp "Veri Al" yapılır) veya "Stok kartı açmadan sipariş kaydet".
+  - Üye olmadan alışveriş yapanlar cari olarak kaydedilebilir. e-Fatura mükellefi isen e-Fatura ayarlarında "Gönderim bilgilerini fatura kartından al" açılmalı.
+  - Siparişin ek bilgileri (promosyon kodu, kargo barkodu…) ERP siparişindeki Özel Tanımlar'a eşlenir.
+  - "Sadece sipariş" kayıtlarında e-Fatura ödeme tipi "Dekont" olarak aktarılabilir.
+- **[3907] 2. şirket (s9.02.02+):** Siparişler aynı anda ikinci bir şirkete de, **yalnız sipariş olarak**, kaydedilebilir. Şirket, şube ve çalışma yılı seçilir. Tek cari kodu verilebilir; boş bırakılırsa her sipariş için cari açılır. Ayar hatalıysa sipariş hiçbir şirkete yazılmaz.
+- **[3068] / [3216] Cari ayarları:**
+  - Carinin e-Ticaret'e gitmesi için cari kartındaki Özel Bilgiler 1'de web kullanıcı adı, parola ve e-posta dolu olmalı.
+  - Varsayılan tip "ÜYE"dir. "BAYİ" için Özel Kodu 3 = "Bayi" yazılır ya da metin tipli bir özel alan "Üye tiplerini kaydet" ayarına bağlanır.
+  - Seçenekler: alışveriş yapmayan üyeleri de kaydet, sitede değişen adresi ERP'de güncelle.
+- **[3072] Virman (sanal pazar bakiyesi):**
+  - Her pazar (N11 vb.) için ERP'de bir cari açılır ve kodu Virman Ayarları'na yazılır.
+  - Sipariş faturalanınca tutar o cariye borç olarak virmanlanır. Müşteri carisinin bakiyesi 0 görünür.
+- **[3119] Genel Muhasebe entegrasyonu:** Yeni cariler için varsayılan muhasebe alış ve satış kodları tanımlanır. Kargo satırının muhasebe kodu "Kargo Satırı Muh. K." alanına girilir.
+- **[3128] "Bağlantı diğer bir HSTMT sonuçları ile meşgul" (MSSQL):** SQL Server Native Client kurulup program yeniden açılır.
+- **Sürüm notları:**
+  - [3919] s9.02.02: Birden fazla şirkete sipariş yazılabiliyor. Site adı küçük harfle kaydediliyor. Cari grup bilgisi aktarılıyor.
+  - [3948] s9.03.01: ERP'de silinen stok sitede pasife çekiliyor. Üyeliksiz alışverişte her siparişe ayrı cari açılıyor. Yasal alanlar gönderiliyor. İskonto tanımlarındaki cari grupları gönderiliyor. Koçtaş siparişleri onaylı geliyor ve virman destekleniyor.
+
+### WOLVOX Veri Transferi (dış sistem entegrasyonları)
+Veri Transferi, ERP, Restoran ve Hızlı Satış'ı dış servislere bağlayan ayrı ve modül bazlı lisanslanan bir programdır.
+- **[3468] Lisans (8.08.01+):** "Online Lisans Al" ile lisans no ve şifre girilir. Modül ekleme ve yenileme Yetkili → "Lisans Satın Al veya Yenile" ekranından kredi kartı ve 3D Secure ile yapılır.
+- **[747] ÜTS / Hotel Runner / SanalSantral / Kobikom:** Ekteki `ssleay32.dll` ve `libeay32.dll` 32 bit Windows'ta `System32`, 64 bit Windows'ta `SysWOW64` klasörüne kopyalanır.
+- **Yemek platformları (Restoran):** Getir Yemek [3007], Çırak [3137], Trendyol Yemek [3201], Yemeksepeti [1047], yeni Yemeksepeti [3628], Migros Yemek [3691], Fuudy [3793].
+  - Hepsinde ortak akış: Veri Transferi → Restoran → ilgili entegrasyon → Ayarlar. Platformdan alınan anahtarlar girilir (secret key, API key, satıcı ID…).
+  - Sipariş alma süresi, "Genel Müşteri BLKODU" ve uyarı süresi ayarlanır.
+  - **Stok Eşleştirme**'de menü listesi platformun servisinden çekilir ve Restoran stoklarıyla eşlenir. Detay için CTRL+Enter. Ürün tipi "Normal" ya da "Açıklama/Fiş açıklaması" (seçenek) olur.
+  - **Yeni Yemeksepeti (VT 8.08.03+):** Müşteri bilgisayarı host olur. **Sabit IP** (veya NoIP) ve modemde açık bir port gerekir. Başvuru ticket ile yapılır: lisans no, VKN, IP, port ve vendor id. Geçişler salı, çarşamba ve perşembe yapılıyor.
+  - **Migros Yemek (VT 8.09.01, Restoran 8.23.03):** Panelde her şube için ayrı API Key üretilir (POS firması = AKINSOFT). "Server kullanılsın" ile port açılır.
+  - **Fuudy (VT 8.11.01, Restoran 8.23.07):** Detaylı log `Veritransfer\FuudyYemekData` altında tutulur. Otomatik sipariş alma aralığı en az 31 sn.
+- **[3437] Getir Çarşı (Hızlı Satış):** ShopID ve ChainID talep formuyla alınır. Stok birimi, sipariş durumu ve sipariş alanı eşleştirmeleri yapılır.
+- **[751] SanalSantral:**
+  - Kontrol Paneli'ndeki kullanıcı kaydına dahili numara yazılır.
+  - Veri Transferi'ne Santral ID ve API Key girilir. CallerID ve bildirim portu ayarlanır.
+  - ERP'de Yetkili → Özel Tanımlar → Özel Ayarlar → Caller ID'deki iletişim portu, Veri Transferi'ndeki bildirim portuyla **aynı** olmalı.
+- **[1930] / [2148] ÜTS (tıbbi cihaz ve kozmetik takibi):**
+  - Veri Transferi, ÜTS bildirimlerini yapar: verme, alma, tüketiciye verme, iade, üretim, ithalat…
+  - "ERP Özel Alan Tanımlarını Aç" butonu gerekli özel alanları otomatik açar.
+  - Kurum no ÜTS portalında "Firma Bilgilerim" altındadır. Token, Sistem Kullanıcısı Tanımlama'dan e-İmza ile alınır ([2137]: izinli IP listesini imza yetkilisi belirler).
+  - Otomatik cari ve stok kaydı yapılabilir. İthalatta ülke kodları kullanılır [3447].
+- **[1724] BKTS (bitki koruma ürünleri):** Bakanlık kararıyla **01.09.2025'ten itibaren kapatıldı**. Modül satıştan kaldırıldı.
+- **[2158] GoBD (Almanya):** Program Almanca kurulur ve Kontrol Paneli GoBD moduyla çalıştırılır. Tarih aralığı, tablo ve alan seçilip CSV dışa aktarılır. ERP, Restoran, Hızlı Satış, Otel ve Mobil Satış'ta var.
+- **[3667] / [3668] Ercom:**
+  - Sipariş entegrasyonu Ercom'un "Muhasebe" klasörünü, üretim entegrasyonu "uretimrecete" klasörünü okur.
+  - MySQL bağlantısı ve birim eşleştirmesi yapılır. İstenirse belli aralıklarla otomatik aktarır. Tanımsız cari ve stoklar ayrıca listelenir.
+- **[3800] Excel entegrasyonu:** Excel'den fatura ve cari tahsilat aktarır. Klasör, başlık, cari/ürün kodu kolonları tanımlanır. Fatura ve tahsilat tipi, pazarlamacı, birim, depo ve e-Fatura senaryosu eşleştirilir.
+- **[3631] Panorama:** ERP faturaları XML olarak export klasörüne yazılır. Şablonda alanlar `TABLO.ALAN` biçiminde verilir ve **yalnız FATURA ve FATURAHR** tablolarından okunabilir.
+
+### WOLVOX Mobil Satış (saha satış) ve Mobil Server
+Mimari: **Mobil Server** (PC) ERP verisini hazırlar, pazarlamacı ayarlarını ve tasarımları tutar. **Mobil Satış** (Android; eski sürümü Windows Mobile) senkronizasyonla veri alıp gönderir.
+- **[2133] Bağlantı:**
+  - Cihaza PC'nin IP'si (yerel ağda `ipconfig` ile bulunur, dışarıdansa statik IP), port ve kullanıcı şifresi girilir.
+  - Pazarlamacı, ERP'de bir cari kart olarak açılır. Özel Bilgiler 2'de **"Pazarlama Sistemini Kullan"** işaretlenir ve **PDA Şifre** verilir.
+- **[1879] APK kurulumu:** Mobil Server çalışırken cihaz tarayıcısında `http://<pc-ip>:<mobil server portu + 1>` açılır. "Bilinmeyen kaynaklar" izni verilir. APK açılmazsa Dosyalarım → Download klasöründen kurulur.
+- **Pazarlamacı ayarları** Mobil Server → Yetkili'de:
+  - "Kasa, POS ve Filtre Tanımları" pazarlamacı bazındadır [2654]. Tekrar yazdırma yetkisi [2342], vade aşımı kontrolü [3438] ve e-Fatura/e-Arşiv/e-İrsaliye sayaç ataması [2653] buradadır. Her pazarlamacıya ayrı sayaç verilmeli [3858].
+  - "PDA Ayarları": çoklu stok seçimi [2341], ağırlıklı barkod [3591], fatura/cari/irsaliyeyi merkeze otomatik gönderme (Genel 2), stok grup resimleri ile katalog [3871].
+  - Değişiklikten sonra cihazda **senkronizasyon/veri alma** yapılır.
+- **[3349] / [3441] Otomatik e-Fatura / e-Arşiv / e-İrsaliye:** Pazarlamacının cihazında internet olmalı.
+  - Kontrol Paneli → Şirket Kayıt → e-Devlet'te otomatik gönderim açılır.
+  - Mobil Server'da PDA Ayarları → Genel 2'de merkeze gönderim açılır ve pazarlamacıya sayaç atanır.
+  - Cihazda "Otomatik e-Fatura Gönderme" = Kullanıcı Onaylı seçilir.
+  - [3460] e-İrsaliye ve özel matrah için Mobil Server 8.07.07 ve Android 8.07.01 gerekir.
+- **[3438] Vade aşımı engeli:**
+  - Pazarlamacıya bir Wolvox kullanıcısı atanır ve bu kullanıcıdan "Cari vade aşımında evrak girişine izin ver" yetkisi alınır.
+  - ERP'de Cari kart ayarları 2'de "Vadesinde ödenmeyen bakiyelerin kontrolünü yap" açılır.
+  - Mobil Server'da Cari Gönderimi'nde aynı kontrol açılır.
+- **Tasarım (`.arp`):**
+  - Mobil Server → Yazıcı Form Tasarımları'nda düzenlenir [2359]. Alanlar "Fatura Yazdırma" tablosundan seçilir.
+  - "Tasarımı Mobil Satış formatına çevir" ile `.ini` dosyasına dönüştürülür [2647]. Cihaz "Rapor Tasarım Dosyalarını Al" ile çeker.
+  - Birden fazla fatura tasarımı `fatura_<ad>.arp` adıyla eklenir, her biri ayrı çevrilir [3516].
+  - Satır bitiminde kesmek için "Detay Özeti = Var" yapılır, alt toplamlar footer'a taşınır [2356].
+  - Logo: `DefDesign` klasörüne ve cihazdaki `Pictures` klasörüne aynı adla konur. Alan adı `IMAGE_logo.png` olur, boyut ~50×50 px [3071].
+  - Karekod: tasarıma eklenir ve merkeze gönderim açılır [3734].
+- **Yazıcı:**
+  - Bluetooth termal ya da dotmatrix (SKS1/SKS2, bluetoothlu Epson LX-300, RW-420) [299].
+  - Android'de "Mobil Printer" APK'si ile yazıcı eklenir. Bluetooth taraması için konum izni açık olmalı [3262][3590].
+  - Etiket için `.prn` tasarımı (Argox/Zebra) `...\MobilServer\DefDesign` altında durur. Cihaza `etiket.prn` adıyla elle kopyalanır [3708].
+- **Saha işlemleri:**
+  - Depo transferi, satıra açıklama eklenebilir [2650].
+  - Stok sayımı: senkronizasyonla ERP'ye gider, ERP'de "Stok ve Sayım Düzenleme"den alınır [2651].
+  - Rota: rota grubu tanımlanır, pazarlamacıya atanır, günlük veya haftalık planlanır [3594].
+  - Sevkiyat planlama: yalnız "Beklemede" durumundaki siparişler listeye gelir [3491].
+  - Faturada pazarlamacının görünmesi için ERP'de "Pazarlamacı kullan = Fatura bazında" seçilir [3593].
+- **[3499] Otomatik veri oluşturma:** Mobil Server bütün pazarlamacıların verisini belirli saatlerde önceden hazırlar. Böylece veri alma hızlanır (9.02.01'de günlük/saatlik periyot eklendi [3825]).
+- **Sürüm notları:**
+  - [3825] 9.02.01: Pazarlamacı yetkisi kopyalama. **Tevsik kapsamında 7.000 TL'yi aşan nakit tahsilatı engelleme ayarı.** Yazdırma yetkileri. Taşıyıcı bilgileri.
+  - [3875] 9.03.01: Çoklu stok grubu seçimi. 10 banka hesabı. Tarih formatı.
+  - [3770] 8.08.08: Rota ve ziyaret notları.
+- **[293] Restoran PDA (eski Windows Mobile):** En az 320×240 ekran, WM5/6 veya CE5, dokunmatik ve Wi-Fi gerekir. Önce .NET Compact Framework 2.0/3.5 kurulur.
