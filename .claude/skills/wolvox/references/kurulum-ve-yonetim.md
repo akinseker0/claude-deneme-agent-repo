@@ -73,6 +73,18 @@ Masaüstü kısayolları silinip yeniden oluşturulur. SDK makalesi (3994) WOLVO
 | 8888 | WebConnect varsayılan çalışma portu |
 | 80 | Uzaktan erişim senaryolarında gerekli |
 
+**Yerel ağ dışından (başka şehirden) bağlantı (Bilgi Bankası 308, 211):**
+- Sunucuda **statik IP** olmalı.
+- Modemde açılacak portlar (TCP/UDP):
+  - Firebird: **3050, 3054, 3055, 3056 ve 80**
+  - MSSQL: **3055, 3056, 1433, 1434**
+- İstemcide "Ana Bilgisayar IP" alanına statik IP yazılır.
+- AKINSOFT modemde port açma konusunda destek vermiyor.
+- **Güvenlik:** Veritabanı portlarını (3050, 1433) internete açmak ciddi risktir. Tercih sırası:
+  1. **VPN**
+  2. Modemde kaynak IP kısıtlaması
+  3. En azından varsayılan `masterkey` / `sa` şifresinin değiştirilmesi
+
 - Yerel ağda bağlanamıyorsan güvenlik duvarında/antivirüste **3054, 3055, 3056** portlarını aç.
 - **Uzaktan (internet üzerinden) erişim:** Firebird kullanıyorsan modemde Kontrol Paneli bilgisayarına **3050, 3054, 3055, 3056 ve 80** portlarını yönlendir. MSSQL kullanıyorsan **3055 ve 3056** ile birlikte SQL Server'ın **1433/1434** portları gerekir (Bilgi Bankası 211, 1894).
 - Kontrol Paneli'ndeki "Çalışma Portu" ve "Güncelleme Portu" özel bir sebep yoksa değiştirilmemeli.

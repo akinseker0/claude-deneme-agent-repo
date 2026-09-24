@@ -20,7 +20,13 @@ Bu repo, AKINSOFT yazılımları ve WOLVOX ERP konusunda uzmanlaşmış bir **Cl
             ├── e-donusum.md
             ├── sektorel-programlar.md
             ├── sorun-giderme.md
-            └── kaynaklar.md      # Bilgi Bankası makaleleri, PDF'ler, videolar ve işlenme durumu
+            ├── bilgibankasi-ozetleri.md   # ~940 makalenin tam metninden kendi cümlelerimizle özetler
+            ├── bilgibankasi-dizini.json   # 1411 makalenin no/başlık/kategori/adres dizini
+            ├── menu-haritasi.md           # WOLVOX 26 / WolvoxCloud menü ağacı
+            ├── video-dizini.md            # YouTube + Dailymotion eğitim videoları listesi
+            └── kaynaklar.md               # Kaynaklar ve işlenme durumu
+tools/
+└── bilgibankasi.py               # Bilgi Bankası tam metinlerini yerel önbelleğe indirir/arar (stdlib)
 ```
 
 ## Yerel VS Code'da kullanım
@@ -45,14 +51,31 @@ Agent'ın kalıcı hafızası yok, bilgisi `references/` dosyalarından gelir. Y
 - Ya da dosyaları kendin düzenle.
 - Değişiklikleri commit'le ve push'la. Diğer bilgisayarlarda `git pull` ile gelir.
 
-## Bilinen eksikler (2026-09-24)
+## Bilgi Bankası tam metinleri (yerel önbellek)
 
-Bilgi tabanı web arama sonuçlarından derlendi: önce genel aramalarla, sonra makale bazında hedefli aramalarla. Oluşturulduğu ortamın ağ politikası akinsoft.com.tr, bilgibankasi.akinsoft.net, akinsoft.net ve youtube.com'u doğrudan açmaya izin vermedi. Bu yüzden:
+AKINSOFT makalelerinin tam metni telif nedeniyle repoya konmadı. Özetler `bilgibankasi-ozetleri.md` dosyasında. Tam metne ihtiyaç olursa kendi bilgisayarında şunları çalıştır (Python 3, ek paket gerekmez, internet gerekir):
 
-- **Bilgi Bankası:** Yaklaşık 100 makale listelendi. Yarıdan fazlası "detaylı" veya "özet" düzeyinde işlendi, hiçbirinin tam metni okunmadı. Durumlar `kaynaklar.md` içinde.
-- **SDK PDF'i okunmadı.** Fonksiyon adları ve XML şemaları eksik.
-- **Videolar izlenmedi.** Sadece başlıklar ve linkler var.
-- **Ekran görüntüleri toplanamadı.**
-- **Veritabanı şeması:** Sadece 8 tablo doğrulandı. Kullanıcının `sirket.fdb` / `wolvox.fdb` kopyasından tam şema çıkarılmalı.
+```bash
+python tools/bilgibankasi.py indir               # 1411 makaleyi .cache/bilgibankasi/ altına indirir (~15 dk, bir kez)
+python tools/bilgibankasi.py oku 3845            # tek makaleyi göster
+python tools/bilgibankasi.py baslik "e-fatura"   # başlıkta ara
+python tools/bilgibankasi.py ara "sysas.ask"     # tam metinlerde ara
+python tools/bilgibankasi.py dizin               # yeni makaleler için dizini yenile
+```
 
-Yerel VS Code oturumunda (ağ erişimi olan bir ortamda) agent'a şunu söyleyebilirsin: "`kaynaklar.md` içindeki 'başlık' durumundaki Bilgi Bankası makalelerini ve SDK PDF'ini oku, bilgi tabanını güncelle."
+`.cache/` klasörü `.gitignore`'da, commit'lenmez.
+
+## Durum ve bilinen eksikler (2026-09-24)
+
+- **Bilgi Bankası:** 1411 makaleden 1410'unun tam metni okundu. Yaklaşık 940'ı özetlere işlendi; geri kalanlar e-Ticaret tema şablonları, pazaryeri ayar ekranları, CafePlus gibi Wolvox dışı ya da tekrar eden konular ve başlık dizininden bulunabiliyor.
+- **SDK:** Wolvox 9 SDK PDF'i ve resmi Delphi demo kaynağı okundu (`sdk-ve-entegrasyon.md`). SDK kullanmak için SDK lisansı ve AKINSOFT'tan alınan geliştirici kodu (devCode) gerekir.
+- **Videolar:** YouTube bu ortamdan transkripte izin vermedi. Yalnız başlıklar listelendi (`video-dizini.md`, `menu-haritasi.md`).
+- **Ekran görüntüleri:** Repoya konmadı. Adresleri araç çıktısında var; agent gerektiğinde indirip okuyabilir.
+- **Veritabanı şeması:** Yaklaşık 15 tablo ve bir kısım alan makalelerden doğrulandı. **Tam şema kullanıcının yerelindeki `wolvox.fdb` / `sirket.fdb` kopyasından çıkarılmalı.** Yerel oturumda agent'a şöyle diyebilirsin: "wolvox.fdb'nin bir kopyasından isql ile şemayı çıkar ve veritabani-ve-sql.md'yi güncelle, veriyi yazma."
+
+## Gizlilik notu
+
+Bu repo şu anda **herkese açık (public)**.
+- Veritabanı dosyaları `.gitignore` ile dışlanıyor (`*.fdb`, `*.fbk`, `*.mdb`…).
+- Yine de şirket verisi, şifre veya lisans bilgisi içeren hiçbir şeyi commit'leme.
+- Repoya kendi notlarını ya da şema dökümlerini ekleyeceksen repoyu **private** yapmayı düşün (GitHub → Settings → General → Danger Zone → Change visibility).

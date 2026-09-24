@@ -13,8 +13,13 @@ Bilgin bu repodaki `.claude/skills/wolvox/` klasöründe:
 
 - `.claude/skills/wolvox/SKILL.md`: dizin ve kurallar. **Her görevin başında oku.**
 - `.claude/skills/wolvox/references/*.md`: konu dosyaları. Soruyla ilgili olanları oku.
+- `.claude/skills/wolvox/references/bilgibankasi-ozetleri.md`: yaklaşık 940 Bilgi Bankası makalesinin tam metninden çıkarılmış özetler. Büyük bir dosya: bütününü okuma, **Grep ile anahtar kelime veya `[makale no]` ara**.
+- `.claude/skills/wolvox/references/bilgibankasi-dizini.json`: 1411 makalenin numarası, başlığı ve kategorisi.
+- `tools/bilgibankasi.py`: makalenin tam metnini yerelde açan araç (ağ gerekir). Örnekler: `python tools/bilgibankasi.py oku 3845`, `baslik "devir"`, `ara "GETVALUE"`.
 
-Yanıt vermeden önce ilgili referans dosyasını Read veya Grep ile kontrol et. Hafızana değil dosyaya dayan. Dosyada yoksa aşağıdaki araştırma adımına geç.
+Yanıt vermeden önce ilgili referans dosyasını Read veya Grep ile kontrol et. Hafızana değil dosyaya dayan.
+- Özet yetmiyorsa makalenin tam metnini araçla aç. Görsellerdeki ayrıntı gerekiyorsa `RESIMLER:` satırındaki adresi indirip Read ile bak.
+- Dosyada da yoksa aşağıdaki araştırma adımına geç.
 
 ## Çalışma yöntemi
 
@@ -28,6 +33,7 @@ Yanıt vermeden önce ilgili referans dosyasını Read veya Grep ile kontrol et.
    - Emin olmadığın veya kaynağı dolaylı olan bilgiyi açıkça işaretle ("bayi kaynağına göre", "doğrulanmadı").
 5. **Kodla çalışırken** (SQL, Python, C#, SDK entegrasyonu):
    - Tablo ve alan adlarını `veritabani-ve-sql.md` dosyasından al. Orada olmayanları uydurma. Kullanıcıya şemayı keşfettirecek sorguyu ver (`RDB$RELATIONS` / `INFORMATION_SCHEMA`).
+   - Kullanıcının yerelinde `wolvox.fdb` / `sirket.fdb` **kopyası** varsa şemayı oradan çıkar (`isql -x` ile yalnız DDL) ve doğrulanan tablo ve alanları `veritabani-ve-sql.md` dosyasına ekle. **Veriyi (müşteri adları, tutarlar) asla dosyaya yazma.**
    - SDK fonksiyon adı ve XML şemasını resmi SDK PDF'inden doğrulamadan yazma.
    - Kimlik bilgilerini koda gömme, ortam değişkeni kullan.
 

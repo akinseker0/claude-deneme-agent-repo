@@ -17,13 +17,27 @@ Bu skill `references/` klasöründeki konu dosyalarından oluşur. Soruya uyan d
 | `references/e-donusum.md` | e-Fatura, e-Arşiv, e-İrsaliye, e-Defter, özel entegratörler, ayarlar, sık hatalar |
 | `references/sektorel-programlar.md` | Hızlı Satış, Restoran, Otel, İK/Bordro, Mobil Satış, Genel Muhasebe, OctoPlus/OctoCloud, e-Ticaret, CafePlus |
 | `references/sorun-giderme.md` | Bağlantı, lisans, SQL ve veritabanı hataları, genel tanı kontrol listesi |
-| `references/kaynaklar.md` | Bilgi Bankası makale numaraları, PDF'ler, video listeleri, bayi kaynakları ve hangisinin işlendiği |
+| `references/bilgibankasi-ozetleri.md` | **Bilgi Bankası makalelerinin tam metinlerinden çıkarılmış özetler** (~900 makale): ERP ayarları ve ipuçları, hatalar, sürüm geçmişi (8.25 → 26.04), WebConnect, Web Entegrasyon, Veri Transferi, Mobil Satış, e-Dönüşüm, yazarkasa/POS uyumluluğu, donanım, Octo, bulut ürünleri, e-Ticaret. Önce `Grep` ile ara (makale numarası `[no]` biçiminde) |
+| `references/bilgibankasi-dizini.json` | 1411 Bilgi Bankası makalesinin numarası, başlığı, kategorisi ve adresi. Konu ararken başlık araması için |
+| `references/menu-haritasi.md` | WOLVOX 26 / WolvoxCloud menü ağacı (eğitim videosu başlıklarından) |
+| `references/video-dizini.md` | AKINSOFT YouTube ve Dailymotion eğitim videolarının listesi (başlık ve ID) |
+| `references/kaynaklar.md` | Kaynak listesi, PDF'ler, bayi kaynakları ve işlenme durumu |
+
+**Tam metin aracı.** Özette ayrıntı yoksa makalenin tamamını oku (ağ erişimi gerekir, metin `.cache/` altına iner ve repoya girmez):
+
+```bash
+python tools/bilgibankasi.py baslik "devir"      # başlıkta ara (dizinden, ağ gerekmez)
+python tools/bilgibankasi.py oku 3845            # tek makale (yoksa indirir)
+python tools/bilgibankasi.py indir               # tüm makaleleri önbelleğe indir (~15 dk)
+python tools/bilgibankasi.py ara "GETVALUE"      # önbellekteki tam metinlerde regex ara
+```
 
 ## Kullanım kuralları
 
-1. **Sürümü netleştir.** Menü yolları Wolvox 7, 8, 9 ve 26 arasında farklılaşabilir. Kullanıcının sürümünü ve veritabanını (Firebird/MSSQL) bilmeden kesin menü yolu verme.
-2. **Kaynağı belirt.** Yanıtta dayandığın Bilgi Bankası makale numarasını veya kaynağı söyle, kullanıcı doğrulayabilsin.
-3. **Bilmediğini uydurma.** Bu tabanda olmayan bilgi (SDK fonksiyon adları, doğrulanmamış tablo adları, paket içerikleri) için web araştırması yap (bilgibankasi.akinsoft.net öncelikli) veya bilmediğini açıkça söyle.
-4. **Riskli işlemlerde önce yedek.** Devir, geri yükleme, Excel toplu aktarım, veritabanı transferi ve sürüm güncellemesinden önce yedek almayı hatırlat.
-5. **Veritabanına doğrudan yazma önerme.** Okuma SQL'i tamam; yazma için SDK, Excel Transfer veya program arayüzünü öner.
-6. **Bilgi tabanını büyüt.** Doğrulanmış yeni bir bilgi öğrendiğinde (kullanıcı onayıyla) ilgili referans dosyasına kaynağıyla ekle ve `kaynaklar.md` içindeki durumu güncelle.
+1. **Sürümü netleştir.** Menü yolları Wolvox 7, 8, 9 ve 26 arasında farklılaşabilir (26.02.01'den itibaren program dosyası `werp.exe`; öncesinde `werp9.exe`). Kullanıcının sürümünü ve veritabanını (Firebird/MSSQL) bilmeden kesin menü yolu verme.
+2. **Önce özetlere bak.** Konu için `Grep` ile `bilgibankasi-ozetleri.md` ve diğer referans dosyalarını ara. Gerekirse `tools/bilgibankasi.py oku <no>` ile tam metni aç.
+3. **Kaynağı belirt.** Yanıtta dayandığın Bilgi Bankası makale numarasını veya kaynağı söyle, kullanıcı doğrulayabilsin.
+4. **Bilmediğini uydurma.** Bu tabanda olmayan bilgi (SDK fonksiyon adları, doğrulanmamış tablo adları, paket içerikleri) için web araştırması yap (bilgibankasi.akinsoft.net öncelikli) veya bilmediğini açıkça söyle.
+5. **Riskli işlemlerde önce yedek.** Devir, geri yükleme, Excel toplu aktarım, veritabanı transferi ve sürüm güncellemesinden önce yedek almayı hatırlat.
+6. **Veritabanına doğrudan yazma önerme.** Okuma SQL'i tamam; yazma için SDK, Excel Transfer veya program arayüzünü öner.
+7. **Bilgi tabanını büyüt.** Doğrulanmış yeni bir bilgi öğrendiğinde (kullanıcı onayıyla) ilgili referans dosyasına kaynağıyla ekle ve `kaynaklar.md` içindeki durumu güncelle.

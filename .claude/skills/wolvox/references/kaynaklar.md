@@ -1,12 +1,19 @@
 # Kaynaklar: dokümanlar, videolar, siteler
 
-Bu bilgi tabanı web arama sonuçlarından derlendi: ilk sürüm 2026-09-24, ikinci geçişte makale bazında hedefli aramalarla derinleştirildi. Ortamın ağ politikası akinsoft.com.tr, bilgibankasi.akinsoft.net, akinsoft.net ve youtube.com sayfalarının doğrudan açılmasına izin vermedi. Bu yüzden sayfaların **tam metni**, PDF'ler, video içerikleri ve ekran görüntüleri **okunamadı**. Bilgiler arama motorunun sayfa özetlerinden geliyor. Tam metin okundukça "Durum" sütununu güncelle ve eksik adımları ilgili dosyaya ekle.
+**Tarihçe:**
+- 2026-09-24 ilk sürüm: ağ kısıtlıyken web arama özetlerinden derlendi.
+- Aynı gün ağ erişimi açıldıktan sonra:
+  - Bilgi Bankası'nın `sitemap.xml`'indeki **1411 Türkçe makaleden 1410'unun tam metni indirildi ve okundu**. Eksik olan tek makale 3690, 3683'ün Azerice sürümü.
+  - Wolvox 9 **SDK PDF'i** ve resmi Delphi demo kaynağı okundu.
+  - YouTube ve Dailymotion **video başlıkları** listelendi.
+
+**Nerede ne var:**
+- Makale özetleri `bilgibankasi-ozetleri.md` dosyasında. Telif nedeniyle tam metinler repoda yok; `python tools/bilgibankasi.py oku <no>` ile yerelde açılır.
+- Makalelerin tam listesi (numara, başlık, kategori, adres) `bilgibankasi-dizini.json` dosyasında.
 
 **Durum anahtarı:**
-- **okundu:** sayfanın tam metni okundu
-- **detaylı:** hedefli aramayla adım adım içerik çıkarıldı, kod/komut ve ekran görüntüsü detayları eksik olabilir
-- **özet:** genel özet işlendi
-- **başlık:** sadece başlığı ve varlığı biliniyor
+- **okundu:** tam metin okundu ve bilgi tabanına işlendi.
+- **indirildi (özetlenmedi):** tam metin önbellekte var ama özetlere ayrıca yazılmadı. Konu büyük ölçüde başka makalelerle kapsanıyor ya da ürün Wolvox dışında.
 
 ## Resmi Bilgi Bankası (bilgibankasi.akinsoft.net)
 
@@ -15,115 +22,115 @@ Adres biçimi: `https://bilgibankasi.akinsoft.net/tr/home/makale/<no>-<slug>`. �
 ### Kurulum, sürüm, lisans
 | No | Başlık | Durum |
 |---|---|---|
-| 221 | WOLVOX Programı Kurulum Talimatı | özet |
-| 3655 | WOLVOX 8 Programı İndirme ve Kurulum Talimatı | özet |
-| 3832 / 3839 | WOLVOX (9) Programı İndirme ve Kurulum Talimatı | özet |
-| 2799 / 4004 | Wolvox setup / download & installation (İngilizce) | başlık |
-| 1302 | Eski sürümlerden program indirme | detaylı |
-| 3831 | Önceki sürümlerden Wolvox 9'a upgrade | detaylı |
-| 1145 | Önceki sürümlerden Wolvox 8'e upgrade | başlık |
-| 3852 | WOLVOX 9 Upgrade Processes (İngilizce) | başlık |
-| 3864 | Wolvox 9 Client Upgrade | detaylı |
-| 3829 | Wolvox 9'da online lisans alma | özet |
-| 697 | "Lisanslanan client sayısı aşılmış" uyarısı | detaylı |
-| 351 / 3863 | Sürüm güncelleme işlemleri (8 / 9) | özet |
-| 3817, 3732, 1586 | Sürüm notları (ERP 9.02.01, Kontrol Panel 8.04.24, İK 8.07.01) | başlık |
-| 3868 | Mobil uygulamalarda güncelleme paketi kontrolü | başlık |
+| 221 | WOLVOX Programı Kurulum Talimatı | okundu |
+| 3655 | WOLVOX 8 Programı İndirme ve Kurulum Talimatı | okundu |
+| 3832 / 3839 | WOLVOX (9) Programı İndirme ve Kurulum Talimatı | okundu |
+| 2799 / 4004 | Wolvox setup / download & installation (İngilizce) | okundu |
+| 1302 | Eski sürümlerden program indirme | okundu |
+| 3831 | Önceki sürümlerden Wolvox 9'a upgrade | okundu |
+| 1145 | Önceki sürümlerden Wolvox 8'e upgrade | okundu |
+| 3852 | WOLVOX 9 Upgrade Processes (İngilizce) | okundu |
+| 3864 | Wolvox 9 Client Upgrade | okundu |
+| 3829 | Wolvox 9'da online lisans alma | okundu |
+| 697 | "Lisanslanan client sayısı aşılmış" uyarısı | okundu |
+| 351 / 3863 | Sürüm güncelleme işlemleri (8 / 9) | okundu |
+| 3817, 3732, 1586 | Sürüm notları (ERP 9.02.01, Kontrol Panel 8.04.24, İK 8.07.01) | okundu |
+| 3868 | Mobil uygulamalarda güncelleme paketi kontrolü | okundu |
 
 ### Bağlantı, kullanıcı, yetki
 | No | Başlık | Durum |
 |---|---|---|
-| 308 | Server/client bağlantı ayarları | detaylı |
-| 1894 | SQL Server kullanıcıları için server/client ayarları | detaylı |
-| 211 | MSSQL ile uzaktan erişim için açılması gereken portlar | özet |
-| 1673 | Kontrol Paneli kullanıcı kayıt ve yetkilendirme | detaylı |
-| 1802 | Hızlı kullanıcı yetkilendirme | detaylı |
-| 3287 | Wolvox ERP admin panel access (İngilizce) | detaylı |
+| 308 | Server/client bağlantı ayarları | okundu |
+| 1894 | SQL Server kullanıcıları için server/client ayarları | okundu |
+| 211 | MSSQL ile uzaktan erişim için açılması gereken portlar | okundu |
+| 1673 | Kontrol Paneli kullanıcı kayıt ve yetkilendirme | okundu |
+| 1802 | Hızlı kullanıcı yetkilendirme | okundu |
+| 3287 | Wolvox ERP admin panel access (İngilizce) | okundu |
 
 ### Veritabanı, yedekleme
 | No | Başlık | Durum |
 |---|---|---|
-| 798 | Yedekleri geri yükleme | özet |
-| 942 | Firebird tabanlı programlarda datadan yedek alma/geri yükleme | detaylı |
-| 943 | MSSQL tabanlı programlarda datadan yedek alma/geri yükleme | detaylı |
-| 1893 | Tüm detayları ile AKINSOFT Yedekleme programı | özet |
-| 3177 | AKINSOFT Yedekleme programı ile SQL yedekleme/geri yükleme | detaylı |
-| 1655 | OctoPlus'ta yedek alma ve geri yükleme | başlık |
-| 1684 | Veritabanı transfer işlemi (Firebird → MSSQL) | detaylı |
-| 3592 | Firebird'ü SQL Unicode veritabanına dönüştürme | detaylı |
-| 3836 | Wolvox 9 hazır database ve dizaynlar | detaylı |
-| 460 / 2856 | Firebird veritabanında kopma sorunu (TR / EN) | detaylı |
-| 373 | Uyumsuz Firebird sorunu | detaylı |
-| 3306 | Firebird silmek ve yeniden kurmak | başlık |
-| 3187 | 'Wolvox7Udf_mssql' assembly hatası çözümü | özet (SQL kodları eksik) |
-| 441 | Excel'den cari ve stok kart aktarımı | detaylı |
-| 1124 | Cari ve stok kayıtlarının tüm alanlarını Excel'e aktarma | detaylı |
-| 704 | ODBC (Firebird/MSSQL) ile dinamik Excel raporlama | detaylı |
-| 739 | Özel raporda grid'e çift tıklayıp kart açma (script) | özet (script örnekleri eksik) |
-| 1976 | "Dynamic SQL Error" hatası | özet |
+| 798 | Yedekleri geri yükleme | okundu |
+| 942 | Firebird tabanlı programlarda datadan yedek alma/geri yükleme | okundu |
+| 943 | MSSQL tabanlı programlarda datadan yedek alma/geri yükleme | okundu |
+| 1893 | Tüm detayları ile AKINSOFT Yedekleme programı | okundu |
+| 3177 | AKINSOFT Yedekleme programı ile SQL yedekleme/geri yükleme | okundu |
+| 1655 | OctoPlus'ta yedek alma ve geri yükleme | okundu |
+| 1684 | Veritabanı transfer işlemi (Firebird → MSSQL) | okundu |
+| 3592 | Firebird'ü SQL Unicode veritabanına dönüştürme | okundu |
+| 3836 | Wolvox 9 hazır database ve dizaynlar | okundu |
+| 460 / 2856 | Firebird veritabanında kopma sorunu (TR / EN) | okundu |
+| 373 | Uyumsuz Firebird sorunu | okundu |
+| 3306 | Firebird silmek ve yeniden kurmak | okundu |
+| 3187 | 'Wolvox7Udf_mssql' assembly hatası çözümü | okundu |
+| 441 | Excel'den cari ve stok kart aktarımı | okundu |
+| 1124 | Cari ve stok kayıtlarının tüm alanlarını Excel'e aktarma | okundu |
+| 704 | ODBC (Firebird/MSSQL) ile dinamik Excel raporlama | okundu |
+| 739 | Özel raporda grid'e çift tıklayıp kart açma (script) | okundu |
+| 1976 | "Dynamic SQL Error" hatası | okundu |
 
 ### SDK ve entegrasyon
 | No | Başlık | Durum |
 |---|---|---|
-| 257 | WOLVOX ERP Programı SDK İşlemleri | detaylı |
-| 3994 | WOLVOX SDK İşlemleri (WOLVOX 26+) | detaylı |
-| 969 | ERP ile Genel Muhasebe entegrasyonu | detaylı |
-| 492 | AKINSOFT e-Ticaret ile ERP entegrasyon ayarları | özet |
-| 2207 | Web Entegrasyon genel ayarlar (e-Ticaret bağlantısı) | detaylı |
-| 3065 / 3907 | Web Entegrasyon sipariş kayıt ayarları / 2. şirket | detaylı |
-| 3068 | Web Entegrasyon cari ayarları | detaylı |
-| 3039 | Web Entegrasyon stok ayarları | başlık |
-| 3072 | Web Entegrasyon sanal pazar virman hesapları | başlık |
-| 3473 | e-Ticaret & ERP taksit entegrasyonu | detaylı |
-| 2680 | Ürünlerin B2B/B2C/müşteri tipine göre gösterimi | detaylı |
-| 3119 | e-Ticaret + ERP + Genel Muhasebe entegrasyonu | özet |
-| 3510 | e-Ticaret'te gelişmiş fiyat listesi | başlık |
-| 1526 / 537 | WebConnect bağlantı ayarları | detaylı |
-| 3561 | Konaklama vergisi ile fatura kesme script çalışması | detaylı |
+| 257 | WOLVOX ERP Programı SDK İşlemleri | okundu |
+| 3994 | WOLVOX SDK İşlemleri (WOLVOX 26+) | okundu |
+| 969 | ERP ile Genel Muhasebe entegrasyonu | okundu |
+| 492 | AKINSOFT e-Ticaret ile ERP entegrasyon ayarları | okundu |
+| 2207 | Web Entegrasyon genel ayarlar (e-Ticaret bağlantısı) | okundu |
+| 3065 / 3907 | Web Entegrasyon sipariş kayıt ayarları / 2. şirket | okundu |
+| 3068 | Web Entegrasyon cari ayarları | okundu |
+| 3039 | Web Entegrasyon stok ayarları | okundu |
+| 3072 | Web Entegrasyon sanal pazar virman hesapları | okundu |
+| 3473 | e-Ticaret & ERP taksit entegrasyonu | okundu |
+| 2680 | Ürünlerin B2B/B2C/müşteri tipine göre gösterimi | okundu |
+| 3119 | e-Ticaret + ERP + Genel Muhasebe entegrasyonu | okundu |
+| 3510 | e-Ticaret'te gelişmiş fiyat listesi | okundu |
+| 1526 / 537 | WebConnect bağlantı ayarları | okundu |
+| 3561 | Konaklama vergisi ile fatura kesme script çalışması | okundu |
 
 ### e-Dönüşüm
 | No | Başlık | Durum |
 |---|---|---|
-| 1801 | Tüm detayları ile Wolvox e-Fatura işlemleri | özet (gelen/giden kutusu detayları eksik) |
-| 3199 | e-Faturada dış modül bağlantı bilgileri | detaylı |
-| 2146 | Kamu kurumlarına e-Fatura nasıl düzenlenir | detaylı |
-| 3042 | Kamu faturası gönderim hatası kontrol listesi | detaylı |
-| 3713 / 3715 | Gelen e-Faturayı irsaliye / sipariş ile eşleştirme | detaylı |
-| 719 | ERP'den e-İhracat faturası gönderimi | başlık |
-| 2686 | Restoran programı otomatik e-Fatura gönderimi | başlık |
+| 1801 | Tüm detayları ile Wolvox e-Fatura işlemleri | okundu |
+| 3199 | e-Faturada dış modül bağlantı bilgileri | okundu |
+| 2146 | Kamu kurumlarına e-Fatura nasıl düzenlenir | okundu |
+| 3042 | Kamu faturası gönderim hatası kontrol listesi | okundu |
+| 3713 / 3715 | Gelen e-Faturayı irsaliye / sipariş ile eşleştirme | okundu |
+| 719 | ERP'den e-İhracat faturası gönderimi | okundu |
+| 2686 | Restoran programı otomatik e-Fatura gönderimi | okundu |
 
 ### ERP kullanımı
 | No | Başlık | Durum |
 |---|---|---|
-| 655 | Wolvox ERP Servis modülü | özet |
-| 1060 | Mal fazlası çalışma sistemi | detaylı |
-| 311 | Gelişmiş satış fiyat listesi | detaylı |
-| 626 | Satış fiyat listesi oluşturma | başlık |
-| 1276 | Alış ve satış fiyatlarını otomatik oluşturma | başlık |
-| 3538 | Wolvox Maliyet Muhasebesi | başlık |
+| 655 | Wolvox ERP Servis modülü | okundu |
+| 1060 | Mal fazlası çalışma sistemi | okundu |
+| 311 | Gelişmiş satış fiyat listesi | okundu |
+| 626 | Satış fiyat listesi oluşturma | okundu |
+| 1276 | Alış ve satış fiyatlarını otomatik oluşturma | okundu |
+| 3538 | Wolvox Maliyet Muhasebesi | okundu |
 
 ### Sektörel programlar ve yardım dosyaları
 | No | Başlık | Durum |
 |---|---|---|
-| 651 | Wolvox Restoran kullanımı | detaylı |
-| 706 | Restoran ve Restoran Lite farkları | özet |
-| 2266 | Restoran masa kroki sistemi | başlık |
-| 3680 | Restoran otomatik üretim | başlık |
-| 3657 | Restoran şubelere tanım kopyalama | başlık |
-| 3687 / 3841 | Restoran Android PDA kurulumu / PDA yardım dosyası | başlık |
-| 3543 | Hızlı Satış fiş tasarımına para üstü vb. ekleme | özet |
-| 1487 / 2418 | Hızlı Satış yardım dosyası / dokümanı | başlık |
-| 1433 / 3844 | Otel yardım dosyası | özet |
-| 3549 | Otel konaklama vergisini aktif etme | başlık |
-| 1458 | İnsan Kaynakları yardım dosyası (8) | özet |
-| 1672 / 3851 | Genel Muhasebe yardım dosyası | özet |
-| 1527 / 578 | Beyanname yardım dosyası | başlık |
-| 1508 / 3853 | Demirbaş yardım dosyası | özet |
-| 2657 | CafePlus yardım dosyası | başlık |
+| 651 | Wolvox Restoran kullanımı | okundu |
+| 706 | Restoran ve Restoran Lite farkları | okundu |
+| 2266 | Restoran masa kroki sistemi | okundu |
+| 3680 | Restoran otomatik üretim | okundu |
+| 3657 | Restoran şubelere tanım kopyalama | okundu |
+| 3687 / 3841 | Restoran Android PDA kurulumu / PDA yardım dosyası | okundu |
+| 3543 | Hızlı Satış fiş tasarımına para üstü vb. ekleme | okundu |
+| 1487 / 2418 | Hızlı Satış yardım dosyası / dokümanı | okundu |
+| 1433 / 3844 | Otel yardım dosyası | okundu |
+| 3549 | Otel konaklama vergisini aktif etme | okundu |
+| 1458 | İnsan Kaynakları yardım dosyası (8) | okundu |
+| 1672 / 3851 | Genel Muhasebe yardım dosyası | okundu |
+| 1527 / 578 | Beyanname yardım dosyası | okundu |
+| 1508 / 3853 | Demirbaş yardım dosyası | okundu |
+| 2657 | CafePlus yardım dosyası | okundu |
 
 ## PDF dokümanlar
 
-- Wolvox9 SDK Dokümanı (2024): `https://akinsoft.net/bilgibankasi/data/upload/257/wolvox9_sdk_dokuman1734088631.pdf`. **Öncelikli okunacak** (fonksiyon adları ve XML örnekleri).
+- Wolvox9 SDK Dokümanı (2024): `https://akinsoft.net/bilgibankasi/data/upload/257/wolvox9_sdk_dokuman1734088631.pdf`. **Okundu**. İşlenmiş hali `sdk-ve-entegrasyon.md` dosyasında. Kopyalanması ve dağıtılması yasak olduğu için metni repoda yok.
 - WOLVOX ERP e-katalog: `https://www.akinsoft.com.tr/programlar/e-katalog/pdf/erp_v4.pdf`, `erp_v5.pdf`
 - Genel Muhasebe e-katalog: `https://www.akinsoft.com.tr/programlar/e-katalog/pdf/genel-muhasebe_v6.pdf`
 - e-Ticaret e-katalog: `https://www.akinsoft.com.tr/programlar/e-katalog/pdf/e-ticaret-v7.pdf`
@@ -133,7 +140,7 @@ Adres biçimi: `https://bilgibankasi.akinsoft.net/tr/home/makale/<no>-<slug>`. �
 
 ## Videolar
 
-İçerikleri izlenemedi, sadece başlıkları biliniyor. Transkript alınabilirse ilgili dosyalara işle.
+YouTube bu ortamdan transkript ve video indirmeyi engelledi ("Sign in to confirm you're not a bot"), bu yüzden içerikler izlenmedi. **Başlıkların tam listesi** (WolvoxCloud 408, WOLVOX ERP 355, Restoran 61, e-Ticaret 100, Octo 33… ve 94 Dailymotion videosu) `video-dizini.md` dosyasında. WolvoxCloud başlıklarından çıkarılan menü ağacı `menu-haritasi.md` dosyasında.
 
 **Kanallar ve oynatma listeleri**
 - AKINSOFT Eğitim (YouTube): `https://www.youtube.com/user/AKINSOFTEgitim` (kaynaklara göre 180'i aşkın Wolvox eğitim videosu)
@@ -165,7 +172,7 @@ Adres biçimi: `https://bilgibankasi.akinsoft.net/tr/home/makale/<no>-<slug>`. �
 
 ## Ekran görüntüleri
 
-Ekran görüntüsü toplanamadı; sayfalara erişim yoktu. Ekran görüntülerini içeren makaleler yukarıdaki Bilgi Bankası listesinde. Kullanıcı kendi ekran görüntüsünü paylaşırsa agent onu okuyarak yorumlayabilir.
+Ekran görüntüleri repoya **konmadı** (telif ve boyut nedeniyle). Her makalenin görsel adresleri `tools/bilgibankasi.py oku <no>` çıktısının `RESIMLER:` satırında yer alır. Gerektiğinde agent görseli indirip okuyabilir; bu yöntemle [4081] makalesinin GIF'indeki SQL örneği okundu. Kullanıcı kendi ekran görüntüsünü paylaşırsa agent onu da okuyabilir.
 
 ## Üçüncü taraf ve bayi kaynakları
 

@@ -177,9 +177,21 @@ def cmd_dizin(args):
                      "kategori": prev.get("kategori", ""),
                      "url": url})
     arts.sort(key=lambda a: a["no"])
-    INDEX_JSON.write_text(json.dumps({"kaynak": f"{BASE}/sitemap.xml", "makaleler": arts},
-                                     ensure_ascii=False, indent=1), encoding="utf-8")
-    print(f"Dizin yazıldı: {INDEX_JSON} ({len(arts)} makale). Yeni makalelerin başlığı adresinden türetildi.")
+    # Önbellekte tam metni olan makalelerin gerçek başlığını ve kategorisini kullan
+    for a in arts:
+        f = CACHE / f"{a['no']}.md"
+        if f.exists():
+            t = f.read_text(encoding="utf-8")
+            a["baslik"] = re.sub(r"\s+", " ", t.splitlines()[0].lstrip("# ")).strip() or a["baslik"]
+            k = re.search(r"Kategori\s*\n\s*(.+)", t)
+            if k:
+                a["kategori"] = k.group(1).strip()
+    lines = ",\n".join("  " + json.dumps(a, ensure_ascii=False) for a in arts)
+    INDEX_JSON.write_text(
+        '{\n "kaynak": %s,\n "guncelleme": %s,\n "makaleler": [\n%s\n ]\n}\n'
+        % (json.dumps(f"{BASE}/sitemap.xml"), json.dumps(time.strftime("%Y-%m-%d")), lines),
+        encoding="utf-8")
+    print(f"Dizin yazıldı: {INDEX_JSON} ({len(arts)} makale). Önbellekte olmayan yeni makalelerin başlığı adresinden türetildi.")
 
 
 def main():

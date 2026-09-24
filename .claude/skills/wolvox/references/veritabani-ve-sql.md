@@ -59,8 +59,17 @@ Kaynaklarda doğrulanmış olanlar:
 | `FATURAHR` | Fatura satırları | `BLFTKODU`, `BLSTKODU`, `MIKTARI`, `KPB_ARA_TUTAR` |
 | `STOK_FIYAT_LISTE` | Fiyat listesi başlığı | `BLKODU`, `FIYAT_TANIMI` |
 | `STOK_FIYAT_LISTE_DT` | Fiyat listesi detayı | `BLMASKODU`, `BLSTKODU`, `STOK_TANIMI` |
+| `STOK_FIYAT` | Stok kartındaki fiyatlar | `BLSTKODU`, `TANIMI`, `FIYATI` (Bilgi Bankası 1124) |
+| `STOK_TEDARIKCI` | Stoğun tedarikçileri | `BLMASKODU` (= `STOK.BLKODU`), `STOKKODU` (tedarikçinin stok kodu) (Bilgi Bankası 4081) |
+| `SIPARISHR`, `TEKLIFHR` | Sipariş ve teklif satırları | `BLSTKODU` (Bilgi Bankası 4081, 4035) |
+| `HESAP_PLANI` | Hesap planı (GM) | `HESAP_KODU` (Bilgi Bankası 3739) |
+| `YEVMIYEHR` | Yevmiye satırları (GM) | `TARIHHR`, `HESAP_KODU`, `HESAP_ADI`, `ACIKLAMA` (Bilgi Bankası 3688) |
+| `MRP_EMIRLERI` | MRP II üretim emirleri | özel alanlar (Bilgi Bankası 3738) |
 
-> Sipariş, irsaliye, kasa, banka ve çek/senet tablolarının aynı adlandırmayı izlemesi muhtemel (`SIPARIS`/`SIPARISHR` gibi) ama **kaynakta doğrulanmadı**. Gerçek şemayı öğrenmek için Firebird sistem tablolarını sorgula:
+> - Sipariş başlığı için `SIPARIS` (`SIPARIS.TICARI_UNVANI`, `SIPARIS_NO`, `TARIHI`; SIPARISHR'de `STOK_ADI`, `MIKTARI`, `KPB_FIYATI`, `KPB_KDVLI_TUTAR`) Bilgi Bankası 4081'deki ARP tasarım ekranında görülüyor.
+> - Özel alanlar `OZELALANTANIM_<n>` adlı kolonlarda tutuluyor (Bilgi Bankası 1817).
+> - Stok resimleri `dosya.fdb` tarafında (tasarımda veritabanı "Dosya"), `WO_STLOGO_<BLKODU>_...` biçimli bir anahtarla saklanıyor (bağ kodu formatı `WO_STLOGO_%sb_%ad`; Bilgi Bankası 3539, 3944).
+> - İrsaliye, kasa, banka ve çek/senet tablolarının adları **kaynakta doğrulanmadı**. Gerçek şemayı öğrenmek için Firebird sistem tablolarını sorgula:
 >
 > ```sql
 > -- Kullanıcı tabloları
@@ -96,7 +105,28 @@ INNER JOIN STOK_FIYAT_LISTE ON STOK_FIYAT_LISTE.BLKODU = STOK_FIYAT_LISTE_DT.BLM
 INNER JOIN FATURAHR        ON FATURAHR.BLSTKODU        = STOK_FIYAT_LISTE_DT.BLSTKODU
 INNER JOIN FATURA          ON FATURA.BLKODU            = FATURAHR.BLFTKODU
 GROUP BY STOK_FIYAT_LISTE.FIYAT_TANIMI, STOK_FIYAT_LISTE_DT.STOK_TANIMI;
+
+-- Stok fiyat listesi (Bilgi Bankası 1124)
+SELECT STOK.STOKKODU, STOK_FIYAT.TANIMI, STOK_FIYAT.FIYATI
+FROM STOK
+JOIN STOK_FIYAT ON (STOK.BLKODU = STOK_FIYAT.BLSTKODU)
+WHERE STOK_FIYAT.FIYATI > 0;
+
+-- e-Defter imzalama hatası için kontrol karakteri arama (Bilgi Bankası 3688)
+SELECT TARIHHR, HESAP_KODU, HESAP_ADI, ACIKLAMA FROM YEVMIYEHR
+WHERE ACIKLAMA LIKE '%' || ASCII_CHAR(30) || '%';   -- MSSQL: '%' + NCHAR(30) + '%'
 ```
+
+## SQL'in program içinde kullanıldığı diğer yerler
+
+| Yer | Nasıl | Kaynak |
+|---|---|---|
+| **Kullanıcı ek yetkileri** | Kontrol Paneli → Kullanıcı Yetkilendirme → **Ek Yetkiler 1**: cari, stok, fatura, irsaliye, teklif, sipariş, doküman, İK ve hesap planı listelerine eklenen bir **WHERE koşulu** yazılır. Ör. `STOK.GRUBU NOT IN ('GIDA','İÇECEK')` | 3739 |
+| **ARP tasarımında alt veri seti** | Alt Detay bandında "SQL Sorgu" yazılır, ana kayda `GETVALUE(TABLO.ALAN)` ile bağlanır. Ör. `SELECT STOKKODU AS TEDARIKSTOK FROM STOK_TEDARIKCI WHERE BLMASKODU = GETVALUE(SIPARISHR.BLSTKODU)` | 4081 |
+| **Çoktan seçmeli özel alan** | Fatura, irsaliye, sipariş ve teklif hareket satırlarında seçenekler `CODE=QUERY(...)` ile SQL'den doldurulur (9.03.01+). Kesin sözdizimi için makaleye bak | 3873, 3850 |
+| **FastReport** | Resim için `[As_StokResim(<TEKLIFHR."BLSTKODU">)]` gibi AKINSOFT fonksiyonları kullanılır. Tasarımlar 9.05.01'den itibaren veritabanında saklanır | 4035, 3970 |
+| **Özel rapor + script** | SQL rapor ve çift tıklamada kart açma script'i | 739 |
+| **Panorama XML şablonu** | Veri Transferi'nde alanlar `TABLO.ALAN` biçiminde yazılır (yalnız FATURA ve FATURAHR) | 3631 |
 
 ## Program içinden SQL çalıştırma
 
