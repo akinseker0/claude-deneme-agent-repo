@@ -2,6 +2,7 @@
 
 AKINSOFT Eğitim kanalındaki **405 WolvoxCloud videosunun başlıklarından** otomatik çıkarıldı. Başlıklar `WolvoxCloud - <Modül> - <Bölüm> - ... - <Ekran>` biçiminde olduğu için ekranların hangi menü altında bulunduğunu gösteriyor. Yanındaki kod, o ekranı anlatan YouTube videosunun ID'si (`https://youtu.be/<ID>`).
 
+- Bu videoların altyazılarından çıkarılan ekran ve ayar bilgileri `video-ozetleri.md` dosyasının WolvoxCloud bölümünde.
 - WolvoxCloud, WOLVOX 26'nın bulut sürümü; masaüstü WOLVOX 26 menüleri büyük ölçüde aynı (doğrulanmadı, küçük farklar olabilir).
 - Wolvox 8/9 menüleri farklılık gösterebilir (ör. "Satış Yönetimi → Faturalar" gibi eski yollar). Kullanıcının sürümünü sor.
 - Liste video başlıklarından türediği için eksik ekranlar olabilir; her ekranın videosu yok. Bazı başlıklarda üst menü atlanmış, bunlar en üst seviyede görünür.

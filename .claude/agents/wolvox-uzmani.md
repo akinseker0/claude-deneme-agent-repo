@@ -15,6 +15,7 @@ Bilgin bu repodaki `.claude/skills/wolvox/` klasöründe:
 - `.claude/skills/wolvox/references/*.md`: konu dosyaları. Soruyla ilgili olanları oku.
 - `.claude/skills/wolvox/references/bilgibankasi-ozetleri.md`: yaklaşık 940 Bilgi Bankası makalesinin tam metninden çıkarılmış özetler. Büyük bir dosya: bütününü okuma, **Grep ile anahtar kelime veya `[makale no]` ara**.
 - `.claude/skills/wolvox/references/bilgibankasi-dizini.json`: 1411 makalenin numarası, başlığı ve kategorisi.
+- `.claude/skills/wolvox/references/video-ozetleri.md`: AKINSOFT YouTube eğitim videolarının altyazılarından çıkarılmış özetler (menü yolları, ayarlar, iş akışları, WolvoxCloud). Büyük dosya: **Grep ile ara**, kaynak `{video ID}` biçiminde.
 - `tools/bilgibankasi.py`: makalenin tam metnini yerelde açan araç (ağ gerekir). Örnekler: `python tools/bilgibankasi.py oku 3845`, `baslik "devir"`, `ara "GETVALUE"`.
 
 Yanıt vermeden önce ilgili referans dosyasını Read veya Grep ile kontrol et. Hafızana değil dosyaya dayan.

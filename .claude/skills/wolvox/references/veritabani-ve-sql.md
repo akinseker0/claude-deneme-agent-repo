@@ -11,6 +11,33 @@
 - Yedekleme tarafında MySQL de destekleniyor.
 - Firebird veritabanı dosyası, Firebird servisinin çalıştığı makinenin **yerel diskinde** olmalı. Ağ sürücüsü (paylaşımlı klasör) üzerinden çalışmaz.
 
+## Firebird mi MSSQL mi? (karar rehberi)
+
+AKINSOFT'un iki veritabanından birini açıkça önerdiği bir makale yok. Aşağıdaki karşılaştırma Bilgi Bankası makalelerinden derlendi. "Genel bilgi" diye işaretlenenler AKINSOFT kaynağı değil, veritabanlarının kendi özellikleri.
+
+| Konu | Firebird | MSSQL |
+|---|---|---|
+| Kurulum | Varsayılan. Kontrol Paneli ile birlikte gelir, ek lisans istemez | SQL Server ayrıca kurulur (2012+ önerilir [4034]; kurulum İngilizce, collation `..._CI_AI`, sa'nın dili English [738][1894]). SSMS ayrı kurulur, en az 6,5 GB disk ister [1816][2220] |
+| Maliyet | Ücretsiz | Express sürümü ücretsiz. Genel bilgi: Express'te veritabanı başına 10 GB ve sınırlı RAM/CPU sınırı var. Standard lisansı ücretli |
+| Bakım yükü | Az. Sık sorunlar: yanlış Firebird sürümü veya ODS [434][373], UDF dll'i eksik [518], servis kapalı [152] | Fazla. CLR assembly ve TRUSTWORTHY [761][3187], SQL Browser [164], Native Client [468][3128], TCP/IP ve portlar [165][1894] |
+| Unicode / dil | **Unicode yok**; Arapça ve Kiril `?` olur [3592]. Azerice desteklenmiyor [170] | Unicode var. Azerice ve Arapça için zorunlu [170][463][3592] |
+| Sürüm | Wolvox, **Firebird 2.5 (32 bit, ODS 11)** kullanıyor [434]. Genel bilgi: 2.5 serisi artık güncelleme almıyor | Güncel SQL Server sürümleri kullanılabilir |
+| Çok kullanıcı ve uzak şube | Çalışır. Sık kopmada Firebird 2.1.7/2.5.4 32 bit önerilir [460] | Kalabalık kullanıcı ve büyük veride genel olarak daha rahat (genel bilgi) |
+| Yedek | Kontrol Paneli yedeği veya servis durdurulup `DATABASE_FB` kopyası [942][798] | Kontrol Paneli yedeği, SQL yedeği [3177] veya `DATABASE_MSSQL` kopyası [943] |
+| Bazı özellikler | – | "Joker karakter eşleştirme" SQL veritabanı ister [1953] |
+| Dış araçla okuma | 32 bit Firebird 2.5 istemcisi gerekir. Firebird 3+ dosyayı açamaz | Modern araçlarla (pyodbc, SSMS, Power BI) doğrudan okunur |
+| Geçiş | Firebird → MSSQL: Kontrol Paneli → Upgrade → Transfer [1684]. Unicode'a geçiş için [3592] | MSSQL'den Firebird'e dönüş adımları [1684]'te var |
+
+**Öneri:**
+- Tek şube, yaklaşık 10'dan az kullanıcı, Türkçe dışında karakter ihtiyacı yok, şirkette SQL Server bilen kimse yok → **Firebird'de kal.** AKINSOFT'un varsayılan yolu bu. "10 kullanıcı" AKINSOFT'un verdiği bir sınır değil, kaba bir ölçüdür. Bayi kaynaklarına göre uzman destek yoksa Firebird öneriliyor (doğrulanmadı).
+- **MSSQL'e geç** eğer:
+  - Unicode (Arapça, Kiril, Azerice) gerekiyorsa,
+  - kullanıcı sayısı ve veri hacmi büyükse ya da çok şubeli ve uzaktan yoğun çalışılıyorsa,
+  - BI veya raporlama araçlarıyla doğrudan entegrasyon isteniyorsa,
+  - şirkette SQL Server yönetebilecek biri varsa.
+- Geçişten önce mutlaka yedek al, geçişi bir kez ve planlı yap [1684]. Web Entegrasyon ve e-Ticaret bağlantısındaki kullanıcı adı `SYSDBA` yerine `sa` olur, ayarların güncellenmesi gerekir [3358].
+- Üçüncü yol **WolvoxCloud**: veritabanı AKINSOFT sunucusunda, kurulum ve bakım yok. Ancak internetsiz çalışmaz. Temmuz 2026 eğitiminde Hızlı Satış, Restoran, yazarkasa, açık bankacılık ve script desteği henüz yoktu. Geçiş: KP → Upgrade → WolvoxCloud Aktarımı [4056] (bkz. `video-ozetleri.md`, {W0NOHUVbouA}).
+
 ## Dosya yerleşimi
 
 - **Firebird:** Program kurulum dizinindeki **`DATABASE_FB`** klasörü (ör. `C:\AKINSOFT\Wolvox9\Database_FB`, eski sürümlerde `...\AKINSOFT\WOLVOX8\DATABASE_FB`).

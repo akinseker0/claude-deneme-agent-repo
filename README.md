@@ -24,6 +24,7 @@ Bu repo, AKINSOFT yazılımları ve WOLVOX ERP konusunda uzmanlaşmış bir **Cl
             ├── bilgibankasi-dizini.json   # 1411 makalenin no/başlık/kategori/adres dizini
             ├── menu-haritasi.md           # WOLVOX 26 / WolvoxCloud menü ağacı
             ├── video-dizini.md            # YouTube + Dailymotion eğitim videoları listesi
+            ├── video-ozetleri.md          # Video altyazılarından çıkarılmış özetler
             └── kaynaklar.md               # Kaynaklar ve işlenme durumu
 tools/
 └── bilgibankasi.py               # Bilgi Bankası tam metinlerini yerel önbelleğe indirir/arar (stdlib)
@@ -69,7 +70,7 @@ python tools/bilgibankasi.py dizin               # yeni makaleler için dizini y
 
 - **Bilgi Bankası:** 1411 makaleden 1410'unun tam metni okundu. Yaklaşık 940'ı özetlere işlendi; geri kalanlar e-Ticaret tema şablonları, pazaryeri ayar ekranları, CafePlus gibi Wolvox dışı ya da tekrar eden konular ve başlık dizininden bulunabiliyor.
 - **SDK:** Wolvox 9 SDK PDF'i ve resmi Delphi demo kaynağı okundu (`sdk-ve-entegrasyon.md`). SDK kullanmak için SDK lisansı ve AKINSOFT'tan alınan geliştirici kodu (devCode) gerekir.
-- **Videolar:** YouTube bu ortamdan transkripte izin vermedi. Yalnız başlıklar listelendi (`video-dizini.md`, `menu-haritasi.md`).
+- **Videolar:** Wolvox ile ilgili 946 Türkçe YouTube videosunun 906'sının Türkçe altyazısı okundu, özetler `video-ozetleri.md` dosyasında. Kalan 40 videonun altyazısı yok. Açıklamalar bilgi içermiyor. Otomatik altyazıda ses tanıma hataları olabileceği için kesin menü yolu programdan doğrulanmalı.
 - **Ekran görüntüleri:** Repoya konmadı. Adresleri araç çıktısında var; agent gerektiğinde indirip okuyabilir.
 - **Veritabanı şeması:** Yaklaşık 15 tablo ve bir kısım alan makalelerden doğrulandı. **Tam şema kullanıcının yerelindeki `wolvox.fdb` / `sirket.fdb` kopyasından çıkarılmalı.** Yerel oturumda agent'a şöyle diyebilirsin: "wolvox.fdb'nin bir kopyasından isql ile şemayı çıkar ve veritabani-ve-sql.md'yi güncelle, veriyi yazma."
 

@@ -21,6 +21,7 @@ Bu skill `references/` klasöründeki konu dosyalarından oluşur. Soruya uyan d
 | `references/bilgibankasi-dizini.json` | 1411 Bilgi Bankası makalesinin numarası, başlığı, kategorisi ve adresi. Konu ararken başlık araması için |
 | `references/menu-haritasi.md` | WOLVOX 26 / WolvoxCloud menü ağacı (eğitim videosu başlıklarından) |
 | `references/video-dizini.md` | AKINSOFT YouTube ve Dailymotion eğitim videolarının listesi (başlık ve ID) |
+| `references/video-ozetleri.md` | **Eğitim videolarının altyazılarından çıkarılmış özetler**: Kontrol Paneli, ERP modülleri, Hızlı Satış, Restoran, yazarkasa/terazi entegrasyonları, İK, Otel, MRP II, Mobil Satış, WolvoxCloud (104 dakikalık resmi eğitim dahil). Kaynak `{YouTube ID}`. Önce `Grep` ile ara |
 | `references/kaynaklar.md` | Kaynak listesi, PDF'ler, bayi kaynakları ve işlenme durumu |
 
 **Tam metin aracı.** Özette ayrıntı yoksa makalenin tamamını oku (ağ erişimi gerekir, metin `.cache/` altına iner ve repoya girmez):

@@ -6,6 +6,7 @@
   - Bilgi Bankası'nın `sitemap.xml`'indeki **1411 Türkçe makaleden 1410'unun tam metni indirildi ve okundu**. Eksik olan tek makale 3690, 3683'ün Azerice sürümü.
   - Wolvox 9 **SDK PDF'i** ve resmi Delphi demo kaynağı okundu.
   - YouTube ve Dailymotion **video başlıkları** listelendi.
+  - Ardından Wolvox videolarının **Türkçe altyazıları ve açıklamaları** okundu; özetler `video-ozetleri.md` dosyasında.
 
 **Nerede ne var:**
 - Makale özetleri `bilgibankasi-ozetleri.md` dosyasında. Telif nedeniyle tam metinler repoda yok; `python tools/bilgibankasi.py oku <no>` ile yerelde açılır.
@@ -140,7 +141,15 @@ Adres biçimi: `https://bilgibankasi.akinsoft.net/tr/home/makale/<no>-<slug>`. �
 
 ## Videolar
 
-YouTube bu ortamdan transkript ve video indirmeyi engelledi ("Sign in to confirm you're not a bot"), bu yüzden içerikler izlenmedi. **Başlıkların tam listesi** (WolvoxCloud 408, WOLVOX ERP 355, Restoran 61, e-Ticaret 100, Octo 33… ve 94 Dailymotion videosu) `video-dizini.md` dosyasında. WolvoxCloud başlıklarından çıkarılan menü ağacı `menu-haritasi.md` dosyasında.
+**Başlıkların tam listesi** (WolvoxCloud 408, WOLVOX ERP 355, Restoran 61, e-Ticaret 100, Octo 33… ve 94 Dailymotion videosu) `video-dizini.md` dosyasında. WolvoxCloud başlıklarından çıkarılan menü ağacı `menu-haritasi.md` dosyasında.
+
+**Altyazılar okundu (2026-09-24):** Wolvox ile ilgili Türkçe YouTube videolarının otomatik Türkçe altyazıları indirildi (yt-dlp, `web_embedded` istemcisi) ve okundu. İşe yarayan bilgi `video-ozetleri.md` dosyasına kaynak `{video ID}` ile yazıldı. Ayrıntı:
+- Wolvox ile ilgili 946 Türkçe videonun (538 WOLVOX ERP ve diğer ürünler, 408 WolvoxCloud) 906'sının altyazısı alındı ve okundu. 40 videonun Türkçe altyazısı yok (istek sınırına takılanlar yeniden denendi).
+- WolvoxCloud videoları kısa ekran tanıtımları olduğu için yalnız yeni bilgiler not alındı. En değerlisi 104 dakikalık resmi WolvoxCloud eğitimi (`W0NOHUVbouA`, Temmuz 2026).
+- **Video açıklamaları** okundu ama neredeyse hepsi yalnız başlığı tekrarlıyor, ek bilgi yok. **Dailymotion** açıklamaları da yalnız eski `akinsoft.net/programlar/prg.php?id=…` ürün sayfası bağlantılarından ibaret.
+- Tanıtım, röportaj ve reklam videoları içerik açısından boş; `video-ozetleri.md` dosyasının son bölümünde listelendi. Birkaç videonun otomatik altyazısı yanlış dil tanıması yüzünden anlamsız.
+- Otomatik altyazıda ses tanıma hataları var ("volvoks", "wallbox" = Wolvox gibi). Kesin menü yolu ve ayar adı için programın kendisi veya Bilgi Bankası esas alınmalı.
+- Ham altyazılar telif nedeniyle repoya konmadı.
 
 **Kanallar ve oynatma listeleri**
 - AKINSOFT Eğitim (YouTube): `https://www.youtube.com/user/AKINSOFTEgitim` (kaynaklara göre 180'i aşkın Wolvox eğitim videosu)
