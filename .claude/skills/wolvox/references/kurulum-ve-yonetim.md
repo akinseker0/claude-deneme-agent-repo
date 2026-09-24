@@ -122,7 +122,7 @@ Masaüstü kısayolları silinip yeniden oluşturulur. SDK makalesi (3994) WOLVO
 ### Kontrol Paneli ile
 - **Yedek al:** Kontrol Paneli → **Veritabanı İşlemleri → Yedekleme → Yedekle** → dosyaları seç → **Şimdi Yedekle**.
 - **Otomatik yedek:** Kontrol Paneli → Veritabanı İşlemleri → **Yedekleme Ayarları**. Varsayılan yedek klasörü **`AS_YEDEK`**.
-- **Geri yükle:** Kontrol Paneli → **Veritabanı İşlemleri → Yedekleme → Geri Yükle** → yedek klasörünü göster → **Listele** → şirket veritabanı dosyasını seç (Firebird: `sirket.fdb`, MSSQL: `sirket.mdb`) → Geri Yükle (Bilgi Bankası 798).
+- **Geri yükle:** Kontrol Paneli → **Veritabanı İşlemleri → Yedekleme → Geri Yükle** → yedek klasörünü göster → **Listele** → önce sistem veritabanı `sirket.fdb`'yi (MSSQL: `sirket.mdb`) seçip **Sisteme Geri Yükle** (Kontrol Paneli kendini kapatıp açar). Sonra aynı ekrandan şirket veritabanlarını yükle: `wolvox`, `gmuhasebe`, `imuhasebe`, `ikaynak`, `dosya` (`.fdb` / `.mdb`) (Bilgi Bankası 798).
 
 ### Klasör kopyalayarak (Firebird, Bilgi Bankası 942)
 - **Yedek:**

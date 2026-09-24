@@ -2,36 +2,137 @@
 
 ## WOLVOX SDK
 
-- **Ne:** WOLVOX ERP'deki verileri **XML olarak dışarı almak** ve dışarıdan gelen XML'i **ERP'ye kaydetmek** için geliştirme arayüzü.
-- **Mimari:** Programlama dilinden bağımsız. **HTTP ve XML** standartlarında, **Kontrol Paneli'ne gömülü** bir servis. Ayrı sunucu kurulmaz; Kontrol Paneli çalışıyorsa SDK da çalışır.
-- **İki işlem türü:**
-  1. **Veri Raporlama:** Cari listesi, stok listesi gibi verileri XML olarak döndürür.
-  2. **Veri Ekleme (kayıt fonksiyonları, "XML Post"):** Belirli formatta hazırlanmış XML'i girdi alır. XML, makalenin ekindeki **örnek formatlara birebir uygun** olmalı.
-- **Dönüş değeri (kayıt fonksiyonları):**
-  - Başarılı: `BLKODU=1234` (yeni kaydın BLKODU'su)
-  - Hatalı: `Error : <Hata Mesajı>`
-- **Bağlantı parametreleri:**
-  - **Host:** Kontrol Paneli'nin kurulu olduğu bilgisayarın IP'si (yerelde `127.0.0.1`)
-  - **Port:** Kontrol Paneli'nin **güncelleme portu** (Kontrol Paneli ayarlarından bak)
-  - **Kullanıcı adı / parola:** Kontrol Paneli'nde tanımlı WOLVOX kullanıcısı
-  - **Şirket kodu** ve **çalışma yılı**
-  - **Ek Şart (SQL):** Raporlamada filtre. Ör. cari listesinde sadece tedarikçileri almak için ilgili tabloya WHERE koşulu.
-- **AKINSOFT WOLVOX SDK programı:** Bilgisayara ayrıca kurulan bir test/yardımcı araç. "Komut" alanında iki grup var:
-  - **XML Post'a kadar olan komutlar** (ör. cari listesi) veri raporlama içindir.
-  - **XML Post altındaki komutlar** XML'den kayıt içindir.
-  - Seçilen komutun isteği bu araçla oluşturulup gönderilebiliyor. Aktif tablolara ait alanlar isteğe göre eklenip çıkarılabiliyor.
-- **Resmi doküman (PDF):** "AKINSOFT Wolvox9 SDK Doküman" (2024). İçinde "CARİ XML DOSYASI" gibi kayıt örnekleri var.
-  - https://akinsoft.net/bilgibankasi/data/upload/257/wolvox9_sdk_dokuman1734088631.pdf
-  - https://akinsoft.net/bilgibankasi/data/upload/257/wolvox9_sdk_dokuman1721372145.pdf (eski revizyon)
-  - İlgili makaleler: Bilgi Bankası 257 (WOLVOX ERP Programı SDK İşlemleri), 3994 (WOLVOX SDK İşlemleri; WOLVOX 26 ve üzeri için güncel)
+Kaynaklar (2026-09-24'te tam okundu):
+- Resmi "AKINSOFT Wolvox9 SDK Doküman" v1.02.01 (2024, 25 sayfa). WOLVOX 26 için yayımlanan "Wolvox SDK Doküman" (Aralık 2025, 26 sayfa) içerik olarak aynı, komutlar ve XML yapısı değişmemiş.
+- Bilgi Bankası 257 (Wolvox 8/9) ve 3994 (WOLVOX 26+).
+- AKINSOFT'un Delphi (W8, W9, WOLVOX 26) ve C# (W8) demo projeleri, makalelerin ekinde.
 
-> **Bu bilgi tabanına fonksiyon adları, uç nokta (endpoint) adresleri ve XML şemaları henüz işlenmedi.** Oluşturulurken PDF'e erişilemedi. SDK ile kod yazmadan önce yukarıdaki PDF'i oku (WebFetch) ve öğrendiğin fonksiyon, parametre ve XML örneklerini bu dosyaya ekle. Fonksiyon adı veya XML etiketi **uydurma**.
+Doküman AKINSOFT'un izni olmadan çoğaltılamaz; burada sadece kendi cümlelerimizle teknik özet var. Ayrıntı için PDF'leri oku:
+- Wolvox 9: `https://akinsoft.net/bilgibankasi/data/upload/257/wolvox9_sdk_dokuman1734088631.pdf` veya `https://bilgibankasi.akinsoft.net/tr/home/dosyaindir?blkodu=1034`
+- WOLVOX 26: `https://bilgibankasi.akinsoft.net/tr/home/dosyaindir?blkodu=1046` (Delphi demo: `blkodu=1047`)
+
+### Ön koşullar
+- SDK **çözüm ortaklarına** yönelik. Kullanmadan önce AKINSOFT **Lisans departmanından SDK lisansı** açtırılmalı.
+- Girişte AKINSOFT'un verdiği **geliştirici kodu (`devCode`) ve geliştirici parolası (`devPass`)** gerekir.
+- AKINSOFT SDK için **teknik destek vermiyor**. Doküman ve demo projeler esas.
+
+### Mimari ve bağlantı
+- **Kontrol Paneli'ne gömülü bir HTTP servisi.** Adres: `http://<KontrolPaneli-IP>:<güncelleme portu>/getdata.html`. Güncelleme portu varsayılan olarak **3056**.
+- **GET:** Parametre dizisinin tamamı (`command=...&tpwd=...` kısmı) **Base64 (UTF-8) ile kodlanıp** `getdata.html?` sonrasına eklenir.
+- **POST:** Adres `http://<ip>:3056/` olur. Gövdeye `DATA=<base64(parametre dizisi)>` gönderilir.
+- **Yanıtın tamamı Base64 kodludur.** Çözünce düz metin veya XML çıkar.
+- **Oturum:**
+  1. `command=wlogin&username=<kullanıcı>&password=<MD5(parola)>&devCode=..&devPass=..&timeOut=<dakika>` gönderilir. Parola **MD5 hash** olarak gider, kullanıcının Wolvox yetkileri aynen geçerli olur. Oturum varsayılan olarak 60 dakika sürer.
+  2. Başarılı yanıt `1&<geçici parola>`, hatalı yanıt `0&<hata mesajı>` biçimindedir.
+  3. Sonraki her istekte **`tpwd=<geçici parola>`** gönderilir.
+  4. İş bitince `command=wlogout&tpwd=..`.
+- Çoğu komut **`sirketKodu`** ve **`calismaYili`** ister. Önce `get_sirketliste` ile yetkili olunan şirket, yıl ve şubeler alınır.
+
+### Veri okuma komutları (`get_*`, dönüş XML)
+| Komut | Ne döndürür | Önemli ek parametreler |
+|---|---|---|
+| `get_sirketliste` | Yetkili şirketler, çalışma yılları, şubeler | — |
+| `get_carilist` / `get_carihrklist` | Cari kartları / cari hareketleri | `ekSart`, `fieldList` |
+| `get_caribakiyeler` / `get_caribakiye` | Cari bakiyeleri (toplu / tek cari) | `ekSart` / `blCrKodu` |
+| `get_carivadesigecenborc` | Vadesi geçen borç | `blcrkodu`, `paraBirimi` |
+| `get_caritaksitdetay`, `get_carikredilist` | Cari taksitleri, kredi bilgileri | `blCrKodu` |
+| `get_stoklist` | Stoklar ve fiyatları | `ekSart`, `fieldList` |
+| `get_stokbarkodbul`, `get_stokpaketbul` | Barkoddan stok veya paket bulma | `barcode` |
+| `get_stokenvanter` / `get_depoenvanter` | Stok / depo envanteri | `envHesabi`, `maliyetTipi`, `tarih1`, `tarih2`, `doviziDahilEt`, `sadeceMikEnv`, `stokEkSart`, `envSubeSart`, (`depoEkSart`) |
+| `get_serilotbakiye` | Seri/lot bakiyeleri | `ekSart`, `fieldList` |
+| `get_faturalist` / `get_faturadetay` | Fatura listesi / tek fatura | `ekSart`, `fieldList` / `blftkodu` |
+| `get_irsaliyelist` / `get_irsaliyedetay` | İrsaliye listesi / detayı | / `blirkodu` |
+| `get_siparislist` / `get_siparisdetay` / `get_siparisdurumtanim` | Sipariş listesi / detayı / durum tanımları | / `blmaskodu` |
+| `get_kasalist`, `get_depolist`, `get_dovizlist`, `get_parabirimleri`, `get_bankaposliste` | Tanım listeleri | `ekSart`, `fieldList` |
+| `get_dovizkur` | Bir dövizin belirli tarihteki kuru | `dovizBirimi`, `tarih`, `subeKodu` |
+| `get_faturaanalizi`, `get_ceksenetanalizi`, `get_kasahrkanalizi`, `get_carihrkanalizi` | ERP'deki analiz raporları | `analizTipi`, `KPBDVZ`, `analizHesap`, `subeSart`, `ekSart` |
+| `get_gunsonuraporu1` | Gün sonu raporu (günlük ve genel) | Çok sayıda `Gun*`/`Gnl*` parametresi (tarih aralıkları, şube, para birimi, dahil edilecek işlem türleri) |
+| `get_kisitlialandegerleri` | Sınırlı (enum) alanların değer-metin listesi | — |
+| `get_ozelalantanimlistesi` | Özel alan tanımları | — |
+| `get_yoneticiekrani` | Yönetici ekranı verisi | — |
+| `get_hotelcheckinlist` | Otel check-in listesi | `subeSart`, `ekSart` |
+
+**Ortak parametreler:**
+- **`ekSart`:** `AND` ile başlayan SQL koşulu, ör. ` AND CARI.ILI = 'KONYA'`.
+- **`subeSart`:** Şube filtresi, ör. ` AND CARI.SUBE_KODU IN ('MERKEZ','SUBE')`.
+- **`fieldList`:** Dönecek alanlar, virgülle ayrılır, ör. `CARIKODU,TICARI_UNVANI`.
+- **`analizTipi`:** 1 günlük, 2 haftalık, 3 aylık, 4 üç aylık, 5 altı aylık, 6 yıllık.
+- **`KPBDVZ`:** 1 = KPB (kendi para birimi), 0 = döviz. Döviz seçilirse `analizHesap` alanına döviz birimi yazılır.
+- **Tarih formatı:** `gg.aa.yyyy` veya `gg.aa.yyyy sa:dk:sn`.
+- **`maliyetTipi`:**
+  - 1–4: Alış Fiyatı 1–4
+  - 5: En Son Alış
+  - 6: Ortalama Alış
+  - 7: Ortalama Ağırlıklı Alış
+  - 8: En Ucuz Alış
+  - 9: En Pahalı Alış
+  - 10: LIFO
+  - 11: FIFO
+
+### Veri yazma komutları (`postxml_*`)
+- Komut `command=postxml_<tür>&tpwd=..&sirketKodu=..&calismaYili=..&xmlValue=<XML>` biçiminde gönderilir. Resmi demo, `get_sirketliste` dışındaki her komutta şirket kodu ve çalışma yılını ekliyor.
+- Başarılı yanıt `BLKODU=<yeni kayıt no>`, hatalı yanıt `Error : <mesaj>`. SDK test programı başarıyı `XML_POST_OK^MBLKODU=339` gibi gösteriyor.
+- Türler: `cari`, `carihrk`, `stok`, `stokhrk`, `fatura`, `faturaiptal`, `irsaliye`, `siparis`, `teklif`, `kasahrk`, `kasatransfer`, `ceksenet`, `servisfis`, `stoksayimi`.
+
+**XML kuralları:**
+1. Yapı dokümandaki örneklerle **birebir aynı** olmalı. Alan eklenip çıkarılabilir; alan adları veritabanındaki tablo alanlarıyla aynıdır.
+2. Değerler `<![CDATA[...]]>` içinde yazılır.
+3. XML içindeki her **`&` karakteri `|*` ile değiştirilir**, çünkü `&` HTTP parametre ayracı.
+4. Fatura, irsaliye ve siparişte iskonto istenmiyorsa iskonto alanları **açıkça 0** gönderilir. Aksi halde carinin veya stoğun tanımlı iskontoları otomatik uygulanır.
+5. Ondalıklar **virgülle** yazılır (`5,00`). Belge içi tarih alanları (ör. `VADESI`, `TARIHI`) örneklerde **Delphi TDateTime sayısı** olarak geçiyor (ör. `40826` gün sayısı; 30.12.1899'dan itibaren).
+6. `<AYAR>` bloğunda **`TRSVER`** (işlem DLL sürümü) zorunlu. Ayrıca veritabanı (`DBFILENAME` = tam `.FDB` yolu veya `DBNAME`), kaydeden kullanıcı (`PERSUSER`) ve şube (`SUBE_KODU`) yer alır.
+
+**Kök etiketler ve `TRSVER` değerleri (doküman v1.02.01):**
+| Kayıt | Kök | Ana blok | Alt bloklar | TRSVER |
+|---|---|---|---|---|
+| Fatura | `WFT` | `FATURA` | `FATURAHAREKET/HAREKET`, `FATURAKUR/HAREKET`, `KAPALIFATURA/HAREKET` (ödemeler) | `ASWFT1.02.03` |
+| Cari | `WCR` | `CARI` | — | `ASWCR1.02.03` |
+| Cari hareket | `WCH` | `CARIHAREKET/HAREKET` | — | `ASWCH1.02.03` |
+| Stok | `WST` | `STOK` | `STOKFIYAT/FIYATLAR` | `ASWST1.02.03` |
+| Stok hareket | `WSH` | `STOKHAREKET/HAREKET` | — | `ASWSH1.02.03` |
+| İrsaliye | `WIR` | `IRSALIYE` | `IRSALIYEHAREKET`, `IRSALIYEKUR` | `ASWIR1.02.03` |
+| Sipariş | `WSP` | `SIPARIS` | `SIPARISHAREKET`, `SIPARISKUR` | `ASWSP1.02.03` |
+| Teklif | `WTK` | `TEKLIF` | `TEKLIFHAREKET`, `TEKLIFKUR` | `ASWTEK1.02.01` |
+| Servis fişi | `WSRFS` | `SERVISFIS` | `FISHAREKET`, `FISISLEMLER/ISLEMLER/PERSONELLER`, `FISKUR` | `ASWSF1.02.01` |
+| Stok/depo sayımı | `WSTSY` | `STOCKTAKING/ROW` | — | `ASWSTDPSY1.02.01` |
+| Kasa transferi | `WKH` | `TRANSFER` | — | `ASWKSTRS1.02.01` |
+| Kasa hareket, çek/senet | — | — | — | `ASWKH1.02.03`, `ASWCS1.02.03` |
+
+**Sık kullanılan alanlar:**
+- **Fatura başlığı:** `FATURA_DURUMU`, `BLCRKODU` (+ carinin unvan/vergi/adres alanları), `KDV_DURUMU` (1 = KDV dahil), `KPBDVZ_CARI`, `ISK_KUL_*` / `ISK_ORAN_*` / `ISK_TUTAR_*`, `FATURA_NO` veya `SAYAC_TANIMI` (sayaç verilirse numara otomatik), `VADESI`, `ACIKLAMA`, `DOVIZ_KULLAN`, `PAZ_*` (pazarlama personeli).
+- **Fatura satırı:** `BLSTKODU`, `STOK_ADI`, `BARKODU`, `MIKTARI`/`BIRIMI` (+ `_2` ikinci birim), `KDV_ORANI`, `KPB_FIYATI`, `DEPO_ADI`, `DVZ_FIYATI`/`DOVIZ_BIRIMI`/`DOVIZ_ALIS`/`DOVIZ_SATIS`, `MUH_KODU_GENEL`.
+- **Kapalı fatura (ödeme):** `ISLEM_TURU` (cari hareket türü), `KASA_ADI`, `KPB_ATUT`.
+- **Stok fiyatı:** `FIYAT_NO` (kaçıncı fiyat), `FIYATI`, `HESAP` (para birimi), `ALIS_SATIS` (1 alış, 2 satış), `TANIMI`.
+- **Stok hareketi:** `BLSTKODU`, `DEPO_ADI`, `KPB_FIYATI`, `MIKTAR_2`, `TUTAR_TURU` (1 giriş, 0 çıkış).
+- **Cari hareketi:** `BLCRKODU`, `ISLEM_TURU`, `TARIHI`, `KPB_ATUT` (alacak) / `KPB_BTUT` (borç), `KASA_ADI`, `GM_ENTEGRASYON` (1 = Genel Muhasebe'ye işle).
+
+### Sabit kod tabloları (enum değerleri)
+Bunlar veritabanında da aynı kodlarla tutulur, SQL yazarken de kullanılır.
+
+- **`FATURA.FATURA_DURUMU`:**
+  - 1 Yurt içi satış
+  - 2 Yurt içi satıştan iade
+  - 3 Yurt dışı satış
+  - 4 Yurt dışı satıştan iade
+  - 5 Alış
+  - 6 Alıştan iade
+  - 7 Masraf faturası
+- **`CARIHR.ISLEM_TURU`:**
+  - 1 Devir, 2 Evrak, 3 Nakit, 4 Dekont
+  - 5 Kredi kartı, 6 POS, 7 Çek, 8 Senet
+  - 9 Fatura, 10 İrsaliye
+  - 12 Virman, 13 Tahakkuk, 14 Bonus, 15 Servis, 16 Sipariş
+  - 101–105: 1.–5. özel tanım
+- **`IRSALIYE.IRSALIYE_DURUMU`:** 1 Giden, 2 Gelen, 3 Transfer.
+- **`SIPARIS.SIPARIS_DURUMU`:** 1 Beklemede, 2 Muhasebelendi, 3 Arşiv, 4 İptal, 5 Onaylandı, 6 Kısmi muhasebelendi.
+- **`SIPARIS.SIPARIS_TURU`:** 1 Yurt içi alınan, 2 Yurt içi verilen, 3 Yurt dışı alınan, 4 Yurt dışı verilen.
+- Diğer enum alanların değerleri için `get_kisitlialandegerleri` komutunu çağır.
 
 ### SDK ile entegrasyon yazarken önerilen yaklaşım
-1. Önce Veri Raporlama ile küçük bir okuma yap (ör. cari listesi). Bağlantı, port ve kullanıcı bilgisini doğrula.
-2. Veri Ekleme için PDF'teki XML örneğini birebir kopyalayıp **test şirketinde** dene.
-3. Dönen metni ayrıştır: `BLKODU=` ile başlıyorsa başarılı, `Error :` ile başlıyorsa hata.
-4. Kimlik bilgilerini ortam değişkeninde tut. SDK portunu internete açma; gerekiyorsa VPN kullan.
+1. Test şirketinde çalış. Önce `wlogin` → `get_sirketliste` → `get_carilist` (küçük `fieldList` ile) zincirini doğrula.
+2. İstek ve yanıtı Base64 kodlama/çözme katmanı yaz, parolayı MD5'le. Demo projeler (Delphi, C#) referans.
+3. Yazma için dokümandaki XML örneğinden başla, `&` → `|*` dönüşümünü ve CDATA'yı unutma. Yanıtı ayrıştır: `BLKODU=` ile başlıyorsa başarılı, `Error :` ile başlıyorsa hata.
+4. Kimlik bilgilerini (Wolvox kullanıcısı, devCode/devPass) ortam değişkeninde tut. 3056 portunu internete açma; gerekiyorsa VPN kullan.
 
 ## Script paketleri
 

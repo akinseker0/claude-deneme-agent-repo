@@ -13,19 +13,22 @@
 
 ## Dosya yerleşimi
 
-- **Firebird:** Program kurulum dizinindeki **`DATABASE_FB`** klasörü (ör. `C:\AKINSOFT\Wolvox9\DATABASE_FB`, eski sürümlerde `...\AKINSOFT\WOLVOX8\DATABASE_FB`).
-- **MSSQL:** **`DATABASE_MSSQL`** klasörü.
-- Bilinen dosya adları:
+- **Firebird:** Program kurulum dizinindeki **`DATABASE_FB`** klasörü (ör. `C:\AKINSOFT\Wolvox9\Database_FB`, eski sürümlerde `...\AKINSOFT\WOLVOX8\DATABASE_FB`).
+- **MSSQL:** **`DATABASE_MSSQL`** klasörü. Dosya adları aynı, uzantı `.mdb`. SQL Server'daki veritabanı adları **`WOLVOX<sürüm>_<şirket kodu>_<yıl>_<modül>`** biçiminde, ör. `WOLVOX8_001_2021_WOLVOX` (Bilgi Bankası 761).
+- **Klasör yapısı:** Şirket verisi **şirket kodu ve çalışma yılı** klasörlerine ayrılır. Resmi SDK dokümanındaki örnek yol: `C:\AKINSOFT\Wolvox9\Database_FB\001\2024\WOLVOX.FDB` (şirket 001, yıl 2024). Her devir işlemi yeni bir yıl klasörü açar.
+- **Dosyalar** (Bilgi Bankası 798'e göre geri yüklemede önce `sirket.fdb`, sonra şirket veritabanları yüklenir):
 
 | Dosya | İçerik |
 |---|---|
-| `wolvox.fdb` | Sistem / Kontrol Paneli veritabanı: şirket tanımları, kullanıcılar, yetkiler, lisans/client tanımları. **Hassas** |
-| `sirket.fdb` | Şirketin ticari verisi (cari, stok, fatura…). Geri yükleme ekranında bu adla listelenir, MSSQL karşılığı `sirket.mdb`. Kullanıcı kurulumunda iki dosyanın varlığı doğrulandı (2026-09) |
+| `sirket.fdb` | **Kontrol Paneli / sistem veritabanı:** şirket ve çalışma yılı tanımları, kullanıcılar, yetkiler, lisans/client tanımları. `DATABASE_FB` kökünde durur. **Hassas** (kullanıcı bilgileri) |
+| `wolvox.fdb` | **Şirketin ERP (ön muhasebe) verisi:** cari, stok, fatura, irsaliye, sipariş, kasa, banka, çek/senet… `CARI`, `STOK`, `FATURA` gibi tablolar buradadır. Şirket/yıl klasöründe durur. **Hassas** (müşteri ve finans verisi) |
 | `gmuhasebe.fdb` | Genel Muhasebe |
+| `imuhasebe.fdb` | Büyük olasılıkla İşletme Defteri (işletme muhasebesi); doğrulanmadı |
 | `ikaynak.fdb` | İnsan Kaynakları |
-| `imuhasebe.fdb`, `dosya.fdb` | Kaynaklarda geçiyor, içeriği doğrulanmadı |
+| `dosya.fdb` | İçeriği doğrulanmadı (muhtemelen kayıtlara eklenen dosyalar/dokümanlar) |
 
-- Birden fazla şirket veya çalışma yılında dosyaların klasörlere nasıl dağıldığı doğrulanmadı. Kesin yol için kullanıcının `DATABASE_FB` klasörüne veya Kontrol Paneli'ndeki şirket/veritabanı ayarlarına bak. **Tahmin etme.**
+- Kullanıcının kurulumunda `wolvox.fdb` ve `sirket.fdb` var (2026-09). SQL sorguları (`CARI`, `STOK`, `FATURA`…) **`wolvox.fdb`** üzerinde çalıştırılır.
+- Kesin yol için kullanıcının `DATABASE_FB` klasörüne bak. **Tahmin etme.**
 - Wolvox 9 için hazır boş veritabanları ve etiket dizaynları (Argox raf etiketi vb.) Bilgi Bankası 3836'da indirilebiliyor. MRP II için ayrı veritabanı var.
 
 ## Anahtar yapısı: BLKODU
@@ -122,7 +125,7 @@ GROUP BY STOK_FIYAT_LISTE.FIYAT_TANIMI, STOK_FIYAT_LISTE_DT.STOK_TANIMI;
   import fdb
 
   con = fdb.connect(
-      dsn="localhost:C:/wolvox-kopya/sirket.fdb",  # her zaman KOPYA dosya
+      dsn="localhost:C:/wolvox-kopya/wolvox.fdb",  # ERP verisi; her zaman KOPYA dosya
       user="SYSDBA",
       password=os.environ["WOLVOX_FB_PASSWORD"],     # koda gömme
       charset="WIN1254",                             # bozuk gelirse "NONE" dene
@@ -139,12 +142,12 @@ GROUP BY STOK_FIYAT_LISTE.FIYAT_TANIMI, STOK_FIYAT_LISTE_DT.STOK_TANIMI;
 - **isql ile şema dökümü (Windows, kopya dosyada):**
 
   ```bat
-  "C:\Program Files (x86)\Firebird\Firebird_2_5\bin\isql.exe" -user SYSDBA -password <parola> "localhost:C:\wolvox-kopya\sirket.fdb"
+  "C:\Program Files (x86)\Firebird\Firebird_2_5\bin\isql.exe" -user SYSDBA -password <parola> "localhost:C:\wolvox-kopya\wolvox.fdb"
   SQL> SHOW TABLES;
   SQL> SHOW TABLE CARI;
   ```
 
-  Tam DDL dökümü için: `isql -x -user SYSDBA -password <parola> "localhost:C:\wolvox-kopya\sirket.fdb" -o sirket_sema.sql`. Bu sadece yapıyı yazar, veriyi yazmaz. Firebird'ün kurulu olduğu yol makineye göre değişir.
+  Tam DDL dökümü için: `isql -x -user SYSDBA -password <parola> "localhost:C:\wolvox-kopya\wolvox.fdb" -o wolvox_sema.sql`. Bu sadece yapıyı yazar, veriyi yazmaz. Firebird'ün kurulu olduğu yol makineye göre değişir.
 
 ## Güvenlik ve veri bütünlüğü kuralları
 
@@ -152,4 +155,4 @@ GROUP BY STOK_FIYAT_LISTE.FIYAT_TANIMI, STOK_FIYAT_LISTE_DT.STOK_TANIMI;
 2. Okuma sorgularını mümkünse **yedek veya kopya veritabanında** çalıştır. Canlıda uzun süren sorgular kullanıcıları yavaşlatır.
 3. Canlı Firebird dosyasını servis çalışırken dosya olarak kopyalama. Önce servisleri durdur (`kurulum-ve-yonetim.md`, Bilgi Bankası 942) ya da `gbak`/Kontrol Paneli yedeklemesini kullan.
 4. Parolaları koda veya repoya yazma. `.fdb`, `.fbk`, `.mdb` dosyalarını git'e ekleme (repodaki `.gitignore` bunları dışlıyor).
-5. `wolvox.fdb` içinde kullanıcı ve yetki bilgileri var. Şemasını çıkarmak serbest, **verisini okuma veya paylaşma**.
+5. `sirket.fdb` içinde kullanıcı ve yetki bilgileri, `wolvox.fdb` içinde müşteri ve finans verisi var. Şemalarını çıkarmak serbest. Veriyi sadece kullanıcının istediği analiz için oku, dosyalara veya repoya yazma, paylaşma.

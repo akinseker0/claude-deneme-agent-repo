@@ -1,0 +1,473 @@
+# WOLVOX menü haritası (WolvoxCloud / WOLVOX 26)
+
+AKINSOFT Eğitim kanalındaki **405 WolvoxCloud videosunun başlıklarından** otomatik çıkarıldı. Başlıklar `WolvoxCloud - <Modül> - <Bölüm> - ... - <Ekran>` biçiminde olduğu için ekranların hangi menü altında bulunduğunu gösteriyor. Yanındaki kod, o ekranı anlatan YouTube videosunun ID'si (`https://youtu.be/<ID>`).
+
+- WolvoxCloud, WOLVOX 26'nın bulut sürümü; masaüstü WOLVOX 26 menüleri büyük ölçüde aynı (doğrulanmadı, küçük farklar olabilir).
+- Wolvox 8/9 menüleri farklılık gösterebilir (ör. "Satış Yönetimi → Faturalar" gibi eski yollar). Kullanıcının sürümünü sor.
+- Liste video başlıklarından türediği için eksik ekranlar olabilir; her ekranın videosu yok. Bazı başlıklarda üst menü atlanmış, bunlar en üst seviyede görünür.
+
+- Alış Faturası — `F3X4XqmTIQE`
+- Alış İrsaliyesi — `Btf14-QhTvc`
+- Alış Konsinye İrsaliyesi — `co4nmrioerQ`
+- Alıştan iade İrsaliyesi — `NIpPM1sGP6Y`
+- Alıştan İade Faturası — `PoJIv-R8SLQ`
+- Alıştan İade Konsinye Faturası — `tgqb0MWc7e8`
+- Alıştan İade Konsinye İrsaliyesi — `zHE21ac_osM`
+- Alıştan İade Proforma Faturası — `eSvpAzo_Onw`
+- Araç Tanımları — `Pf0j-6VkZBo`
+- Başlangıç
+  - Güvenilir Cihazlar — `EAn5klcBHiA`
+  - Kullanıcı Profili — `SNAylZbJod8`
+  - Şirket Kurulum — `IttxC3fImdE`
+- Beden Tanımları — `OGq29BsnB4U`
+- Beyanname
+  - Beyanname Listesi — `N5B-puzxLwM`
+  - Beyanname Vergi Dairesi Kodu — `ZdcOXl72hUA`
+  - Damga Vergisi — `CO1rhPdEwSk`
+  - KDV Beyannamesi
+    - 2 — `nTlM9xolmC8`
+  - KDV Beyannamesi-1 — `-wt-bsNTDHM`
+  - Muhtasar  SGK 2 Beyanname — `ee_KCv5WM5g`
+  - Muhtasar  SGK Beyanname — `QLQShfP6cLg`
+  - Muhtasar Beyanname — `Szgr2rExaC4`
+- Demirbaş
+  - Amortisman Kontrol — `cq5LdQPexTA`
+  - Demirbaş Grup Tanımları — `A2GrteWW-GQ`
+  - Demirbaş Raporu — `fKbRNfsaFg0`
+  - Demirbaş Tanımları — `dcwFj6vUW_c`
+  - Dönem Raporu — `UH9NDTjsd-Y`
+  - Yeniden Değerleme Raporu — `TVPuPOKvrL8`
+  - Zimmet Raporu — `KjRP2MuZR40`
+- Depo  Envanteri Birimli — `1i8gGq-rqLg`
+- Depo  Envanteri Yatay — `gohmrBiaQnE`
+- Depo  Hareket Raporu — `txxN8Vfjx0E`
+- Depo  Tanımlar Listesi — `98CGfE04Tg4`
+- Depo Envanter Raporu — `PvSNSGAtXZc`
+- Depo Transfer Fiş Raporu — `2UN17q08w9o`
+- e-Fatura Eşleştirme — `VvTLnm11ff8`
+- e-İrsaliye Durum Sorgulama — `hwwPtzeCO4Q`
+- e-İrsaliye Eşleştirme — `n_e2MemVLsg`
+- Fatura Grup Tanımları — `5k09_V6uBJk`
+- Finans Yönetimi
+  - Analizler
+    - İşlem Türü Raporu — `-bBJKpUMdP0`
+  - Cari Analizi — `NELLsfGCPaM`
+  - Cari Hareket Analizi — `QMumPo3uwTM`
+  - Cari Hareket Analizi Aylık — `xgU1D3kL82w`
+  - Cari Özel Rapor — `OMybjkFHkLE`
+  - Dönemsel Hareket Raporu (Taksitli) — `qFiVZ2KEXUY`
+  - Finansal Analiz Detaylı — `VyG_bl0wGac`
+  - Finansal Analiz Kontrol — `Kh0LsuJem4k`
+  - Finansal Analiz Periyodik Rapor — `HP-mcA9G-zk`
+  - Gün Sonu Raporu 1 — `GykbB-Fum_s`
+  - Gün Sonu Raporu 2 — `ZmZ8T7eOEYg`
+  - Gün Sonu Raporu 3 — `nr8hupNVpiU`
+  - İşlemler
+    - Banka İşlemleri
+      - Banka
+        - Kasa Transfer Fişi — `p9olr7jbobA`
+      - Banka Alacak Girişi — `m_uCWRkLW0E`
+      - Banka Borç Girişi — `8T3QjqSkC4Y`
+      - Banka Transfer Fişi — `GXMEOeC0bSg`
+      - Kredi İşlemleri — `985nrxqpWUU`
+      - Kredi Kartı Taksitlendirme — `lDmcvsp7xws`
+    - Cari Virman Fişi — `5wPDSArr9pw`
+    - Döviz İşlemleri
+      - Günlük Kur Girişi — `Jia8ZTA9gWA`
+      - T.C.M.B Kur Download — `i-72lP8JMrQ`
+    - Kasa İşlemleri
+      - Kasa Gelir Girişi — `fknaFIwFn6Y`
+      - Kasa Gider Girişi — `q_zLapl4xlQ`
+      - Kasa Transfer Fişi — `7Phn5_Dg6zc`
+      - Kasa-Banka Transfer Fişi — `6iqB4hy9YUQ`
+    - Tahsilatlar
+      - Cari Tahsilat Girişi — `CH6WcC_NvHQ`
+      - Teminat Çek-Senedi Bordrosu (Tahsilat) — `y_u3YqingJ8`
+      - Toplu Cari Tahsilat Fişi — `rEqc_1dn8b4`
+      - Çek-Senet Bordrosu (Tahsilat) — `B2haj539_qs`
+      - Çek-Senet Kısmi Tahsilat — `q9cuWVvuB7g`
+    - Tediyeler
+      - Cari Tediye Girişi — `p87S0P-8hnE`
+      - Teminat Çek-Senedi Bordrosu (Tediye) — `2KfN3QtAaQI`
+      - Toplu Cari Tediye Fişi — `tXoR73V84k8`
+      - Çek-Senet Bordrosu (Tediye) — `v8jEAwMcPM8`
+      - Çek-Senet Kısmi Tediye — `LX_dlG6UYzQ`
+    - Toplu Cari Hareket Fişi — `TCWBK5edGUo`
+    - Çek-Senet Bordrosu (Durum Değiştirme) — `mk4-DJKXYT4`
+  - İşlemler -Teminat Çeki-Senedi Bordrosu (Durum Değiştirme) — `pCEs7qX7iew`
+  - Raporlar
+    - Analizler
+      - Dönemsel Hareket Raporu — `L7CjcRm2IfQ`
+    - Bakiye Raporları
+      - Bakiyeler Listesi — `TLVC5_ZrdZ4`
+      - Hareketli Bakiyeler Listesi — `L97frgZrSF8`
+      - Kpb esaslı bakiyeler listesi — `FvhlFywkfxw`
+      - Valörlü Bakiyeler Listesi — `sqaT7d3XqUk`
+    - Banka Hesap Tanımlar Listesi — `8ceSZ_qduuY`
+    - Banka Raporları
+      - Banka Analizi — `xtrZx0GL8Xo`
+      - Banka Bakiyeler Listesi — `2m80rpxTWFI`
+      - Banka Hareket Raporu — `SDKwN4TsQos`
+      - Banka Kasa Transfer Raporu — `X6iwoOY1NKc`
+      - Banka Transfer Raporu — `XDur6iJXgQs`
+      - Kredi Kullanım Raporu — `Y_fvhuR9j1w`
+    - Cari Ayrıntılı Hareket Raporu — `JhTHTYNBEsI`
+    - Cari Hareket Raporu — `LY8Vn-mKCqs`
+    - Cari Tanımlar Listesi — `ALEufCGP7RI`
+    - Cari Yaşlandırma Raporu ve Valör Hesaplı Rapor — `_HUZHPdecHo`
+    - Cari Yetkililer listesi — `DELpd4_Md_c`
+    - Döviz Raporları
+      - Döviz Kur Listesi — `w9MeVKjrH-g`
+    - Hızlı Cari Arama — `Yd-p2uEMgzU`
+    - İşlem Raporları
+      - Cari Toplu Hareket Fiş Raporu — `XDWp0hCHK1g`
+      - Cari Virman Fiş Raporu — `imTTfRMb25Y`
+    - Kasa Raporları
+      - Kasa Hareket Analizi — `WJBRKcnyOrU`
+      - Kasa Hareket Raporu — `_THcpoEEKSM`
+      - Kasa Toplamları — `aLBf1Hkwcsk`
+      - Kasa Transfer Raporu — `JHsEI1ifdxQ`
+      - Kasa/Banka Transfer Raporu — `G-YBlHBuuWE`
+    - Kasa Tanımlar Listesi — `MnFIYXGjERU`
+    - Kredi Kartı Raporu ve Kredi Kartı Ekstreleri — `etMp5QtQjGk`
+    - Pos ve provizyon raporu / Banka likidite akışı — `vMDkLqfoOx4`
+    - Tanım Listeleri
+      - Cari Tanımları Seri Etiket — `b7Nq7QvqSbU`
+      - Döviz Tanımları Listesi — `1V4N2feNi7o`
+    - Çek/Senet İşlemleri
+      - Çek/Senet İşlemler Raporu — `MBROixFldCw`
+    - Çek/Senet Raporları
+      - Teminat Çek Senet Bordroları — `TF-tjSqzZVQ`
+      - Teminat Çek Senet Raporu — `iMDDOu0B8OI`
+      - Çek Senet Valör Hesaplı Rapor — `3ApBN71ZeUM`
+      - Çek-Senet Analizi — `BpsGADLhiTY`
+      - Çek/Senet Raporu — `Amukr8zkFXU`
+    - Çek/senet Raporları
+      - Çek/Senet Bordroları — `zIDLgAyyRb0`
+  - Tanımlar
+    - Banka Hesap Tanımları — `wjMuvfiJ80o`
+    - Cari Departman Tanımları — `_qpajZnWiPA`
+    - Cari Grup Tanımları — `aJukMC7Xh6Q`
+    - Cari Tanımları — `cH0T3GP4NH8`
+    - Döviz Tanımları — `SUCKs6c-XgU`
+    - Kasa Hareket Grup Tanımları — `ZR4K80wpd3M`
+    - Kasa Tanımları — `_azeMOGnp9A`
+    - Tatil Tanımları — `0D41nVxflv8`
+- Fiyat Değiştirme/Fiyat Listesi  ve Fiyat Yenileme İşlemi — `wet53zOBzII`
+- Genel Muhasebe
+  - 7A Sabitleri — `UXVaDOKyc8Q`
+  - 7B Sabitleri — `5o3GwOq9nwY`
+  - Aylık Mizan — `WJCwFyZ0tag`
+  - Açıklama Tanımı — `Dc2h2j2Qw5I`
+  - Açılış Fişi — `zKGlZwbAcRs`
+  - Açılış Mizan — `dstRqh6x7nY`
+  - Banka Ekstre Aktramı — `24Kd2LgwJSI`
+  - Belge Türü Tanımları — `2WGPPW1MuJ0`
+  - Bilanço (Ayrıntılı) — `QnaEeYyWSsA`
+  - Bilanço (Özet) — `RkJn0UsfIv0`
+  - Defter-i Kebir — `y-IpBCaPnp4`
+  - Firma Tanımları — `acAgToyG_BA`
+  - Fiş Birleştirme — `7GzxusxRSWg`
+  - Fiş Birleştirme Günlük — `k6boAwmEQP8`
+  - Fiş Hareket Sıra No Güncelle — `o6I1SEc10XM`
+  - Fiş Hareketleri — `J_eZlgSPr0c`
+  - Fiş Listesi — `-QeBEy9coc8`
+  - Fiş Parçalama — `IlReGv3_YNg`
+  - Fiş Sıralama — `C5j58yxvD_Y`
+  - Fiş Tipi Tanımları — `y-CcvoIMRss`
+  - Gelir Tablosu (Ayrıntılı) — `YlhQBx8iq1M`
+  - Gelir Tablosu(Özet) — `Gr90co4yrpk`
+  - Hareket Sıralama — `1ptOrPUJZkM`
+  - Hesap Aktarma İşlemleri — `bs3AHe-_C98`
+  - Hesap Durumu — `YLE2yyNhJOs`
+  - Hesap Planı — `Ar6tm9WUS7U`
+  - Hesap Planı Oluşturma İşlemleri — `6NL1wBmF8a4`
+  - Hesap Planı Tablo — `HLH9VH8SWuc`
+  - Hesaplanan KDV Listesi — `1X7oghE_-bI`
+  - Hesapların Yansıtılması 7A — `pKBXbrWWEPo`
+  - Hesapların Yansıtılması 7B — `gNtJCdgmxn8`
+  - Hızlı Fiş Girişi Tanımları — `6_pDpSYbTKA`
+  - İndirilecek KDV Listesi — `Ky1l2skJaRU`
+  - Kapanış Fişi — `HTGqw0SZ3dM`, `cY8VyKfKGC8`
+  - Kapanış Mizan — `mDFqiaEFmxM`
+  - Kar/Zarar Hesaplamaları — `tlktBUo_oKQ`
+  - Kdv Tahakkuku — `tah2Nr5j1UI`
+  - Kdv Tanımları — `EbXqadnKbqI`
+  - Kesin Mizan — `ffh8t28vKC8`
+  - Madde No Sıralama — `VWnVxw-0_lg`
+  - Mahsup Fişi — `g0K_3BNobXg`
+  - Maliyet Hesaplamaları — `7ypZydk0Oew`
+  - Masraf Merkezi Durumu — `STzOc3u9raQ`
+  - Masraf Merkezi Hareket Raporu — `F0a2oYWQm78`
+  - Masraf Merkezi Tanımı Ve tanım Listesi — `ZIuZO9w6SFw`
+  - Masraf Merkezi Şablon Tanımı — `9YjBcL6em6o`
+  - Nakit Akım Tablosu — `gHe039LdUjY`
+  - Satışların Maliyeti — `0I1_-uNN9w4`
+  - Stok Envanter Raporu — `KhFBw_qo8T8`
+  - Stok Hareket Raporu — `3tIgK6h_ah0`
+  - Stok Tanım Listesi — `50HXSGMy3yo`
+  - Stok Tanımı — `afKSecqh_Q4`
+  - Tahsil Fişi — `Bc_OnCwP2_k`
+  - Tediye Fişi — `E-JY1OcrPIg`
+  - Toplu Fiş Yazdırma — `fDP2P_GTLT8`
+  - Virman Hesap Aktarımı — `xS6lBWMgo_w`
+  - Yansıtılan Hesapların Kapatılması 7A — `tpOjAEoCGs8`
+  - Yansıtılan Hesapların Kapatılması 7B — `sVMyZajSMqM`
+  - Yardımcı Defter — `CMas3-EJub8`
+  - Yevmiye Defteri — `OrPkKlZLhb8`
+  - Yevmiye Defteri (Basit) — `-7FTV7QHn0c`
+  - Z Raporu Fiş Oluştur — `UsXd3_uWVFA`
+  - Z Raporu Giriş İşlemleri — `1FMAgfZKekE`
+  - Z Raporu Tanım — `FBuwv3rc9TA`
+  - Zamanlanmış Fiş İşlemleri — `9xHUYB5JuzU`
+  - Önceki Dönem Bilgileri — `aCaVICIqwpE`
+- Hizmet Tanımlar Listesi — `KWgDEykKvpA`
+- Hızlı Stok Arama — `IulXJieovCE`
+- İrsaliye Fiyat Güncelleme — `c5Bnq1z5kTE`
+- İrsaliye Grup Tanımları — `l61AP8fp16w`
+- Marka/Model Tanımları — `L-P38DsrDto`
+- Masraf Faturası — `nqJip-2QM7g`
+- Paket Tanımlar Listesi — `-8Dwl1kcFNg`
+- Renk Tanımları — `YrPleVsm5Vc`
+- Satın Alma Talep Ekranı — `Hcd1sllhFes`
+- Satın Alma Yönetimi
+  - B Formları — `bUdhqgT9Ie4`
+  - Cari Bazlı Sipariş Raporu — `FgkHPiXj0qg`
+  - E-fatura Eşleştirme Listesi — `0YEhPFoc5BM`
+  - E-irsaliye Eşleştirme Listesi — `Nwuotmaosuo`
+  - Fatura Grup Tanımları — `TJUZgGIFgAY`
+  - Fatura Raporu — `ZrulTG2OaJI`
+  - Fatura Raporu Hareketli — `PdLv345E7IE`
+  - Fatura Özel Rapor — `rKi-CtsOIRw`
+  - İrsaliye Faturalandırma — `T75Kr7zAy5o`
+  - İrsaliye Grup Tanımları — `CaroloyrCQk`
+  - İrsaliye Raporu — `M3PnPyUT0Wk`
+  - İrsaliye Raporu Hareketli — `TM2pxZhKojY`
+  - Konsinye Fatura — `17CEnA1KkJc`
+  - Masraf Faturası Raporu — `m3c-2hcJRDM`
+  - Masraf Faturası Özel Raporu — `ZIQP9rEMeGg`
+  - Proforma Fatura — `u3v5oeJjvdI`
+  - Satın Alma Talep Listesi — `ypjNKJynJOs`
+  - Sipariş Fiyat Güncelleme — `hvDscXUn7cw`
+  - Sipariş Grup Tanımları — `AWuhrnyASVY`
+  - Sipariş İhtiyaç Listesi — `cu5PYjSogeE`
+  - Sipariş Raporu — `Qsej_cvY7lU`
+  - Sipariş Raporu Hareketli — `Mh454BmXY8U`
+  - Sipariş Teslim Raporu — `OVho0SOoTDM`
+  - Siparişler
+    - Yurtdışı Verilen Sipariş — `_d86Js2gbU0`
+  - Stok Bazlı Fatura Raporu — `W3ElAmS3CMI`
+  - Stok Bazlı İrsaliye Raporu — `D-FjMg5aOuM`
+  - Stok Bazlı Sipariş Raporu — `-2OVCm0fM-o`
+  - Stok Bazlı Teklif Raporu — `HGyRIsJnxW0`
+  - Stok Sipariş Listesi — `KQ_OwlAy8SY`
+  - Teklif Faturalandırma — `0fO3cOSilws`
+  - Teklif İrsaliyelendirme — `UAuHztE8Z0M`
+  - Teklif Raporu — `jwK4H-v3gds`
+  - Teklif Raporu Hareketli — `VSfTSQCHMfs`
+  - Teklif Revize Raporu — `d8yG09Q4CqI`
+  - Teklifler
+    - Yurtdışı Alınan Teklif — `h6IP-hjk3Ws`
+  - Toplu Alış İrsaliyesi — `4nKx_WjIYKo`
+  - Toplu Alış İrsaliyesi Faturalandırma — `dB8S1W9Z2Vw`
+  - Toplu İrsaliye Faturalandırma — `Nxra_WE_9VY`
+  - Toplu Masraf Faturası — `fp95cpVIVp4`
+  - Transfer İrsaliye Raporu — `ki6xxDWPd34`
+  - Transfer İrsaliye Raporu Hareketli — `CWF0fjQIgb4`
+  - Transfer İrsaliyesi — `4XpcoGUqEjc`
+  - Transfer Talep Ekranı — `VHsyhA79HdA`
+  - Transfer Talep Listesi — `ovQkkycBvW0`
+  - Yurtİçi Alınan Teklif — `1ECNSaZ0HD0`
+  - Yurtİçi Verilen Sipariş — `RhdgNTq55Kw`
+- Satış İrsaliyesi — `ZL9Icu2myvQ`
+- Satış Yönetimi
+  - İrsaliye Faturalandırma — `fERInIYDgQA`
+  - İşlemler
+    - Fatura
+      - e-Fatura
+        - e-Fatura Durum Sorgulama — `SCw4eH0CmLE`
+        - e-Fatura Gönderimi — `XvSxJDb34H4`
+        - Gönderilmiş e-Faturalar — `rW7tUeRDtZk`
+      - Yurt Dışı Satış Faturası
+        - Fiyat Farkı Faturası — `ScmhPluM0UA`
+        - Konsinye Faturası — `9AGUfw_h0ks`
+        - Proforma Faturası — `Bb4clJCxM0I`
+        - Satış Faturası — `2m3OfmyEVFQ`
+      - Yurt Dışı Satıştan İadeler
+        - Konsinye Faturası — `2jK0wSvUmnA`
+        - Proforma Faturası — `uDZjfGyy5As`
+        - Satış Faturası — `WUCC3wzHDnc`
+      - Yurt içi Satıştan İadeler
+        - Satış faturası — `87cnVyMWhmU`
+      - Yurt İçi Satış Faturası
+        - Fiyat Farkı Faturası — `7pmJLeZDSxQ`
+        - Konsinye — `1q7U8-llDbw`
+        - Proforma Faturası — `qWgbDuaKssk`
+        - Satış Faturası — `hGXfZ4d-tlA`
+      - Yurt İçi Satıştan İadeler
+        - Konsinye Faturası — `u2vKtSCySD8`
+        - Proforma Faturası — `llQI7F2Ac4g`
+    - İrsaliye
+      - e-irsaliye
+        - E-irsaliye Gönderimi — `H-mgYKkHMrQ`
+        - Gönderilmiş e-İrsaliyeler — `zG4-pXeUf8w`
+  - Konsinye İrsaliye — `Izv1YFWlNeU`
+  - Raporlar
+    - Fatura Raporları
+      - Fatura Raporu — `g3iYxdhiXLU`
+      - Fatura Stok İşlem Türü Raporu — `pXZFRlCavPM`
+      - Fatura Özel Rapor — `YDHTlR81D4o`
+      - Stok Bazlı Fatura Raporu — `7qs72rkggUU`
+    - Fatura Raporu (Hareketli) — `QIaklqCi5GI`
+    - İrsaliye Raporları
+      - İrsaliye Raporu — `OGgTzrSpl5A`
+      - İrsaliye Raporu (Hareketli) — `nM8vEKIl6pM`
+      - Stok Bazlı İrsaliye Raporu — `qNbeTax3ZTg`
+      - Tansfer İrsaliye Raporu(Hareketli) — `g6grMnKTjP8`
+      - Transfer İrsaliye Raporu — `9a46b2DrEqE`
+      - Transfer İrsaliye Raporu (Hareketli) — `T1FxRGEunvs`
+    - Sipariş Raporları
+      - Cari Bazlı Sipariş Raporu — `guLJwWKvJ20`
+      - Sipariş Raporu — `TVWbODKM-vw`
+      - Sipariş Raporu (Hareketli) — `RJwTHijpspw`
+      - Sipariş Teslim Raporu — `Gb6DDurnr4g`
+      - Stok Bazlı Sipariş Raporu — `XeVSPvttAuY`
+    - Tanım Listeleri
+      - İrsaliye Araç Tanım Listesi — `TELdGr6IWUo`
+      - Teklif Durum Tanım Listesi — `SLk5TNHLZus`
+    - Teklif Raporları
+      - Stok Bazlı Teklif Raporu — `d1dxNisptbA`
+      - Teklif Raporu — `XHM159ielVs`
+      - Teklif Raporu (Hareketli) — `d9oLSso064A`
+  - Sipariş Fiyat Güncelleme — `AqEfP07Yyu4`
+  - Siparişler
+    - Yurtdışı Alınan Sipariş — `zbNFcVesr6w`
+  - Tanım Listeleri
+    - Sipariş Durum Tanım Listesi — `yHbdeVWbh08`
+  - Tanımlar
+    - Sipariş Tanımları
+      - Grup Tanımları — `EnutAibpy10`
+      - Sipariş Durum Tanımları — `Jmp3drkZNRc`
+    - Teklif Tanımları
+      - Teklif Durum Tanımı — `Xu0B3vQJb4M`
+      - Teklif Grup Tanımları — `OAb-GMkNXMc`
+  - Teklif İrsaliyelendirme — `_yVWYesF3OM`
+  - Toplu İrsaliye Faturalandırma — `jKvHj11eCDI`
+  - Toplu Satış İrsaliyesi — `hDV79_89FOc`
+  - YurtDışı Verilen Teklif — `aaOCbbc-qSA`
+  - Yurtİçi Alınan Sipariş — `uyImnRBCpGw`
+  - Yurtİçi Verilen Teklif — `oYvgBFv9DJs`
+- Satıştan İade İrsaliyesi — `xne01a1K4d0`
+- Satıştan İade Konsinye İrsaliyesi — `0ShZu1LCIms`
+- Seri/Lot Garanti Takip İşlemleri — `QB3C2LLwKr8`
+- Seri/Lot Hareket Raporu — `FXqlJd4cNR4`
+- Seri/Lot Raporu — `hKfUiYSeMD8`
+- Seri/Lot Son Kullanım Tarihi İzleme — `UfKawiYFcyI`
+- Sipariş Durum Tanımları — `dzgJRiBCmvE`
+- Sistem
+  - Belge Onay Tanımları — `bdEmS0BCwOs`
+  - Belge Onay Tanımları Listesi — `zIZzLxnwtxw`
+  - Excel Transfer İşlemleri — `gGyIkMt6Ee4`
+  - Formül Hesaplama — `-oLhja5Yy8g`
+  - Formül Tanımları — `BXI3hEZEq4A`
+  - Formül Tanımları Listesi — `rws3Y304zQI`
+  - Genel Ayalar
+    - Şirket / Cari ayarları — `ZRA_FGu1ci8`
+  - Genel Ayarlar
+    - Beyanname Ayarları — `D7eEt9tDaUU`
+    - e-Defter Ayarları — `UNFodX8Dlnc`
+    - e-Devlet Ayarları — `v9y3CBdpPFc`
+    - Fatura Ayarları — `FjnCPxYMuuc`
+    - Genel Muhasebe Ayarları — `gjC4bkfxnaE`
+    - Hareket Tarih Kontrolü Ayarları — `tYhBZz2f6no`
+    - İrsaliye Ayarları — `BIzdi1ESJic`
+    - Mail/Sms Ayarları — `bci4QLvkFbA`
+    - Parasal Ayarlar — `HJkPR92iSc4`
+    - Sipariş Ayarları — `DF55ayzynCA`
+    - Stok Ayarları — `684bD6zwRxo`
+    - Teklif Ayarları — `30wJud-39L8`
+    - Çek/Senet Ayarları — `jCAx_AHo9OI`
+    - Özel Alan Aktarım Eşleştirme — `fWdk7xb50Hg`
+    - Şube Ayarları — `m_b6aW5YLMs`
+  - Genel Ayarları
+    - Kasa Ayarları — `ACX4f6DDCTM`
+  - Kullanıcı Davet — `InJvkRwVmpo`
+  - Kullanıcı Davet Listesi — `v1uu_SAUQJU`
+  - Kullanıcı Listesi — `PPAmqFSz2V4`
+  - Kullanıcı Yetkilendirme — `4ibqtwP7TzQ`
+  - Lisans Detay — `EfqyYWH7BxE`
+  - Mail/Sms Şablon Tanımları — `vZU0eooqD4I`
+  - Mail/Sms Şablon Tanımları Listesi — `c5Ia7izDjH0`
+  - Mali Dönem Tanımları Listesi — `9pWVCk08aJI`
+  - Metin Özelleştirme — `ejhCwRL2mmo`
+  - Modül Kullanıcı Eşleştirme — `162Qb5kT9tQ`
+  - Muhasebeci Tanımı — `skWfMu8t8ts`
+  - Muhasebeci Tanımı Listesi — `IgxM4jkGnws`
+  - Rol Tanımları — `PfLuv4-etUw`
+  - Rol Tanımları Listesi — `uVflaukcIKg`
+  - Sayaç Seçimi — `8WOC6s3rhk4`
+  - Sayaç Tanımları — `YhXICk6l46o`
+  - Uyarıcı / Hatırlatıcı Ayarları — `oyqg_ASgaT4`
+  - Özel Alan Tanımları — `wDj982Na0mk`
+  - Özel Ayarlar — `Q-DMNt1GKOw`
+  - Ülke Tanımları — `K9DV1Ym-QpU`
+  - Şube Tanımlar Listesi — `OmUjgMZnWs4`
+  - Şube Tanımları — `qaBy3Dn3vfc`
+- Stok Bloke/Termin Raporu — `zTmTPj36p6A`
+- Stok Envanter Raporu — `MvbvQSS94YA`
+- Stok Envanter Raporu Birimli — `jMrElyEAEpU`
+- Stok Envanter Raporu Depo Bakiyeli — `WZAoh9I1XKM`
+- Stok Fiyat Kural Tanımları Listesi — `fILK0vrs4jU`
+- Stok Hareket Raporu — `wXJ7dIpUKaA`
+- Stok İskonto Kural ve Kısıtlama Listesi — `qwfwfwbPugg`
+- Stok Kar/Zarar Raporu — `CVewZqWsV58`
+- Stok Kar/Zarar Raporu (Basit) — `JDS-9buw754`
+- Stok Kar/Zarar Raporu (Özel) — `NNU97eEAWlk`
+- Stok Paket Seri Etiket İşlemleri — `4PCaRzvdvSY`
+- Stok Sayım Düzenleme Fiş Raporu — `T9CEV-wOIwo`
+- Stok Tanımlar Listesi — `LOY4X2skDBM`
+- Stok Tanımlar Listesi Seri Etiket — `OIE9lXxjFEA`
+- Stok Yönetimi
+  - İşlemler
+    - Alt Stok İşlemleri — `7O_mhgO2Q-Q`
+    - Depo Transfer Fişi — `27aRWf7Ha7k`
+    - Seri/Lot Giriş Hareketi — `EsRd89ooRfQ`
+    - Seri/Lot Çıkış Hareketi — `eB3AJ1XjpDM`
+    - Stok Giriş Hareketi — `U01-YozjOJY`
+    - Stok Sayım ve Düzenleme — `c5feOZXQin0`
+    - Stok Tanım Birleştirme — `_PGoAa38fAQ`
+    - Toplu Seri No Giriş İşlemleri — `CLzj_lKrjXk`
+    - Toplu Stok Hareket Fişi — `c8qj9UdVjxw`
+  - İşlemleri
+    - Stok Çıkış Hareketi — `-76dmJQG1ls`
+  - Rapolar
+    - Analizler
+      - Dönemsel Giriş-Çıkış Raporu — `pRi7wv8nWSg`
+      - Hizmet Analizi (Aylık) — `lLJJStyUHsI`
+      - Hizmet Raporu — `viSwXKOU5ow`
+      - Hizmet Raporu (Hareketli) — `cYdHq05_LPY`
+      - İşlem Görmeyen Stoklar Raporu — `-GNBz9zMCf8`
+      - Stok Hareket Analizi — `iYIF6I9LcvI`
+      - Stok Hareket Analizi (Aylık) — `OpOOm0cNmK0`
+      - Stok Yeterlilik Raporu — `CgtNN9_MXxs`
+      - Stok Özel Raporu — `zFrLyy-3DIk`
+  - Tanımlar
+    - Depo Tanımları — `rDEWJNIfOzY`
+    - Hizmet Grup Tanımları — `QCq7qxZQzZE`
+    - Hizmet Tanımları — `Gn-XJiQu4Eo`
+    - Hızlı Stok Tanımı — `o5_bKD9ocIw`
+    - Stok Birim Tanımları — `B5Zpc_cs9Zs`
+    - Stok Fiyat Kural Tanımları — `oAakKWLdYiI`
+    - Stok Fiyat Tanımları — `L6O5A6fTczg`
+    - Stok Grup Tanımları — `-BmwBdfYwSE`
+    - Stok İskonto Kural Kısıtlama Tanımları — `E9H18TQPPqE`
+    - Stok Paket Grup Tanımları — `UzVN3QuTHYA`
+    - Stok Paket Tanımları — `Mo8BUYFPRGU`
+- Tanımlar
+  - Stok Tanımları — `Dqq-ENLSt4E`
+- Teklif Değerlendirme — `v0By4KhUejQ`
+- Teklif Durum Tanımları — `PCrP0gLQCtM`
+- Teklif Faturalandırma — `j_pzdctUbS4`
+- Teklif Fiyat Güncelleme — `w2ApmwO6NNQ`
+- Teklif Grup Tanımları — `qeQ-GIppRtw`
+- Toplu Stok Fiş Raporu — `SvsLbvOxhCY`

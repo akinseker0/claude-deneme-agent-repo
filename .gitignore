@@ -9,3 +9,6 @@
 *.bak
 AS_YEDEK/
 DATABASE_FB/
+
+# Bilgi Bankası tam metin önbelleği (telifli içerik, repoya girmez)
+.cache/
