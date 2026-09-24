@@ -958,3 +958,470 @@ Mimari: **Mobil Server** (PC) ERP verisini hazırlar, pazarlamacı ayarlarını 
   - [3875] 9.03.01: Çoklu stok grubu seçimi. 10 banka hesabı. Tarih formatı.
   - [3770] 8.08.08: Rota ve ziyaret notları.
 - **[293] Restoran PDA (eski Windows Mobile):** En az 320×240 ekran, WM5/6 veya CE5, dokunmatik ve Wi-Fi gerekir. Önce .NET Compact Framework 2.0/3.5 kurulur.
+
+## AKINSOFT e-Ticaret ↔ WOLVOX: sık sorulanlar ve sorun giderme
+- **[3327] / [3647] ERP'den ürün siteye gitmiyor veya güncellenmiyor.** Kontrol sırası:
+  1. Stok kartı **aktif** olmalı.
+  2. Özel Ayarlar 1'de **"Web'de Görünsün"** işaretli olmalı.
+  3. **Grubu** dolu olmalı ve grubun kendisi de "Web'de Görünsün" olmalı.
+  4. e-Ticaret panelinde **Tam Senkronizasyon** seçili olmalı. Kısmi senkronizasyonda yeni ürün gitmez, yalnız güncelleme olur.
+  5. Web Entegrasyon'da **Test Et** başarılı olmalı. Başarısızsa muhasebe kullanıcısının şifresi panelde yenilenip programa yeniden girilir.
+  6. Web Entegrasyon → Stok Ayarları 2'deki **Özel Kodu 1/2/3 filtreleri**: doluysa yalnız aynı özel kodu taşıyan stoklar gider. Silinirse bütün stoklar gider, bu yüzden silmeden önce yetkiliye sorulmalı.
+  7. Ürün panelde pasif listede olabilir (filtre "Durum: Hepsi").
+  8. **Paket ürün limiti** (aktif ve pasif ürünler birlikte sayılır): Platinum 5.000, Professional 10.000, Advanced 50.000, Enterprise sınırsız.
+- **[3383] Sipariş sonrası stok düşümü:** İki yol var.
+  - Siparişi **direkt fatura** olarak kaydetmek.
+  - **Sipariş olarak kaydedip bloke** kullanmak: Sipariş ve Stok 2 modülleri gerekir. ERP Genel Ayarlar → Sipariş Ayarları → Sipariş Bloke = Evet. Web Entegrasyon'da "Stok miktarına bloke miktarını dahil ederek gönder" açılır. Fatura kesilince bloke kalkar.
+- **[3358] "Üyeliğiniz muhasebe sisteminde aktif değildir" (cari ödeme ve bakiye):**
+  - Sitedeki bakiye sorgulama ve cari ödeme, e-Ticaret panelindeki "Entegrasyon Yönetimi (bakiye sorgulama ve ödeme)" ayarıyla **doğrudan Kontrol Paneli'ne bağlanır** (SDK altyapısı).
+  - Gerekenler: **statik IP**, DB yetkili kullanıcı adı ve şifresi (MSSQL'e geçişte değişebilir), **3056 portu dışarıya açık**, doğru şirket kodu, şube kodu ve güncel çalışma yılı. Eski yıl seçilirse ödeme devredilmiş yıla yazılır.
+  - Üyenin muhasebe kodu ERP'de yoksa Web Entegrasyon'dan "Carileri Al" yapılır.
+- **[3382] Üye bakiyesini göremiyor:** Aynı Entegrasyon Yönetimi bağlantısı "Test Et" ile kontrol edilir.
+- **[3361] Cari ödemeler ERP'ye düşmüyor:** Sanal POS taksit tanımları ERP banka taksit tanımlarıyla eşleştirilmemiş ([3360] "Ticari Program Eşleştirme").
+- **[3386] Panelde "Wolvox'a gönderildi" yazıyor ama ERP'de yok:** Web Entegrasyon yanlış şirket, şube veya yılda açılmış olabilir ([3394] şirket adına tıklayıp değiştirilir). Yeniden gönderim için destek gerekir.
+- **[3670] e-Faturalar sanal pazara gitmiyor:**
+  - Web Entegrasyon ≥ s8.06.11 olmalı ve "e-Fatura/e-Arşiv PDF linklerini e-Ticaret'e otomatik gönder" açık olmalı.
+  - Faturadaki e-Ticaret sekmesinde "E-Ticaret Satış" = Evet olmalı.
+  - ERP'de e-Fatura Durum Sorgula çalıştırılır.
+- **[3359] / [3216] Üye tipinin ERP'ye taşınması:** "Üye tiplerini kaydet" bir özel koda ya da özel alana bağlanır. Değerler "Bayi", "Üye" ya da "Toptancı" olur.
+- **[3555] Sitede bozuk ülke/il/ilçe listesi:** Kaynağı ERP cari kartlarına elle ve hatalı girilmiş değerlerdir (sonda boşluk, yanlış alan).
+  - ERP'de cari listesi ilgili alana göre filtrelenip düzeltilir.
+  - Panelde Site İçerikleri → Ülke ve Şehirler'den hatalı kayıt silinir.
+  - Web Entegrasyon'dan "Cari Gönder" yapılır.
+- **[3639] KDV oran değişikliği (10.07.2023, %8→%10, %18→%20):** Panelde varsayılan KDV güncellenir. Senkronizasyon açıksa KDV ERP'den düzeltilip yeniden gönderilir.
+- **[3500] "Hangi mağazada var":** ERP'de Depo modülü gerekir. Web Entegrasyon'da "Depo envanterini gönder" açılır ve Stok Ayarları 2'de depolar seçilir.
+- **Salt e-Ticaret panel ayarları** (ERP'siz):
+  - Üyeliksiz alışveriş [3324]. Online Market açıkken kapanır.
+  - Sepete Ekle görünmüyor [3357]: tanıtım modu, fiyat yok, ya da stok yok ve stok kontrolü açık.
+  - Sipariş alınamıyor [3345]: tanıtım modu, açık adres zorunlu, kargo tanımı eksik.
+  - Kargo ücreti görünmüyor [3352]: alıcı ödemeli seçilmiş.
+  - Liste fiyatı ile sepet fiyatı farklı [3461]: Ürün Listeleme Ayarları'nda B2B, B2C ve misafir için fiyat sırası aynı olmalı.
+  - "Sanal pos bulunamadı" [3400]: varsayılan POS seçilmemiş.
+  - Ödeme alındı ama sipariş düşmedi [3523]: 3D dönüşü tamamlanmadan sayfa kapatılmış.
+  - Mail bildirimi gelmiyor [3393]: sistem mail tanımı.
+  - Domain ve NS [3414][3458], Facebook ve Google Merchant doğrulaması [3472][3489][3490], desi hesabı (en×boy×yükseklik/3000; yurt dışında /5000) [3619], iade ve değişim [3582], B2B modülü [3331][3426][3556].
+
+## WOLVOX ERP sürüm geçmişi ve yeni özellikler (2024–2026)
+Sürüm numaralandırması 9.x'ten sonra **yıl bazlı** oldu (26.xx.xx = WOLVOX 26 dönemi).
+
+| Sürüm | Tarih | Öne çıkanlar |
+|---|---|---|
+| 8.25.07 [3767] | 31.01.2024 | Sevkiyat planlama için mail/SMS. "Eksiye düşen stokta işleme devam", "Yazdırılanları düzenleyebilsin" yetkileri. "İade edilemez ürün". **Kur farkı faturası** tipi. |
+| 9.02.01 [3817] | 01.07.2024 | Formlarda sevk adresi yerine fatura adresi. Faturada Birim 2 / Miktar 2 raporu. Tevkifat KDV tanımı uyarısı. e-Arşiv gelen kutusuna QR ile aktarım. e-İrsaliyede fiyatı 0 gönderme. Login'de son 5 kullanıcı adı hatırlanıyor. |
+| 9.03.01 [3873] | 05.11.2024 | Hareket satırındaki çoktan seçmeli özel alanlarda **`CODE=QUERY()`** (seçenekleri SQL ile doldurma). K.V. stopaj. Zorunlu alanlara GTİP. İstisna kodlu stokta KDV 0. Lokasyon bazlı sayım. Excel stok aktarımında diğer birimler (`KG-2,5-C|Koli-10-C|Palet-1000-C`). Esnek kredi yapılandırma. |
+| 9.03.02 [3883] | 09.12.2024 | Siparişten faturaya 301 istisna kodu. e-Müstahsilde GV stopajı 0. Vergi dairesi alanı 250 karakter. |
+| 9.04.01 [3935] | 19.06.2025 | **WolvoxAI** eklendi. Açık Bankacılık (FinCloudy) iyileştirmeleri. POS/provizyon aylık analizi. **İlaç ve Tıbbi Cihaz** ile **SARJ/SARJANLIK** e-Fatura tipleri. Masraf faturasında tevkifat. |
+| 9.05.01 [3970] | 01.10.2025 | Belge türü detayı. Fatura notu 2000 karakter. Seri/lot için Excel'den alma. 85 No'lu KDV uyarısı. Carinin varsayılan fatura senaryosu. 702 istisnada DİB satır kodları. 344 istisna kodu. ÖTV istisna kodları 101–108. **FastReport tasarımları veritabanında saklanıp paylaşılabiliyor**, aktif şirket ve şube parametreleri kullanılabiliyor. |
+| 26.02.01 [3987] | 01.12.2025 | **Program dosyasının adı `werp9.exe` → `werp.exe` oldu.** Eski kısayollar otomatik silinir, yenileri oluşturulmalı. Seri/lotta üretim tarihi. UNO alanı 23 karakter. İlaç takibi için UNO/GTIN. Cari birleştirmede kaynak cari pasife alınabiliyor. |
+| 26.03.01 [4017] | 09.03.2026 | **MRP reçete revizyon sistemi**. Cariye **zorunlu ödeme yöntemi** (tutarın tamamı ya da belirli yüzdesi ödenmeden fatura kaydedilmez). Gelen kutusunda cari ve stokların otomatik eşleşmesi, eksik olanların oluşturulması. `.webp` desteği. Depo transferinde maliyet hesabı. Yeni Online İş Merkezi izleme ekranları. WolvoxAI İngilizce. Takım birimi kodu 5B. |
+| 26.04.01 [4083] | 11.08.2026 | **Obifin Açık Bankacılık**. Döviz ve virman hareketleri aktarımı. Dekont no son 6 hane → evrak no. **Satın alma talebi onay sistemi** (Genel Ayarlar → Program; "Durumu Beklemeye Alabilsin (Onay Sistemi)" yetkisi). Mal kabul ve sevkiyatta karekod. **Stok İhtiyaç Planlama** (tahmine dayalı; 3/6/9/12 ay; stok kartında "Tahmini üretim ve tedarik süresi"). Hizmette KKEG'ye düşen KDV için ayrı hesap. 226 istisnada 0 KDV. İDİS'te birden fazla etiket. Stok ve cari muhasebe kodları boş bırakılabiliyor. |
+
+Diğer ürünlerin sürüm notları:
+- **Veri Transferi 26.03.01 [4066]:** ÜTS API uçları güncellendi. Mükerrer seri/lot kontrolü. "11111111111" TCKN uyarısı.
+- **Genel Muhasebe 26.03.01 [4069]:** Envanter defteri için ek hesaplar (Ayarlar 3). Zorunlu alanlar. Kira fişi sayacı. Geçmiş tarihli kur girişi. İndirilecek KDV listesine yeni kolonlar.
+- **e-Ticaret 1.15.11 → 1.26.01 [3646…4090]:** Panel sürüm notları. Tam liste için `python tools/bilgibankasi.py baslik "e-Ticaret 1\."`.
+
+### WOLVOX ERP kategorisindeki diğer makaleler
+- **[3934] WolvoxAI (yapay zekâ asistanı):**
+  - Fatura, stok ve cari için **yalnız listeleme ve rapor** sorgularına cevap verir. Kayıt eklemez, silmez, güncellemez. e-Fatura kontörü de buradan alınabilir.
+  - Kurulum: Kontrol Paneli → Yetkili → Özel Ayarlar → Yapay Zekâ Kullanımı = ChatGPT, "+" ile **OpenAI API key** girilir. Ücreti OpenAI keser, AKINSOFT sorumlu değildir.
+  - Yetki: "WolvoxAI Yapay Zekâ Asistanını Kullanabilsin". Asistan yetkili düzeyinde çalışır.
+  - ERP'de arama düğmesinin yanındaki AI simgesiyle açılır.
+  - Ses tanıma ve seslendirme Kontrol Paneli'nden açılır. Yerel WolvoxAI motoru için NVIDIA GTX 1050 veya üstü gerekir; diğer seçenek OpenAI (token başına ücretli).
+- **[3306] Firebird'i kaldırıp yeniden kurma:**
+  - Önce Denetim Masası → Firebird Server Manager'dan **sürüm** öğrenilir. Yeni makineye aynı sürüm kurulur.
+  - Kaldırdıktan sonra `Program Files (x86)\Firebird` klasörü (32 bit Windows'ta `Program Files\Firebird`) silinir ve bilgisayar yeniden başlatılır.
+  - Yeniden kurulunca kullanıcı SYSDBA, şifre masterkey olur. Güvenlik için değiştirilmeli ([1457] Firebird şifresi değiştirme).
+- **[3538] Maliyet muhasebesi (MRP II'ye bağlı, fiili maliyet yöntemi):**
+  - Genel Ayarlar → Genel Muhasebe Ayarları → Genel2'de "Maliyet Muhasebesi Kullan" açılır.
+  - Stok kartında dört hesap tanımlanır: mamul yansıma, gider yansıma (711), ilk madde gider (710) ve maliyet.
+  - Dönem tanımlarında çalışmayan kısım gider oranı girilir. Gider tanımlarında hesap kodu, yansıma kodu ve MRP II eşleştirmesi yapılır.
+  - İşlem sırası: ilk madde → dağıtım → çalışmayan kısım fişi → yarı mamul (151) → mamul (152) → stok hareket fiyatını güncelle → MRP II maliyetini güncelle → satılan mamul maliyeti.
+  - Birim maliyet: `BM = (İMM + ((GG + İG) / ToplamMiktar) × ÜrünMiktarı) / ÜrünMiktarı`.
+  - Bu açıkken MRP II kendi maliyetini hesaplamaz.
+  - Raporlar gider, stok ve üretim bazındadır.
+- **[3640] KDV oran değişikliği (2023):** ERP en az 8.24.06 olmalı. Stok Tanımlar Listesi → filtrele → İşlemler → **Bilgi Güncelle** ile KDV toplu değiştirilir. GM'de yeni KDV tanımları açılır.
+- **[3701] TCMB kur indirme hatası:** İnternet Seçenekleri → Gelişmiş'te "sunucu sertifikası iptalini denetle" ve "şifreli sayfaları diske kaydetme" kapatılır.
+- **[3787] Pazarlamacı hedefi:** Pazarlamacı kartında Özel Bilgiler 2 → Hedef Tanımları (gün, ay ya da yıl; dövizde hesap seçilir) → "Pazarlamacı Hedef Analizi" raporu.
+- **[3789] Stok sayım ve düzenleme:**
+  - Depo seçilir ve "Envanter son tarih" (sayımın yapıldığı gün) girilir.
+  - Excel veya txt'den kod/barkod ve miktar kolonları okunur. Sayım tipi: depo sayımı, stok girişi ya da çıkışı.
+  - "Sayılmayan ama bakiyesi olan stokları ekle" seçeneği var.
+  - Son adım "Stok harekete işle". Giriş/çıkış tipinde "Muhasebelendir" ile irsaliye veya fatura oluşturulur.
+- **[3792] Şube izleme ekranı:** Ana şubeden diğer şubelerin nakit, dekont ve POS işlemleri otomatik yenilemeyle izlenir.
+- **[3816] Program bazlı modül bağımlılıkları:** Restoran, Hızlı Satış, Otel ve İK içindeki cari, kasa ve stok işlemleri ERP lisansındaki Cari 1 / Kasa / Stok 1 / Depo / Fatura modüllerini ister. GM'de bütçe için Bütçe, kur için Döviz modülü gerekir.
+- **[3998] Ters kur girişi:** KPB'si yabancı para (ör. USD) olan ülkeler için `gunlukterskurgiris.asspack` script paketi Yetkili → Tanımlar → Script Paket İşlemleri → Paket Yükleme ile kurulur, program yeniden açılır. Script paketlerinin gerçek bir kullanım örneği.
+
+## Wolvox 9/26 sistem yönetimi ve geliştirici ipuçları (ek)
+
+### Tasarım ve rapor (ARP, Gelişmiş Tasarım, FastReport)
+- **[4081] ARP tasarımına başka bir tablodan SQL ile veri çekme** (makaledeki GIF'ten okunmuştur):
+  1. Tasarıma bir **Alt Detay** (QRSubDetail) bandı eklenir. Özelliklerinde Veritabanı = `1`, "Dataset Adı" (ör. `STOK_TEDARIKCI`) ve Master = `Report1` olur.
+  2. "SQL Sorgu" alanına sorgu yazılır. Ana tablodaki alan **`GETVALUE(TABLO.ALAN)`** ile bağlanır:
+     ```sql
+     SELECT STOKKODU AS TEDARIKSTOK
+     FROM STOK_TEDARIKCI
+     WHERE BLMASKODU = GETVALUE(SIPARISHR.BLSTKODU)
+     ```
+  3. Değer detay satırında bir expression ya da data alanıyla gösterilir (örnekte "TEDARIK" kolonu).
+  - Bu örnek iki şeyi doğruluyor: `STOK_TEDARIKCI.BLMASKODU` stok kartının BLKODU'suna bağlanır, `STOKKODU` tedarikçinin stok kodudur.
+- **[3920] Gelişmiş Tasarım Sistemi (FastReport tabanlı):**
+  - Formun Yazdır → Ayarlar ekranında bir `.arp` seçilip **"Gelişmiş Rapora Dönüştür"** ile çevrilir.
+  - Alanlar sağdaki Veri Ağacı'ndan sürüklenir. Metin nesnesinde Σ ile expression ve koşul yazılır, Format sekmesinden biçim verilir.
+  - 9.05.01'den beri tasarımlar veritabanında saklanıp paylaşılabiliyor ([3970]).
+- **[4035] FastReport'ta stok resmi:** Resim nesnesinin "File Link" alanına `[As_StokResim(<TEKLIFHR."BLSTKODU">)]` yazılır. Fonksiyon Veri Ağacı → Fonksiyonlar → AKINSOFT altındadır.
+- **[3944] ARP'de stok resmi:** Rapor veri setinde BLSTKODU veya STOK.BLKODU bulunmalı. Resim alanında:
+  - Parametre = "Aktif Stok Resmi", Bağ Tablo = hareket veri seti, Bağ alanı = BLSTKODU
+  - **Veritabanı = "Dosya"** (resimler `dosya.fdb` tarafında durur)
+  - **Bağ kodu formatı `WO_STLOGO_%sb_%ad`**
+- **[3600] Fatura Özel Raporu:** Gruplanacak alanlar seçilerek serbest rapor hazırlanır. Fatura, stok ve cari filtreleri kullanılabilir.
+- **[1953] Joker karakter eşleştirme (SQL veritabanı, ERP 8.14.05+):** F7 Filtre Düzenleme'de Türkçe karakter varyantları (Ümit/Umit, Yiğit/Yigit) tek aramada bulunur.
+
+### Yetki, lisans, offline
+- **[3739] Ek Yetkiler 1: SQL koşuluyla satır bazlı yetki.**
+  - Yeri: Kontrol Paneli → Kullanıcı Yetkilendirme → Ek Yetkiler 1. Kullanıcı, şirket ve yıl bazında tanımlanır.
+  - Cari, stok, fatura, irsaliye, teklif, sipariş, doküman takibi, İK ve hesap planı listelerine **WHERE'e eklenen bir SQL koşulu** yazılır. Örnekler:
+    - `COALESCE(CARI.GRUBU,'') NOT IN ('X') AND COALESCE(CARI.ARA_GRUBU,'') NOT IN ('Z')`
+    - `STOK.GRUBU NOT IN ('GIDA','İÇECEK')`
+    - `HESAP_PLANI.HESAP_KODU NOT LIKE '335%' AND HESAP_PLANI.HESAP_KODU NOT LIKE '500%'`
+  - Bu örnekler tablo ve alan adlarını da doğruluyor: `CARI.GRUBU`, `CARI.ARA_GRUBU`, `STOK.GRUBU`, `HESAP_PLANI.HESAP_KODU`.
+- **[3826] Kullanıcı–modül eşleştirme (Wolvox 9 lisansı):**
+  - Kullanıcı hakkı modül bazında verilir. Atanmamış modül kullanıcıya görünmez. **SYSDBA/sa'ya da atama gerekir.**
+  - Renkler: yeşil = atanmamış, mor = hakkı dolmamış, gri = hakkı bitmiş, kırmızı = uygun değil.
+  - Toplu atama sağ tıkla yapılır. Kaynak kullanıcının yetkileri hedef kullanıcıya kopyalanabilir.
+- **[3834] Offline sistem (Wolvox 9):**
+  - Lisansta **Şube modülü** gerekir. Şirket kaydında "offline kullanıma izin ver" açılır, Şube Kayıt'ta "Offline Personel Ata" yapılır.
+  - Bir kullanıcı yalnız bir şubede offline olabilir. SYSDBA/sa ile offline çalışılamaz.
+  - Veri Al/Gönder kullanıcı bilgileriyle yapılır.
+- **[3717] Tarih kontrol sistemi:** Genel Ayarlar → Program Ayarları'nda iki ayar var.
+  - Çalışma yılı: aktif yıl dışına izin verme / sorarak onay al / kontrol etme.
+  - Tarih: aktif ay öncesine / aktif gün öncesine / onay tarihi öncesine izin verme.
+  - İstisna tutulacak kullanıcıya Kontrol Paneli'nde "Onay Tarihi Kontrolü Yapma" verilir.
+- **[3868] Güncelleme paketi (WOL9 GP) isteyen mobil uygulamalar:**
+  - İsteyenler: Reporter (iOS/Android), Fiyat Gör, DepoMaster, Restoran Mobil iOS.
+  - İstemeyenler: Restoran Mobil Android, Mobil Satış (Android/WM), **Wolvox SDK**.
+
+### Güncelleme ve sürüm sorunları
+- **[3863] Sürüm güncelleme:**
+  1. Kontrol Paneli → Veritabanı İşlemleri → Yedekleme → **Şimdi Yedekle** (hedef `AS_YEDEK`).
+  2. Programlar kapalıyken `AKINSOFT` klasörü başka bir yere kopyalanır.
+  3. Kontrol Paneli **Yetkili → Programdan Çık** ile kapatılır. Kapatılmazsa sürüm uyuşmazlığı çıkar.
+  4. Installer (AKINSOFT klasöründe ya da akinsoft.com.tr'de) ile programlar seçilip kurulur. "Sadece dosyaları indir" seçeneği de var.
+- **[3869] Kontrol Paneli sürüm hatası:** `AKINSOFT\Wolvox9\KontrolPanel\sysas.ask` silinir ve yeniden lisanslanır. Düzelmezse `C:\Windows\System32\drivers\etc\hosts` dosyasındaki yönlendirme kaldırılır.
+- **[4037] "-90" güncelleme hatası:** Makaledeki `kontrolpanelfix` aracı Kontrol Paneli kapalıyken kurulum dizini seçilerek çalıştırılır. Araç süreli.
+- **[3850] Wolvox 8 → güncel sürüm farkları:** Açık Bankacılık, DepoMaster, Tüp/Su modülü, `CODE=QUERY()` ve diğerleri (ayrıntı [3817]/[3873] sürüm notlarında).
+
+### Depo, stok, maliyet
+- **[3872] Wolvox DepoMaster (Android sayım uygulaması):**
+  - Depo ve Stok 2 modülleri ve Kontrol Paneli 9.02.13+ gerekir.
+  - APK `http://<sunucu-ip>:3056/depomaster/index.html` adresinden indirilir (**güncelleme portu 3056**).
+  - Kullanıcı ve sunucu bilgisiyle girilir, şirket/yıl/şube seçilip senkronize edilir. Sayım listesi aktarımı ayarlardan açılmalı.
+  - Kaydedilen sayım ERP'de **PDA Sayım Listesi**'ne gelir.
+- **[499] Lokasyon yönetimi (Depo modülü içinde):** Depoya lokasyon ve alt lokasyon tanımlanır, kroki üzerinde işaretlenir. "Lokasyon Hareket Girişi" ile giriş ve çıkış yapılır. 9.03.01 ile lokasyon bazlı sayım geldi.
+- **[3601] Transfer irsaliyesinde FIFO:** Genel Ayarlar → İrsaliye Ayarları → İrsaliye sabitleri → stok fiyatı = FIFO. Transferde eski giriş hareketleri listelenir.
+- **[3964] Kâr/zarar raporunun maliyet seçenekleri:**
+  - Alış fiyatı 1–4, en son alış.
+  - **Ortalama** (fiyatların basit ortalaması).
+  - **Ağırlıklı ortalama** (Σtutar / Σmiktar).
+  - **FIFO** ve **LIFO**.
+  - Seçilen yönteme göre sonuç değişir. Karşılaştırma yapılırken hangi yöntemin seçildiğine bakılmalı.
+
+### Finans: banka entegrasyonu, mutabakat, kur farkı, finansal analiz
+- **[4085] Açık Bankacılık (FinCloudy veya Obifin):**
+  - Banka modülü gerekir. Kontrol Paneli → Şirket Kayıt → Açık Bankacılık İşlemleri'ne bilgiler girilip **Test Et** yapılır:
+    - FinCloudy: kullanıcı adı, parola, kurum kodu/ID.
+    - Obifin: kullanıcı adı, parola, API key.
+  - Eşleştirme: cari **gönderen/alıcı IBAN ve vergi no** ile, banka **IBAN** ile bulunur. Eşleşmeyenler elle seçilir. Virmanda karşı banka seçilmelidir.
+  - İşlem türü kodları: `TRFGEL`, `TRFGID` (havale/EFT), `VIRMGEL`, `VIRMGID`, `PERSODE`, `OGSHGS`, `MASRKOM`, `KARTODE`, `KRDODE`.
+  - Eski "Banka Online Veri Al" modülüne göre farkı: giden EFT, FAST ve portal da gelir. 11 yerine 23 banka desteklenir. Ücret banka sayısına göredir.
+- **[1718] / [2278] Banka Online Veri Al (eski modül):**
+  - Bankaya imzalı "online ekstre" formu verilir ve bankadan kullanıcı adı ile parola alınır.
+  - Kontrol Paneli'nde şirket kaydı → Özel Bilgiler'de **"Online veri al"** açılır.
+  - ERP'de Banka Tanımı'nda IBAN ve API bilgileri (entegrasyon bankası, kullanıcı, parola, son işlem tarihi) girilir.
+  - [3011] "Could not load SSL library" (ör. Windows Server 2012): Kontrol Paneli kapatılır, dizinine `ssleay32.dll` ve `libeay32.dll` konur ya da yenilenir.
+- **[1946] / [3719] / [3720] / [4084] e-Mutabık (e-mutabakat, BA/BS ve cari):**
+  - ERP'de B formlarından ya da bakiye listesinden gönderilir. e-mutabik.com kullanıcı bilgileriyle çalışır.
+  - Ücreti yalnız gönderen öder (kontör). Onaylayan tarafın üye olması gerekmez.
+  - Kullanıcı izinleri ve HTML şablon tasarımı web panelinden yapılır.
+- **[3758] Kur farkı faturası (8.25.07+):**
+  - Önkoşul: carinin döviz hesabına dövizli bir hareket ve karşı dövizli hareket olmalı. İkisi **manuel yaşlandırma** ile kapatılır.
+  - "Kur Farkı Faturalandırma" raporunda durumlar: yaşlandırma yapılmamış / tamamlanmamış / fatura alınacak / fatura kesilecek. "Faturalandır" ile fatura oluşturulur.
+  - Oluşan faturanın özellikleri:
+    - Tipi "Kur Farkı", KDV dahil tutarı kur farkına eşit.
+    - Cari ya da stok hareketine işlemez, iskonto ve formül uygulanmaz.
+    - e-Fatura notuna "Kur Farkı Faturası" yazılır.
+    - Bağlantısında asıl faturanın numarası tutulur. Kur farkı faturası silinmeden asıl fatura değiştirilemez.
+  - Yetki, hizmet tanımı, hizmet muhasebe kodu ve fatura sabitleri önceden ayarlanır.
+- **[3799] / [3804] / [3807] Finansal analiz:** Likit kontrol seviyesine göre "nakit temin edilmeli" ya da "yatırım yapılabilir" raporlar.
+  - Hesaba katılabilecekler: cari bakiyeler, opsiyonlu, rotatif ve vadeli banka hesapları, zamanlı hesaplar, protestolu çek/senet.
+  - Periyot günlük, haftalık, aylık, 3/6 aylık ya da yıllık seçilir.
+- **[3707] Bütün carilerin döviz hesabını kapatma:** Cari Tanımlar Listesi → filtrele → İşlemler → **Bilgi Güncelle** → Diğer → "Döviz hesabı kullan" işareti kaldırılır. Bilgi Güncelle genel bir toplu güncelleme aracıdır.
+- **[3703] e-Faturada döviz kuru:** e-Fatura Ayarları → "Not alanına eklenecek döviz kuru": güncel ya da fatura kuru, alış/satış.
+
+### Satış ve evrak ayarları
+- **[3716] Kaynak iskonto:** Fatura, irsaliye, teklif, sipariş ve servis ayarlarında iskontonun kaynağı seçilir: **Genel Ayarlar** (sabit oran), **Cari** (Cari kart → Hesap Bilgileri) ya da **Stok**.
+- **[3602] İrsaliye faturalanınca cari hareket faturaya bağlansın:** Fatura sabitlerinde "irsaliyenin faturalandırılması sırasında cari hareket entegrasyonunu fatura ile ilişkilendir" açılır.
+- **[3677] Tekliften siparişe özel alan aktarımı:** Teklif bilgilerindeki "Özel tanım aktarma ayarları"nda eşleştirme yapılır, sonra İşlemler → Kopyala.
+- **[3662] İhraç kayıtlı fatura:**
+  - Yurt içi satış faturasında Ek Bilgiler 1'de "İhraç Kaydı" işaretlenir.
+  - Satırda istisna kodu seçilir.
+  - e-Fatura "?" ekranında tip = İhraç Kayıtlı yapılır.
+- **[3709] Belgeye QR kod:** Tasarıma karekod eklenip içine bir URL yazılır.
+
+### Yıl sonu devri ve WolvoxCloud'a geçiş
+- **[3845] / [3718] 2026'ya devir (Wolvox 9 ve Wolvox 8):**
+  - Önce bütün programlar güncellenir ve **yedek alınır**.
+  - Teklif, sipariş veya servis için ek durum tanımları varsa, devirden önce Şirket Kayıt → "Çalışma Yılı Oluştur" ile taşınır.
+  - Bütün kullanıcılar çıkar. Kontrol Paneli → Yetkili → **Devir İşlemleri**'nde oluşturulacak yıl (2026) ve devir için son işlem tarihi (31.12.2025) girilir, şirketler ve modüller seçilir, "Tüm kontrollerimi yaptım" → **Devir İşlemine Başla**.
+  - Devirden sonra bakiyeler kontrol edilir.
+  - Yeni yılda devirden gelen kayıtlar değiştirilemez. Eski tarihli işlem de girilemez.
+- **[4056] WolvoxCloud'a aktarım:**
+  - Kontrol Paneli son sürüm olmalı, güncelleme paketi bulunmalı. Bulut şirketinin **VKN**'si Kontrol Paneli'ndeki şirketle aynı olmalı.
+  - Kontrol Paneli → **Upgrade → WolvoxCloud Aktarımı** → klasör seçilir → şirketin aktarım dosyası oluşturulur (istenirse dosya, resim ve PDF'ler dahil) → Aktarım İşlemine Başla → WolvoxCloud sayfasında yüklenir.
+- **[4078] WolvoxCloud yardımı:** Menü yapısıyla eğitim videolarının listesi (bkz. `menu-haritasi.md`). **[4096] WolvoxCloud 1.03.01** (15.09.2026): yetki grupları yeniden düzenlendi, stok ve cari arama iyileştirildi.
+- **[3857] Enflasyon muhasebesi:**
+  - Genel Muhasebe ve Demirbaş modülleri gerekir.
+  - Yasal şart: Yİ-ÜFE son üç dönemde %100'ü, içinde bulunulan dönemde %10'u aşarsa **yalnız bilanço** düzeltilir.
+  - Makalede adım adım uygulama var.
+
+### e-Dönüşüm (ek makaleler)
+- **[1801] e-Fatura ayarlarının tamamı:**
+  - Önce Kontrol Paneli'nde şirket kaydı → **e-Devlet 1** sekmesinde e-Fatura / e-Arşiv / e-İrsaliye / e-Müstahsil açılır.
+  - Ayarlar ERP'de Satış Yönetimi → Faturalar → e-Fatura → e-Fatura Ayarları'ndadır.
+  - **Genel sekmesi:** not aktarımı, şahıs firmasında unvanı ad-soyada yazma, gönderimden sonra fatura no'yu güncelleme, PDF'i dosyalara kaydetme, kayıtta "gönderilsin mi?" sorusu, VKN ve e-posta zorunluluğu, cari bakiyesi, bağlı evrak no, vade, tedarikçi stok kodu.
+  - **Varsayılan sekmesi:** senaryo (Temel / Ticari; ticari faturayı alıcı reddedebilir), gönderim tipi kağıt/elektronik (elektronik e-ticaret içindir), hesap/döviz.
+  - **Entegratörler:** EDM Bilişim, Digital Planet, İzibiz, Süper Entegratör. EDM'de "taslak olarak portala kaydet" seçeneği var.
+  - **Sayaç:** Yetkili → Sayaç İşlemleri. Basamak sayısı 9'a tamamlanır. "Başa Ekle" = 3 harf + yıl. Birden fazla kullanıcı gönderiyorsa şablon kodları girilir. EDM'de portal sayacı da tanımlanır.
+- **[3726] Opsiyonel alanlar:** e-Fatura/e-İrsaliye Ayarları → Opsiyonel Alanlar'dan fatura, hareket, irsaliye ve stok alanları XML'e eklenir.
+  - Gönderimden sonra oluşan XML şu klasöre yazılır: `<ERP dizini>\Temp\<kullanıcı>\Efatura_Giden` (ya da `Eirsaliye_giden`).
+  - Tasarımda görünmesi için bu XML entegratöre gönderilir. **Bu klasör UBL çıktısını incelemek için de kullanışlı.**
+- **[3199] Dış modül bağlantıları (UBL):** "Dış Modül Bağlantı Bilgilerini Gönder" açılırsa sipariş `cac:OrderReference/cbc:ID`, irsaliye `DespatchDocumentReference` içinde gider.
+  - Elle yazılıyorsa "İrsaliye" ve "Sipariş" baş harfi büyük yazılmalı.
+  - İkisi birlikte gidecekse akış sipariş → irsaliye → fatura olmalı.
+- **Fatura tipleri** (e-Fatura "?" ekranı):
+  - Tevkifat [3672]: satırda tevkifat kodu ve oranı.
+  - SGK [3674]: cari SGK vergi numarasıyla açılır, SGK alanları doldurulur.
+  - İstisna [3675]: satırda istisna kodu.
+  - İhraç kayıtlı [3662].
+  - **İlaç ve Tıbbi Cihaz [3936]:** senaryo `ILAC_TIBBICIHAZ`. Stokta tür ve GTIN girilir. İlaçta parti, seri ve SKT, tıbbi cihazda parti, seri ve üretim tarihi zorunludur (Seri/Lot'tan gelir).
+  - **Yatırım Teşvik [3995]:** senaryo `YATIRIMTESVIK`; tipler SATIS, ISTISNA, IADE, TEVKIFAT, TEVKIFATIADE. e-Arşivde YTBSATIS vb. 26.03.01'den itibaren cari ve yevmiyeye KDV yansımaz.
+  - **IDIS (inşaat demiri) [3996]:** senaryo `IDIS`. 26.04.01'de birden fazla etiket no girilebiliyor.
+  - Alıştan iade [3916]: iade edilen faturanın bilgileri "Fatura Bilgileri" sekmesine girilir (Wolvox 8 ≥ 8.25.22, Wolvox 9 ≥ 9.03.04).
+- **Hatalar:**
+  - "Fatura numarasındaki tarih ile fatura tarihi tutarsız" [3669]: sayaçta "Başa Ekle" eski yılda kalmış. Yıl düzeltilir, "basıma hazır no" 1 yapılır.
+  - `java.lang.RuntimeException: kullanıcı bilgisi sistemde bulunamadı` [3659]: mükellef listesindeki posta kutusu (PK) etiketi portaldakiyle aynı değil.
+  - Sertifika iptal uyarısı [3548]: İnternet Seçenekleri'nde "sunucu sertifikasını denetle" kapatılır.
+  - Gönderilen fatura raporda görünmüyor [3546]: önce **Durum Sorgula** yapılır, GİB'de başarılı olanlar "Gönderilmiş e-Faturalar"a geçer.
+  - Gönderildiği halde gönderim ekranında kalan fatura [3740]: **"Mnl.Ft.Ony."** ile GUID/ETTN girilerek elle onaylanır.
+  - e-İrsaliye `EntityValidationErrors` [3982]: alıcı firma entegratörün adres defterinde yok, elle eklenir.
+- **Gelen kutusu:**
+  - İçeri aktarmada ürün adının kaynağı seçilir: gelen faturadaki ad ya da ERP'deki stok adı [3547].
+  - Kayıtlı alış irsaliyesiyle eşleştirme yapılabilir; irsaliyenin cari/stok hareketine işlenip işlenmeyeceği seçilir [3713] ([3715] sipariş eşleştirme).
+- **[3960] EDM Türmob:** Cari kartında VKN/TCKN'nin yanındaki "Cari bilgilerini EDM servisinden getir" butonu unvan, adres ve vergi dairesini doldurur. Her sorgu 1 kontör.
+- **[3972] ASELSAN'a e-Fatura:** İki `.asspack` script paketi (`EFATURA.asspack` vb.) yüklenir.
+  - KOBİ ve EYDEP bilgi ve tarihleri `AdditionalDocumentReference`'a, yerlilik oranı `AdditionalItemIdentification`'a, sipariş no `OrderReference`'a, kalem no `BuyersItemIdentification`'a yazılır.
+  - **Script paketlerinin UBL XML'ini değiştirebildiğini gösteren resmî örnek.**
+- **[3688] e-Defter "XML imzalama sırasında problem":** Yevmiye açıklamalarında kontrol karakterleri (ASCII 2, 28–31) vardır. Şu sorguyla bulunur:
+  ```sql
+  -- Firebird
+  select tarihhr, hesap_kodu, hesap_adi, aciklama from yevmiyehr
+  where aciklama like '%' || ascii_char(30) || '%'
+  -- MSSQL
+  select TARIHHR, HESAP_KODU, HESAP_ADI, ACIKLAMA from YEVMIYEHR
+  where ACIKLAMA like '%' + NCHAR(30) + '%'
+  ```
+- **[4003] e-Envanter defteri:** Tebliğ Sıra No:6 ile envanter defteri de e-Defter olarak tutulabiliyor. Açılış ve kapanış envanteri, mali mühürle imzalanır. GM 26.03.01'de Ayarlar 3'te ek hesaplar tanımlanır.
+- **e-Beyan (Beyanname programı, 9.04.01+):**
+  - Damga vergisi [3932] (Mayıs 2025'ten itibaren), KDV-1 [3951], KDV-2 [3981].
+  - Dijital Vergi Dairesi → e-Beyan → profil → **Entegrasyon Yönetimi → Oluştur** ile **token** alınır ve saklanır, sonra programa girilir.
+  - Hata `Rest request failed: Error adding header (87)` [4060]: Beyanname klasörünün adı değiştirilip program yeniden kurulur.
+  - [3977] KDV-1 özel matrah işlem kodları: 1001 altın, 1002 gümüş, 1003 kıymetli taş, 1004 ikinci el araç, 1005 ikinci el taşınmaz… İşlem bedeline KDV hariç tutar yazılır.
+
+### ERP kullanım ipuçları (ek)
+- **Tasarım:**
+  - Fatura tasarımında stok resmi [3539]: Resim Sığdır = Var, Bağ Tablo = `FATURAHR`, Bağ Alan = `BLSTKODU`, Veritabanı = Dosya, Bağ Kodu Formatı = `WO_STLOGO_%sb_%ad`.
+  - Çeki listesinde GTİP [3542]: Özel Ayarlar → Fatura Genel → "Faturayı yazdırırken stok bilgilerini çek" açılır. Tablo "Fatura Stok Bilgileri", alan `GTIP_NO`.
+  - Etikette 2. birim fiyatı [3599]: tablo "Stok Etiket Yazdırma", alan "Diğer Birim Fiyatı 1".
+  - Çoklu etiket [3463]: tablo "Stok Etiket Yazdırma". Detay bandında "Yeni Sayfa Aç" = Yok ise bir sayfaya birden çok etiket basılır, Var ise her etiket ayrı sayfaya.
+  - Asorti matrisi [3913]: SubDetail bandı eklenir, tablo "Asorti Hareketleri Matris"; her beden için ayrı alan.
+  - MRP II özel alanları [3738]: `MRP_EMIRLERI` tablosundan eklenir.
+  - `Dizayn.arp cannot be read` [229]: `...\Wolvox9\ERP\DefDesign\` altındaki dosya silinmiş ya da taşınmış, yolu yeniden gösterilir.
+  - Yazdırırken `Access violation … WERP9.exe` [246]: tasarımda "Detay" bandı "Var" yapılır (kaldırılırsa içindeki alanlar da silinir).
+- **Fiyat etiketi yönetmeliği [3308] (8.21.07+):**
+  - Genel Ayarlar → Stok Ayarları → Genel'de loglama türü (alış, satış ya da tümü) ve süresi (yasal olarak 30 gün) seçilir.
+  - Etikete "Stok Etiket Yazdırma → En Düşük Fiyat" alanı eklenir (son 30 günün en düşük fiyatı). Çabuk bozulan ürünlerde bir önceki fiyat da basılabilir.
+  - Restoranlar için bkz. [3756].
+- **Bilgi Güncelle (toplu değişiklik):** Liste raporlarında İşlemler → Bilgi Güncelle ile KDV [3640], döviz hesabı [3707], istisna kodu, özel matrah kodu ve kâr marjı (26.04.01) toplu değiştirilir.
+- **Excel aktarımları (Transfer menüsü):**
+  - Cari ve stok kartı [441]: çalışma sayfası numarası, "ilk satır başlık", mevcut kayıtları güncelleme ya da yeni açma.
+  - Hizmet [3790], cari yetkili [3794] ve cari kredi limiti [3797]: cari kodu eşleşmeli, para birimi simgeyle yazılır ($, €), her para birimine ayrı limit verilir.
+  - Alan eşleştirmesi "+" ile şablon olarak kaydedilir.
+- **Ayar noktaları:**
+  - Alış faturasında satış fiyatı oluşturma penceresi [2024]: Özel Ayarlar → Fatura → Alış Faturası (istenirse "alış fiyatına KDV ekle").
+  - Teklif ve siparişte tevkifat [3454]: Program Ayarları.
+  - Masraf faturasında döviz [3598].
+  - MRP üretim emrinde başlangıç tarihini otomatik doldurma [3597].
+  - İrsaliye faturalanınca stok hareket fiyatını güncelleme [3147]: açıkken hareket aktarma seçenekleri değiştirilemez, stok hareket raporunda fatura fiyatı görünür.
+- **Modüller:**
+  - **Tüp/Su** [639–641]: fiş, rehin takibi, dolu ve boş stok değişim tanımları, toplu faturalandırma, Caller-ID.
+  - **Mal Kabul** [2089]: onaylı siparişten kontrollü irsaliye oluşturur.
+  - **İthalat Yönetimi** [2245][2252]: ithalat dosyası (teslim, ödeme, menşei, gümrük), hareket dökümü, stok **millileştirme** ve ithalat envanteri.
+  - **Bonus** [402]: Genel Ayarlar → Cari Kart Ayarları → "Bonus Sistemi Kullan" ve fatura bonus matrahı.
+  - **Eksiye düşen stokları otomatik üret** [1987]: reçetesi olanlar Üretim → İşlemler'den üretilir.
+  - **Gün Sonu Raporu 1/2/3** [3788]: kasa, çek ve senet; faturalar, işlem gören cari ve stoklar; transfer irsaliyeleri. Yetkiliye SMS gönderilebilir.
+  - Cari doğum günü SMS'i [2022]: Kontrol Paneli → Mail/SMS → Otomatik SMS Tanımları.
+- **Kullanıcı arayüzü:**
+  - Rapor gridinde Ctrl+ / Ctrl− ile kolon genişliği otomatik ayarlanır [3515].
+  - Excel'e aktarma butonu kaybolduysa kullanıcıya "Raporları dışa aktarabilsin (Excel/HTML)" yetkisi verilir [3700].
+  - Servis randevusunda cari ve servis özel alanları eşleştirilebilir [3503].
+- **Mobil Fiyat Gör [3685]:** Kullanıcı adı, parola, IP ve **güncelleme portu (3056)** ile bağlanır. Barkoddan resim, fiyat, birim, KDV ve miktar gösterir.
+- **Genel hatalar:**
+  - "Dynamic SQL Error" [1976]: Kontrol Paneli → Veritabanı İşlemleri → **Veritabanı Bakımı** bütün veritabanları seçilerek çalıştırılır. Hata sürerse veritabanı onarımı gerekir.
+  - "Mail editör bileşeni yüklenemedi" [251]: `xstandard.ocx` `system32`'ye konup `regsvr32 xstandard.ocx` çalıştırılır.
+  - Toplu SMS'te "List index out of bounds (0)" [1466]: mesaj dışarıdan yapıştırılmış, elle yazılır.
+  - Windows 7'de genel ayar ve lisans ekranı [143]: UAC "hiçbir zaman uyarma" yapılır ve bölge ayarları sıfırlanır.
+  - Restoranda "geçersiz değer" [2028]: Windows bölge ve dil ayarları sıfırlanır.
+  - NOD32 veya ESET [168]: programın exe'sine güvenlik duvarında izin kuralı eklenir.
+  - Yedekleme programında bulut sunucusu izni beyaz ekranda kalıyor [741]: Sunucu Yöneticisi'nde "IE Artırılmış Güvenlik Yapılandırması" kapatılır.
+  - Eski Paradox tabanlı programlarda "Index is out of date" [31][37]: **PxOnar** aracı çalıştırılır. **WOLVOX için geçerli değildir.**
+  - OctoPlus/OctoPers'te "function UPPERTR is not defined" [52]: `UDF_TRUP.DLL` ve `OCTOPUS.DLL` (OctoPlus 7'de ayrıca `WOLVOXUDF7.DLL`) Firebird'ün `UDF` klasörüne kopyalanır. Wolvox'taki UPPERTR hatası da aynı nedenden çıkar.
+  - Firebird şifresi unutulduysa [9]: aynı sürüm Firebird kaldırılıp yeniden kurulur (bkz. [3306]).
+- **Yazarkasa (ÖKC) zorunluluğu [4033]:**
+  - 02.08.2024 tarihli tebliğe göre ÖKC muafiyeti olmayan Hızlı Satış ve Restoran kullanıcıları yeni nesil ÖKC'yi **entegre** kullanmak zorunda.
+  - Son tarih **15.06.2026**. Gereken sürümler: Kontrol Paneli 26.02.16 (zorunluluk 26.02.12'den itibaren), Hızlı Satış 26.02.06 (26.02.04'ten), Restoran 26.03.04 (26.03.02'den), Yazarkasa 26.04.02.
+  - Muaf olanlar müşteri panelinde Lisanslarım → **ÖKC kullanım muafiyeti bildirimi** yapar, belgeyi yükler ve onay SMS'ini bekler.
+  - Muaf olmayanlarda Yazarkasa modülü veya VUK507 ek hizmeti yoksa **program açılmaz**. Kural yalnız yurt içi lisanslar için geçerli.
+- **[4061] Yazarkasa satış sorgulama:** İletişim hatası yüzünden cihazda kapanıp programda açık kalan satış cihazdan sorgulanır ve otomatik kapatılır. Kapsam entegrasyona göre değişir: PAVO (Rest, Cloud, P2P) ve diğerleri.
+- **[4068] SMS Server 2.03.07:** Ülke bazlı servis sağlayıcı seçilir. Azerbaycan için public ve private key gerekir.
+
+### Donanım entegrasyonları
+- **[292] Caller ID:**
+  - Destekleyen programlar: ERP, Restoran (Lite dahil), Hızlı Satış, Otel, RentAgent, NetSürücü Plus, NetEmlak.
+  - PC'ye **AKINSOFT Caller ID Server** kurulur. Desteklenen cihazlar: CID2 (Sistemler) ve ARG. Diğer seri port cihazları özel ayarla bağlanır. Hugin [380]: USB-seri, sanal COM portu Aygıt Yöneticisi'nden bulunur.
+  - Caller ID Server'da cihaz seçilir, "Portu Test Et" ile denenir. ERP'de Yetkili → Özel Ayarlar → Caller ID → "Arayan Numarayı Tanıma Aktif". Restoranda Program Ayarları → Caller ID.
+  - **İletişim portu programda ve Server'da aynı olmalı.** Aynı anda cihazla tek bir program konuşabilir (test programı açıksa Server çalışmaz). Hatta numara gösterme servisi açık olmalı.
+- **[300] / [1723] Kimlik tarama:**
+  - Programlar: ERP, Otel (Wolvox 8/9), Otel 4/5, RentAgent.
+  - Cihazlar: Plustek TR-821 (kimlik, ehliyet) ve TR-550 (pasaport). TR-550'de aktarım üreticinin (ERAYSOFT) `Batch_Archiv.exe` ara yazılımıyla yapılır, programda ayar gerekmez.
+- **[290] / [1507] / [3604] PDKS (İK, Personel Takip modülü):**
+  - Proximity kart, parmak izi ve yüz tanıma cihazları desteklenir.
+  - Online kullanımda **Wolvox Kapı Ekranı** gerekir (ayrı bir PC'ye kurulabilir). Offline kullanımda cihazdan veri çekilir.
+  - ZK Teco TRFace 100 yalnız veri çekme modunda çalışır: cihaz tipi BIOCLOCK, iletişim TCP/IP, IP ve port girilir.
+- **[238] Karekodla belge aktarımı (WOLVOX'tan WOLVOX'a):**
+  - Cari kart → Hesap Bilgileri → "Karekod Transfer" = barkod / stok kodu / tedarikçi stok kodu.
+  - Genel Ayarlar → Program Ayarları'nda karekodun maksimum uzunluğu belirlenir.
+  - Tasarımda "DB Bağlantılı Karekod Ekle" → tablo "Fatura Yazdırma Karekod", alan "Karekod". Ürün çoksa yan yana birkaç karekod konur.
+  - Alıcı firma formda İşlemler → **Karekoddan Veri Al** ile okutur.
+- **[150] Santral Server 3 – Karel MS48:** Santral tipi seçilir. İletişim: CM kartı varsa orijinal, printer kartı varsa printer çıkışı. Seri port 4800-8-N-1, RTS/DTR handshake.
+- **[3830] e-Adisyon (Restoran):**
+  - Lisansta Restoran ve Fatura modülleri gerekir. Kontörle çalışır. Entegratörler SuperEntegratör ve EDM.
+  - Kontrol Paneli → e-Devlet 1'de "e-Adisyon Sistemini Kullan" (ve otomatik gönderim) açılır.
+  - Ayarlar ERP'de Satış → Faturalar → e-Adisyon'dadır. Sayaç Yetkili → Sayaç İşlemleri'nden tanımlanır.
+  - Restoranda Program Ayarları → Ö.Muhasebe/G.Muhasebe → Sayaç ve Kodlar'dan sayaç seçilir. Gönderim tipi: Kuyruğa ekle / Hemen gönder / Kullanıcı onaylı.
+  - Gönderim ekranları hem ERP'de hem Restoranda var.
+
+### Akaryakıt, otopark ve diğer sektörel programlar
+- **[1432] / [3843] / [2236] / [3520] Akaryakıt Veri Aktarımı:**
+  - Turpak, Asis, Türksis ve Mepsan pompa otomasyonlarındaki satışları ERP'ye **irsaliye veya sipariş** olarak aktarır. Taşıt tanıma işlemlerini de alır. **Offline sistemde çalışmaz.**
+  - Ayarlar → Tablo Alanları → "Oluştur" gereken özel alanları açar.
+  - Vardiya script'i irsaliye modülüyle çalışır, TXT veya XML seçilir, vardiya için genel bir cari açılır.
+  - [3558] Vardiya dosyası okunamıyorsa bölge ve dil ayarları sıfırlanır.
+- **Otopark:**
+  - [669] Metcom plaka tanıma kamerayla bariyeri açar, LED panelde ücreti gösterir. Metcom'da tanıma yöntemi "sürekli" olmalı.
+  - [1899] Abonelik bitiş uyarısı Genel Ayarlar → Uyarılar'dan ayarlanır.
+- **ProKuaför [2190][2193][3729]:** Kuaför için bulut randevu sistemi. İşletme, domain, kullanıcı ve hizmet tanımlanır.
+- **Kendi alan adı [3397][3980] (MyRezzta, QR Menü, ProKuaför):** Hosting yoksa Cloudflare üzerinden, varsa DNS'te **CNAME** kaydıyla alt alan adı yönlendirilir.
+- **Diğer:**
+  - NetEmlak "Unable to write to Netemlak.INI" [746]: UAC kapatılır ya da program yönetici olarak çalıştırılır.
+  - E-Ofis Network Admin kurulumu [81]: makaledeki PDF.
+- **Online İK [3215][3833]:**
+  - Personel web üzerinden giriş/çıkış kayıtlarını, maaş dökümünü, anket, sınav ve duyuruları görür. Kontrol Paneli 8.03+ gerekir.
+  - 9.02.01 ile mazeret ve yıllık izin talep/onay ekranları geldi.
+- **Üretim:**
+  - [4019] **Reçete revizyonu:** Genel Ayarlar → MRP Ayarları → Genel Ayarlar-2 → "Üretim reçetelerinde revizyon kullan". Yeni revizyon açılınca eskisi pasife düşer, revizyon geçmişi izlenir.
+  - [4021] **Online İş Merkezi izleme ekranları** (26.03.01): devam eden ve bekleyen işler, ilerleme, plan uyumu, gecikmeler, iş merkezi yükü.
+- **[4067] Pazarlamacı takibi ve harita rota planlama (ERP 26.03.05+):** Kontrol Paneli → Özel Ayarlar → Harita Servisi'ne **Google Maps API key** girilir (Google Cloud Console → Credentials) ve rota planlamada harita servisi açılır.
+- **Mobil sürüm notları:**
+  - [4063] Mobil Satış / Server 26.03.01: zorunlu alanlar, mobilde mal kabul, cari konum güncelleme.
+  - [4065] WebConnect 26.03.01: seri/lot ve stok giriş/çıkış, e-Fatura portalına geçiş, makbuz no.
+  - [4031] Mobil Satış'ta fiyat güncellemesi gelmiyorsa "Standart ilk 4 stok fiyatı kullan" yetkisi kaldırılır.
+
+### Yazarkasa (YNÖKC / VUK507) uyumluluk tablosu ve cihaz notları
+**[3912] Cihaz ve program uyumu** (R = Restoran, HS = Hızlı Satış, K = MyRezzta Kiosk):
+
+| Marka | Model | Tür | R | HS | K |
+|---|---|---|---|---|---|
+| inPOS | M120 | YNÖKC | ✓ | ✓ | – |
+| inPOS | M530 | YNÖKC/TSM | ✓ | ✓ | – |
+| Hugin | VX675, FT202, FP300, T300 | YNÖKC | ✓ | ✓ | – |
+| Hugin | S1 | Android | ✓ | ✓ | – |
+| Olivetti | MX915 | YNÖKC | ✓ | ✓ | – |
+| Olivetti | PBT990 | YNÖKC | – | ✓ | – |
+| Beko | 300TR Token | YNÖKC | ✓ | ✓ | – |
+| Beko | X30TR kablolu / kablosuz | Android | ✓ | ✓ | – |
+| Profilo | S900 | YNÖKC | ✓ | ✓ | – |
+| NBA | FiscalBox, e-Kassa (Azerbaycan) | YNÖKC | ✓ | ✓ | – |
+| Omnitech | e-Kassa (Azerbaycan) | YNÖKC | ✓ | ✓ | – |
+| Fiskaltrust | Almanya, Avusturya | YNÖKC | ✓ | ✓ | – |
+| NPOS | YN500, YN200 | YNÖKC | ✓ | ✓ | – |
+| Ingenico | iWE280, iDE280, Move 5000F | YNÖKC | ✓ | ✓ | – |
+| Ingenico | Move 5000F | TSM | ✓ | – | – |
+| Verifone | VX680 | TSM | ✓ | – | – |
+| PAX | A910SF | Android | ✓ | ✓ | – |
+| PAVO | N86 | Android | ✓ | ✓ | – |
+| PAVO | UN20 | Android | – | – | ✓ |
+| Inter MPOS | 2001 | YNÖKC | – | ✓ | – |
+| Perkon Digi | IPT 360 | YNÖKC | – | ✓ | – |
+
+- **Ortak kurulum:** Lisansta **Yazarkasa** (eski adı "Yazarkasa-POS-Terazi") modülü gerekir. Kontrol Paneli → Şirket Kayıt → e-Devlet 1'de **"Yeni Nesil Yazarkasa / YNÖKC Entegrasyonu Kullan"** açılır. Wolvox **Yazarkasa** programında (eski adı Market Otomasyon) cihaz seçilip "Ayarla" ile fiş limiti, IP ve port girilir.
+  - Kaynaklar: [3706] Move5000F, [3760] inPOS M530, [3993] PAX A910SF, [3683] NBA e-Kassa, [3895]/[3897] Omnitech.
+- **TSM modu (Restoran):** Bilgisayar TSM sunucusu olur. **Sabit IP** ve modemde açık bir port gerekir, kullanıcı adı ve şifreyi AKINSOFT girer ([3992] PAX TSM, [4001] inPOS M530 TSM).
+- **Beko:**
+  - X30TR kablolu [3950][3963] ile kablosuz [3974] arasında geçiş yapılamaz, satın alma bağlantıları farklı.
+  - Kablosuz modda 21.04.2026'dan sonra (Restoran 26.03.01, Yazarkasa 26.04.01) cihaz seri no, sabit IP ve port ticket ile bildirilir.
+  - 300TR Token [3978]. Branch ID cihazdaki karekoddan okunur [4045].
+  - "POS ödeme başarısız … CANCELLED" [4011]: KDV oranı ile KDV departmanı uyuşmuyor.
+- **Hugin S1 PC Link [4073]:**
+  - Cihazın Entegrasyon ekranına AKINSOFT'un VKN'si girilir (makalede yazılı).
+  - `ERR_UNAUTHORIZED-X-hardwareid` [4082]: cihaz başka bir bilgisayara kilitli. Servis modunda PC Link eşleşmesi kaldırılır (şifreyi Hugin verir).
+- **Diğer cihaz hataları:**
+  - Profilo S900 "satış moduna geçemedi" [3967]: "Şifreleme kullanılsın" işaretlenir.
+  - inPOS M530 "1030" [3968]: MarketOtomasyon klasörünün adı değiştirilip program yeniden kurulur. Stok adı, birim, KDV oranı ve KDV departmanı dolu olmalı.
+  - Ingenico'da yemek kartı için "Global Yemek Çeki" uygulaması kurulur [3917]: sicil numaraları Ingenico'ya gönderilir, sonra parametre güncellenir.
+  - CAS PDI 30 kg terazide "online veri al" modu açık olmalı [3973].
+- **PAVO N86 (VUK 507 – GMÖEBYS) [3906][3928]:** Android POS ile belge ve ödeme entegrasyonu yapılır. **PAVO kullanılırken ERP'de "Gün sonu sistemi kullan" kapalı olmalı**, açıksa hesap kapatırken "Sistem belirtilen nesneyi konumlandıramıyor" hatası çıkar [4077].
+
+### Restoran, Hızlı Satış, Otel, İK, GM, Demirbaş (sürüm notları ve ipuçları)
+- **Restoran:**
+  - [651] Kullanım kılavuzu: masa aç, adisyon, müşteri seçimi…
+  - [3765] Adisyon fişinde stok **Özel Kod 3**'e göre gruplama: Yazdırma Ayarları'nda açılır, tablo "Fiş Hareketleri (Gruplandırılmış)".
+  - [3815] Gün sonunda görünen adisyon sayacını sıfırlama: ERP'de "Gün sonu sistemi kullan", Restoranda "Görünen Adisyon Numarası Sayacı", gün sonunda "Görünen sayaçları sıfırla".
+  - [4030] Gün sonunda "I/O error 103": varsayılan gün sonu tasarımı seçilmemiş.
+  - [4028] **Happy Hours**: gün ve saat bazlı indirim, X al Y öde, özel fiyat.
+  - [4089] Online platform siparişinde "teslim edildi" bildirimini otomatik göndermeme ayarı (kurye dışarıdan geliyorsa).
+  - [3880] Afanda müşteri ekranı `.asspack` script'i: Wolvox 9 için `VCFDisplayW9`, Wolvox 8 için `VCFDisplayW8`. Restoranda Menü → Tanımlar → **Script Paket İşlemleri** bulunur.
+  - [3756] Restoranlarda fiyat listesi zorunluluğu (19.12.2023 yönetmeliği; kapı önü ve masada).
+  - Sürüm notları: 8.23.04 [3768], 9.02.01 [3819], 9.03.01 [3884] (web mutfak, garsona göre filtre), 26.02.01 [3989] (entegrasyonu olmayan cihazların seri no'su e-Adisyona Özel Kod 2 ile gider).
+- **Hızlı Satış:**
+  - Sürüm notları: 9.02.01 [3824], 9.02.04 [3882] (PAX A910S), 26.02.01 [3985] (PAVO para üstü, KDV departmanına göre oran, ödeme türüne göre çekmece).
+  - [1822] Normal görünümde ödeme türlerinin yeri değiştirilebilir.
+- **Otel:**
+  - HotelRunner rezervasyonları Veri Transferi üzerinden gelir [3704].
+  - Sürüm notları:
+    - 9.02.01 [3820]: AKBS bildirimleri otomatik, forecast tasarımı.
+    - **26.03.01 [4012]:** folyoda Fiş A/B/C ile masraflar farklı ödeyenlere bölünür.
+    - 26.04.01 [4047]: rack ekranında kroki.
+  - [4048] 26.04.03'te TGA **Tesis Künye Bilgi Sistemi** için uyruk ve ay bazlı rapor geldi.
+  - Otel 5: güncelleme [3676], kurulum [3679], lisans [3681] (makine kodu uyarısı gelirse Evet).
+- **İK:**
+  - 9.02.01 [3818].
+  - 9.02.02 [3870]: 3294 teşviki, kısa vadeli prim %2,25, GV matrahı indirimli gösteriliyor, PDKS'de sabit maaş.
+  - 9.03.01 [3921]: Perkotek YT-32/33 PDKS, departman aktif/pasif, personel bazlı muhasebe entegrasyonu.
+- **Genel Muhasebe entegrasyonu [969]:** ERP Genel Ayarlar → Genel Muhasebe → "Genel Muhasebe Sistemini Kullan" + entegrasyon tipi:
+  - **Anlık:** fişler hemen oluşur.
+  - **Toplu:** ERP'de Diğer İşlemler → G.Muhasebe → Entegrasyon Dosyası Oluştur (XML, tarih aralığı), GM'de Fiş İşlemleri → Transfer Dosyasından Fiş Oluştur → Fiş Oluştur.
+  - GM 9.02.01 [3822]: "Eski fişler" menüsünün adı "Muhasebe Fişleri" oldu.
+- **Demirbaş:**
+  - 9.02.01 [3823]: zimmet devri.
+  - 9.02.04 [3959]: GM yetkisi olmadan kullanılabiliyor, ek harcama yetkisi, enflasyon filtresi.
+- **OctoPers 5 / OctoPlus 6 devri [3749]:** Server'da Yetkili Kişi → Şirket İşlemleri → Çalışma Yılları → Çalışma Yılı Oluştur.
