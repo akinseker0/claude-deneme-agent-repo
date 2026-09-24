@@ -30,9 +30,26 @@ Akış: **Teklif → Sipariş → İrsaliye → Fatura**. Her adım bir öncekin
 - Fatura ekranına menüden ulaşılır: **Satış Yönetimi → Faturalar** (Alış Faturası / Satış Faturası).
 - Sipariş ve irsaliye numarasının e-Faturada görünmesi için sipariş irsaliyeye, irsaliye faturaya aktarılmalı. Ayrıca e-Fatura Ayarları'nda **"Dış Modül Bağlantı Bilgilerini Gönder"** açık olmalı. Bilgiler faturanın "Bağlantılar" bölümünden gelir.
 - Gelen e-Fatura, sistemde kayıtlı sipariş veya irsaliye ile eşleştirilebilir (Bilgi Bankası 3713, 3715).
-- **Mal fazlası çalışma sistemi** destekleniyor (Bilgi Bankası 1060).
-- **Gelişmiş satış fiyat listeleri** tanımlanabiliyor (Bilgi Bankası 311). Veritabanında `STOK_FIYAT_LISTE` ve `STOK_FIYAT_LISTE_DT` tablolarında durur.
 - Fatura üzerinde formül tanımlama yapılabiliyor.
+
+### Gelişmiş satış fiyat listesi (Bilgi Bankası 311)
+Belirli tarihler arasında belirli stokların, belirli carilere özel fiyattan satılmasını sağlar (kampanya, bayi fiyatı). Veritabanında `STOK_FIYAT_LISTE` ve `STOK_FIYAT_LISTE_DT` tablolarında durur.
+- Gereksinim: sürüm **7.11.01+** ve lisansta **Stok-2** modülü.
+1. **Yetkili → Genel Ayarlar → Stok Ayarları → Genel** → **"Gelişmiş Satış Fiyatı Sistemini Kullan"** → kaydet.
+2. Stok modülünde **Satış Fiyat Liste Tanımları**, **Satış Fiyat Listesi** ve **Varsayılan Satış Fiyat Listeleri** menüleri açılır.
+3. Listeyi tek bir cariye ya da grup, ara grup, alt grup, özel kod, ülke veya il seçimine bağla.
+4. Soldaki menüden listeye stok ekle. "Filtreleme" ile listedeki stokları süz.
+- İlgili: "Satış Fiyat Listesi Oluşturma" (626), "Alış ve Satış Fiyatlarını Otomatik Oluşturma" (1276).
+
+### Mal fazlası çalışma sistemi (Bilgi Bankası 1060)
+"3 alana 2 bedava" gibi, faturada bedelsiz verilen ürünün alış fiyatından kâr olarak gösterilmesi.
+1. Fatura, Sipariş ve İrsaliye için **hareket bazında özel alan tanımı** aç (ör. adı "Mal Fazlası Adedi").
+2. Bu alanı ilgili modüllerin hareket satırına **yerleşim dizaynı** ile yerleştir.
+3. **Formül tanımla**. "Metin özelleştirme" ile "Özel İskonto" başlığının karşısına mal fazlası tutarını yazdır.
+4. Fatura girerken iskontolar alanında **mal fazlası tutarı** kutusunu işaretle. Giriş miktarı, birim fiyat ve mal fazlası adedini yaz. Tutar (adet × birim fiyat) otomatik hesaplanır ve **genel toplama yansımaz**.
+
+### Özel alan tanımları
+Stok, cari, fatura, sipariş ve irsaliyede kullanıcı tanımlı ek alanlar açılabiliyor (kart bazında veya hareket bazında, veri tipi seçilerek). Bunlar yerleşim dizaynıyla ekrana yerleştirilir, formüllerde ve entegrasyonlarda kullanılır. Örnekler: mal fazlası, e-Ticaret'te üye tipine göre ürün gösterimi (`sdk-ve-entegrasyon.md`).
 
 ### Fatura tasarımı (fatura dizayn)
 1. Alış veya satış faturası listesinden bir faturanın içine gir.
@@ -71,6 +88,9 @@ Hızlı Satış fiş tasarımına para üstü, kalan tutar ve ödeme toplamı ek
 
 ## Diğer
 
+- **Yönetici paneli (admin ekranı):** ERP açılışında gelen özet ekran. Gösterimi ve yetkisi `kurulum-ve-yonetim.md` dosyasında (Bilgi Bankası 3287).
+- **Maliyet muhasebesi:** Bilgi Bankası 3538 (henüz işlenmedi).
+- **Script paketleri:** ERP'ye hazır script yüklenebiliyor (`sdk-ve-entegrasyon.md`).
 - **Excel transfer:** cari/stok kartları Excel'den alınıp verilebilir (`kurulum-ve-yonetim.md`).
 - **Özel raporlar / SQL Monitör:** `veritabani-ve-sql.md`.
 - **Genel Muhasebe entegrasyonu:** `sdk-ve-entegrasyon.md`.

@@ -3,15 +3,30 @@
 ## Veritabanı motorları
 
 - **Firebird** (varsayılan, en yaygın). Kullanıcı `SYSDBA`, varsayılan parola `masterkey` (değiştirilmediyse). Port **3050**.
-- **MSSQL** destekleniyor. Firebird'den MSSQL'e geçiş "Veritabanı Transfer İşlemi" ile yapılır (MSSQL Server 2008+). Bazı bayiler, uzman desteğin yoksa Firebird'de kalmanı öneriyor.
+  - **Sürüm:** AKINSOFT, Wolvox için **Firebird 2.1.7 veya 2.5.4, 32 bit (win32)** öneriyor (Bilgi Bankası 460, 2856). İşletim sistemi 64 bit olsa bile AKINSOFT programları genelde 32 bit Firebird ile çalışır.
+  - Veritabanı dosyası ODS 11 yapısında (Firebird 2.x). **Firebird 3/4/5 bu dosyayı doğrudan açamaz**, "unsupported on-disk structure" hatası verir. Modern Firebird'de açmak için önce Firebird 2.5'in `gbak` aracıyla yedek (`.fbk`) alıp sonra yeni sürümde geri yüklemek gerekir. **Bunu sadece kopya üzerinde yap**, Wolvox'un kullandığı dosyayı asla yükseltme.
+  - **Unicode yok:** Latin dışı karakterler (Arapça, Kiril) `?` olur (Bilgi Bankası 3592). Türkçe karakterler için bağlantı charset'i büyük olasılıkla `WIN1254`. Bu doğrulanmadı; bozuk gelirse `NONE` ile dene.
+- **MSSQL** destekleniyor. Firebird'den MSSQL'e geçiş "Veritabanı Transfer İşlemi" ile yapılır (MSSQL Server 2008+, WebConnect varsa 2012+). Unicode ihtiyacı varsa MSSQL Unicode collation seçilir. Ayrıntılar `kurulum-ve-yonetim.md` dosyasında. Bazı bayiler, uzman desteğin yoksa Firebird'de kalmanı öneriyor.
+  - MSSQL tarafında Wolvox bir **CLR assembly** (`Wolvox7Udf_mssql`) kullanıyor. SQL Server 2017+'da `clr strict security` açık olduğu için "CREATE or ALTER ASSEMBLY" hatası çıkabilir (`sorun-giderme.md`).
 - Yedekleme tarafında MySQL de destekleniyor.
 - Firebird veritabanı dosyası, Firebird servisinin çalıştığı makinenin **yerel diskinde** olmalı. Ağ sürücüsü (paylaşımlı klasör) üzerinden çalışmaz.
 
-## Dosya yerleşimi (Firebird)
+## Dosya yerleşimi
 
-- Veritabanları program kurulum dizinindeki **`DATABASE_FB`** klasöründe durur (ör. `...\AKINSOFT\WOLVOX8\DATABASE_FB`).
-- Bilinen dosya adları: `wolvox.fdb` (sistem/Kontrol Paneli), `gmuhasebe.fdb` (Genel Muhasebe), `imuhasebe.fdb`, `ikaynak.fdb` (İnsan Kaynakları), `dosya.fdb`, ayrıca her şirketin kendi veritabanı dosyası.
-- Kesin dosya adı ve yolu için kullanıcının kendi `DATABASE_FB` klasörüne veya Kontrol Paneli'ndeki şirket/veritabanı ayarlarına bakılmalı. **Tahmin etme.**
+- **Firebird:** Program kurulum dizinindeki **`DATABASE_FB`** klasörü (ör. `C:\AKINSOFT\Wolvox9\DATABASE_FB`, eski sürümlerde `...\AKINSOFT\WOLVOX8\DATABASE_FB`).
+- **MSSQL:** **`DATABASE_MSSQL`** klasörü.
+- Bilinen dosya adları:
+
+| Dosya | İçerik |
+|---|---|
+| `wolvox.fdb` | Sistem / Kontrol Paneli veritabanı: şirket tanımları, kullanıcılar, yetkiler, lisans/client tanımları. **Hassas** |
+| `sirket.fdb` | Şirketin ticari verisi (cari, stok, fatura…). Geri yükleme ekranında bu adla listelenir, MSSQL karşılığı `sirket.mdb`. Kullanıcı kurulumunda iki dosyanın varlığı doğrulandı (2026-09) |
+| `gmuhasebe.fdb` | Genel Muhasebe |
+| `ikaynak.fdb` | İnsan Kaynakları |
+| `imuhasebe.fdb`, `dosya.fdb` | Kaynaklarda geçiyor, içeriği doğrulanmadı |
+
+- Birden fazla şirket veya çalışma yılında dosyaların klasörlere nasıl dağıldığı doğrulanmadı. Kesin yol için kullanıcının `DATABASE_FB` klasörüne veya Kontrol Paneli'ndeki şirket/veritabanı ayarlarına bak. **Tahmin etme.**
+- Wolvox 9 için hazır boş veritabanları ve etiket dizaynları (Argox raf etiketi vb.) Bilgi Bankası 3836'da indirilebiliyor. MRP II için ayrı veritabanı var.
 
 ## Anahtar yapısı: BLKODU
 
@@ -90,23 +105,27 @@ GROUP BY STOK_FIYAT_LISTE.FIYAT_TANIMI, STOK_FIYAT_LISTE_DT.STOK_TANIMI;
 2. "SQL Rapor Adı" alanına rapor adını yaz, SQL kodu alanına sorguyu yaz.
 3. **SQL Kodunu Çalıştır (F9)** ile test et. "SQL Kodu Başarıyla Çalıştı" mesajı gelmeli.
 4. **Kaydet**. Sonra "Seçili Raporu Düzenle / Sil / Aç" ile yönetilir. Açınca filtrelenebilir.
-- Özel raporda grid'e çift tıklayınca ilgili kartı açtırmak mümkün (Bilgi Bankası 739).
+- **Script sekmesi:** Özel rapor tanımında bir **Script** sekmesi var. Buradaki **"Çift Tıklama"** sayfasına kod yazılırsa, rapor grid'inde bir satıra çift tıklanınca ilgili kart açılır (ör. fatura numarasına çift tıklayınca o fatura). Kod önce seçili alanın boş olmadığını kontrol eder, sonra örneklerdeki "kartı aç" komutlarını çağırır (Bilgi Bankası 739). Komutların tam sözdizimi için makaleyi oku.
 
 ### Dış araçlarla okuma
-- **Excel + ODBC:** Firebird ODBC sürücüsü veya MSSQL ile Excel'den dinamik bağlantı kurulup raporlanabilir (Bilgi Bankası 704).
+- **Excel + ODBC** (Bilgi Bankası 704):
+  - Firebird: **Firebird ODBC sürücüsünü** kur, sonra **Denetim Masası → Yönetimsel Araçlar → Veri Kaynakları (ODBC)** üzerinden DSN ekle. Excel'den bu DSN ile bağlanıp kendi raporunu tasarla.
+  - SQL Server: **SQL Server Native Client** kur. Kurulumdan sonra WOLVOX ERP'yi kapatıp açınca raporlama kesintisiz çalışır.
 - **Genel Firebird araçları:** `isql` (Firebird ile gelir), FlameRobin, IBExpert, DBeaver.
-- **Python (Firebird):**
+- **Python (Firebird 2.5 dosyası):**
 
   ```python
-  # Firebird 3+ istemcisi için: pip install firebird-driver
-  # Firebird 2.5 için: pip install fdb (API benzer: fdb.connect(...))
-  from firebird.driver import connect
+  # pip install fdb   (Firebird 2.5 istemcisiyle çalışır)
+  # DİKKAT: Python'un bit sayısı fbclient.dll'in bit sayısıyla aynı olmalı.
+  # Wolvox 32 bit Firebird kurar; 64 bit Python kullanıyorsan 64 bit Firebird 2.5 istemcisi (fbclient.dll) gerekir.
+  import os
+  import fdb
 
-  con = connect(
-      "192.168.0.10/3050:C:/AKINSOFT/WOLVOX8/DATABASE_FB/<SIRKET_DOSYASI>.FDB",  # gerçek yolu doğrula
+  con = fdb.connect(
+      dsn="localhost:C:/wolvox-kopya/sirket.fdb",  # her zaman KOPYA dosya
       user="SYSDBA",
-      password="<parola>",   # koda gömme; ortam değişkeninden oku
-      charset="WIN1254",     # Türkçe karakterler bozuksa UTF8 dene
+      password=os.environ["WOLVOX_FB_PASSWORD"],     # koda gömme
+      charset="WIN1254",                             # bozuk gelirse "NONE" dene
   )
   cur = con.cursor()
   cur.execute("SELECT CARIKODU, TICARI_UNVANI FROM CARI")
@@ -115,11 +134,22 @@ GROUP BY STOK_FIYAT_LISTE.FIYAT_TANIMI, STOK_FIYAT_LISTE_DT.STOK_TANIMI;
   con.close()
   ```
 
-  Kurulu Firebird sürümü (2.5 / 3 / 4) ve karakter seti kurulumdan kuruluma değişebilir. Bağlanmadan önce kontrol et.
+  Firebird 3+ istemcisiyle çalışan `firebird-driver` paketi ODS 11 dosyasını doğrudan açamaz (yukarıdaki sürüm notuna bak).
+
+- **isql ile şema dökümü (Windows, kopya dosyada):**
+
+  ```bat
+  "C:\Program Files (x86)\Firebird\Firebird_2_5\bin\isql.exe" -user SYSDBA -password <parola> "localhost:C:\wolvox-kopya\sirket.fdb"
+  SQL> SHOW TABLES;
+  SQL> SHOW TABLE CARI;
+  ```
+
+  Tam DDL dökümü için: `isql -x -user SYSDBA -password <parola> "localhost:C:\wolvox-kopya\sirket.fdb" -o sirket_sema.sql`. Bu sadece yapıyı yazar, veriyi yazmaz. Firebird'ün kurulu olduğu yol makineye göre değişir.
 
 ## Güvenlik ve veri bütünlüğü kuralları
 
 1. **Doğrudan veritabanına yazma** (`INSERT`/`UPDATE`/`DELETE`). Program iş kuralları, bakiyeler, hareket bağlantıları ve BLKODU üretimi atlanır, veri tutarsızlaşır. Veri eklemek için **SDK**, **Excel Transfer** veya **Web Entegrasyon** kullan.
 2. Okuma sorgularını mümkünse **yedek veya kopya veritabanında** çalıştır. Canlıda uzun süren sorgular kullanıcıları yavaşlatır.
-3. Canlı Firebird dosyasını, servis çalışırken dosya olarak kopyalama. `gbak` veya Kontrol Paneli yedeklemesini kullan.
-4. Parolaları koda veya repoya yazma.
+3. Canlı Firebird dosyasını servis çalışırken dosya olarak kopyalama. Önce servisleri durdur (`kurulum-ve-yonetim.md`, Bilgi Bankası 942) ya da `gbak`/Kontrol Paneli yedeklemesini kullan.
+4. Parolaları koda veya repoya yazma. `.fdb`, `.fbk`, `.mdb` dosyalarını git'e ekleme (repodaki `.gitignore` bunları dışlıyor).
+5. `wolvox.fdb` içinde kullanıcı ve yetki bilgileri var. Şemasını çıkarmak serbest, **verisini okuma veya paylaşma**.

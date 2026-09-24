@@ -45,13 +45,14 @@ Agent'ın kalıcı hafızası yok, bilgisi `references/` dosyalarından gelir. Y
 - Ya da dosyaları kendin düzenle.
 - Değişiklikleri commit'le ve push'la. Diğer bilgisayarlarda `git pull` ile gelir.
 
-## Bilinen eksikler (ilk sürüm, 2026-09-24)
+## Bilinen eksikler (2026-09-24)
 
-İlk sürüm web arama sonuçlarından derlendi. Oluşturulduğu ortamın ağ politikası akinsoft.com.tr, bilgibankasi.akinsoft.net ve youtube.com'u doğrudan açmaya izin vermedi. Bu yüzden:
+Bilgi tabanı web arama sonuçlarından derlendi: önce genel aramalarla, sonra makale bazında hedefli aramalarla. Oluşturulduğu ortamın ağ politikası akinsoft.com.tr, bilgibankasi.akinsoft.net, akinsoft.net ve youtube.com'u doğrudan açmaya izin vermedi. Bu yüzden:
 
-- **Videolar izlenmedi.** Sadece başlıklar ve linkler var (`kaynaklar.md`).
-- **Ekran görüntüleri toplanamadı.**
-- **Bilgi Bankası makalelerinin çoğu tam okunmadı.** Arama özetleri işlendi, hangisinin ne kadar işlendiği `kaynaklar.md` içinde işaretli.
+- **Bilgi Bankası:** Yaklaşık 100 makale listelendi. Yarıdan fazlası "detaylı" veya "özet" düzeyinde işlendi, hiçbirinin tam metni okunmadı. Durumlar `kaynaklar.md` içinde.
 - **SDK PDF'i okunmadı.** Fonksiyon adları ve XML şemaları eksik.
+- **Videolar izlenmedi.** Sadece başlıklar ve linkler var.
+- **Ekran görüntüleri toplanamadı.**
+- **Veritabanı şeması:** Sadece 8 tablo doğrulandı. Kullanıcının `sirket.fdb` / `wolvox.fdb` kopyasından tam şema çıkarılmalı.
 
 Yerel VS Code oturumunda (ağ erişimi olan bir ortamda) agent'a şunu söyleyebilirsin: "`kaynaklar.md` içindeki 'başlık' durumundaki Bilgi Bankası makalelerini ve SDK PDF'ini oku, bilgi tabanını güncelle."

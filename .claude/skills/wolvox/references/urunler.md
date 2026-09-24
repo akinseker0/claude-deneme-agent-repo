@@ -13,7 +13,7 @@
 
 | Grup | Ürünler |
 |---|---|
-| Ticari: WOLVOX | WOLVOX ERP, Genel Muhasebe, İnsan Kaynakları, Hızlı Satış, Restoran, Otel, Servis, e-Defter, Web Entegrasyon, WebConnect, Demirbaş, Kontrol Paneli |
+| Ticari: WOLVOX | WOLVOX ERP, Genel Muhasebe, Beyanname, İnsan Kaynakları, Hızlı Satış, Restoran (ve Restoran Lite), Otel, Servis, e-Defter, Web Entegrasyon, WebConnect, Demirbaş, Kontrol Paneli, SDK, AKINSOFT Yedekleme, Barkod, Yazarkasa/Terazi |
 | Ticari: OctoPlus / Bulut | OctoPlus (paketli ön muhasebe; Paket 2 ve Paket 4), OctoCloud (bulut ön muhasebe, iOS/Android uygulaması var) |
 | e-Devlet / e-Dönüşüm | e-Fatura, e-Arşiv, e-İrsaliye, e-Müstahsil, e-SMM, e-Defter, e-Adisyon |
 | Web | AKINSOFT e-Ticaret (B2B/B2C, pazaryeri entegrasyonları) |
@@ -35,6 +35,8 @@ AKINSOFT her programa 3–4 harfli bir kod ve sürüm numarası veriyor. Sondaki
 | WHO9 | WOLVOX Otel |
 | VSV9 | WOLVOX Servis (teknik servis) |
 | WDF9 | WOLVOX e-Defter |
+| WOD9 | WOLVOX Demirbaş (amortisman) |
+| WOK8 | WOLVOX Kontrol Paneli (Wolvox 8 kodu) |
 | WWB9 | WOLVOX Web Entegrasyon (ERP ↔ e-Ticaret) |
 | IWM9 | WOLVOX WebConnect (ERP'ye web/mobil erişim) |
 | APD9 | WOLVOX Mobil Satış (Android) |

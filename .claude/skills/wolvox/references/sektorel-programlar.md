@@ -7,7 +7,10 @@
 - **Barkod:** AKINSOFT Barkod programıyla ürün grupları için barkod oluşturma ve etiket basımı.
 - **Terazi:** YNÖKC ve online terazi entegrasyonu. Desteklenen elektronik terazilere ürün gönderimi. Desteklenmeyen teraziler için **script** yazılarak dosya üretilebiliyor.
 - İade ve değişim kartı, ürün bekletme (bekleme listesi tüm kullanıcılarda görünür).
-- Hızlı Satış için ayrı e-Fatura/e-Arşiv sayaç tanımı var. Fiş tasarımına para üstü, kalan tutar ve ödeme toplamı eklenebiliyor (Bilgi Bankası 3543).
+- Hızlı Satış için ayrı e-Fatura/e-Arşiv sayaç tanımı var. Otomatik e-Fatura gönderimi yapılabiliyor.
+- **Fiş tasarımına para üstü, kalan tutar, ödeme toplamı eklemek** (Bilgi Bankası 3543): Tasarıma metin alanları eklenir ve her biri sırasıyla ilgili parametreye bağlanır. Fişin toplamlar bölümünde Toplam, İskonto, KDV ve Para Üstü gösterilir.
+- Yardım dosyası: Bilgi Bankası 1487 (Wolvox 8/9), yardım dokümanı 2418.
+- "Fiyat Gör" cihazlarıyla entegrasyon var (bayi kaynağı).
 
 ## WOLVOX Restoran (WOA9)
 
@@ -17,7 +20,18 @@
 - **QR menü** ve tablet menü (müşteri kendi siparişini verir).
 - Yemeksepeti, Getir, Trendyol (Yemek) entegrasyonu.
 - WOLVOX ERP ve WOLVOX Otel ile tam entegre: Cari, Kasa, Stok, Fatura, Banka ve Adisyon modüllerine doğrudan işler. e-Adisyon destekleniyor.
-- Kullanım: Bilgi Bankası 651. Eski yardım dokümanı PDF olarak bayi sitelerinde var.
+
+**Kullanım** (Bilgi Bankası 651):
+- **Masa açma ekranı:** hangi masaların boş olduğu ve hangilerinin kalkmak üzere olduğu buradan izlenir. Masa krokisi sistemi de var (2266).
+- **Ürünleri adisyona almak:** Ön muhasebedeki stoklar **Dizayn** butonuyla adisyon ekranına aktarılır. Dizayn modunda altta **Ürün Ekle** aktifleşir, ürünler tek tek seçilip departmanlara yerleştirilir. Ürün resmi adisyonda görünsün isteniyorsa stok kartına resim eklenir.
+- **Sipariş:** Masayı aç → **Ürün Ekle** → ürünleri seç.
+
+**Diğer özellikler:**
+- Satılan menüden hammadde düşümü için otomatik üretim (3680).
+- Şubelere tanım kopyalama (3657), otomatik e-Fatura gönderimi (2686).
+- **PDA:** Android kurulumu 3687; Android/iOS yardım dosyası 3841. Wolvox 8 Restaurant yardım dosyası da var.
+
+**Restoran ve Restoran Lite** (706): Restoran Lite daha sade bir paket. **Wolvox Veri Transferi** lisansıyla Yemeksepeti, Getir Yemek, Migros Yemek ve Trendyol Yemek entegrasyonu yapılabiliyor. MyFranchise, QR Menü ve MyRezzta sistemleriyle çalışıyor. Tam karşılaştırma tablosu makalede.
 
 ## WOLVOX Otel (WHO9)
 
@@ -26,8 +40,10 @@
 - **HotelRunner** entegrasyonu (channel manager üzerinden seyahat sitelerine bağlantı).
 - **AKBS / Jandarma** bilgi sistemlerine otomatik kimlik bildirimi.
 - Toplu e-posta/SMS. ERP ile tam entegre.
+- Hızlı rezervasyon ve check-in, tek tıkla grup girişi. Check-in tarihi bilgisayarın sistem tarihinden alınır.
+- Ayarlar: gün sonu sistemi, rezervasyon ekranında cari kayıt izni, mükerrer rezervasyon engelleme, yeni rezervasyonda varsayılan pansiyon ve oda tipi. Otel müşterilerinin ERP carileriyle nasıl eşleşeceği de ayarlanır.
 - Yardım dosyası: Bilgi Bankası 1433 (Wolvox 8), 3844 (güncel).
-- Konaklama vergisiyle fatura kesme script çalışması: Bilgi Bankası 3561.
+- **Konaklama vergisi:** Otel'de aktif etme 3549. ERP'de fatura kesme script paketi 3561 (`sdk-ve-entegrasyon.md`).
 
 ## WOLVOX İnsan Kaynakları (WIK9): bordro ve personel
 
@@ -37,7 +53,10 @@
 - İş başvuru ve iş ilanı kayıtları, ziyaretçi takibi.
 - **Web portalı:** Çalışanlar kullanıcı adı ve parolayla kendi bilgilerine erişir.
 - ERP (ön muhasebe), Genel Muhasebe ve beyanname modülleriyle entegre. Yetkilendirme sistemi var.
-- Yardım dosyası: Bilgi Bankası 1458.
+- **Puantaj:** Listedeki personele belirtilen ay için otomatik puantaj oluşturulur. Çalışılan gün, hafta sonu gibi bilgiler girilip Tamam'a basılır.
+- **Bordro hesaplama:** Listede **kırmızı** satırlar hesaplanmamış, **beyaz** satırlar hesaplanmış personeli gösterir. **"Belirtilen Ay İçin Otomatik Bordro Hesapla"** ile hesaplanır.
+- Personel kartında AGİ hesaplaması vardı. AGİ 2022'de kaldırıldığı için güncel sürümde karşılığını kontrol et.
+- Yardım dosyası: Bilgi Bankası 1458. Sürüm notu örneği: 1586.
 
 ## WOLVOX Servis (VSV9)
 
@@ -53,12 +72,18 @@
 
 ## WOLVOX Genel Muhasebe (WOG9) ve e-Defter (WDF9)
 
-- Resmi muhasebe (tek düzen hesap planı, fişler, mizan, beyannameler).
-- ERP'den anlık veya toplu fiş aktarımı (`sdk-ve-entegrasyon.md`).
-- e-Defter ile entegre. Yardım dosyası: Bilgi Bankası 1672 / 3851.
+- Bölümler: hesap planı, fiş işlemleri, tanımlamalar, dönem sonu işlemleri, defterler, mizan/raporlar, mali tablolar, bütçe.
+- **Fiş türleri:** Tahsil, Tediye, Mahsup, Açılış, Kapanış. Sık kullanılan fişler için **hızlı fiş girişi tanımları** yapılabiliyor.
+- **Hesap planı:** Tek Düzen Hesap Planı'na uygun alt hesaplar açılır. Hesap planı Excel'den aktarılabilir veya başka şirketten kopyalanabilir.
+- KDV tanımları yapılıp fiş girişinde KDV hesaplatılıp ayrıştırılabiliyor.
+- ERP ve İnsan Kaynakları ile entegre. ERP'den anlık veya toplu fiş aktarımı (`sdk-ve-entegrasyon.md`). WOLVOX Beyanname, Demirbaş ve e-Defter ile tamamlanıyor.
+- Yardım dosyası: Bilgi Bankası 1672 (Wolvox 8) / 3851. Beyanname yardım dosyası 1527 ve 578.
 
-## WOLVOX Demirbaş
-- Demirbaş/amortisman takibi. Yardım dosyası: Bilgi Bankası 1508.
+## WOLVOX Demirbaş (WOD9)
+- Demirbaş ve zimmet yönetimi, envanter ve amortisman takibi.
+- Sabit kıymet kaydına genel bilgiler, alış, satış ve amortisman bilgileri girilir, amortismanın yıl ve dönem değerleri hesaplatılır.
+- Zamanı gelen amortismanlar kontrol edilip muhasebeleştirilir. Hesaplanan değerler WOLVOX Genel Muhasebe'ye veya İşletme Defteri'ne entegre aktarılır.
+- Yardım dosyası: Bilgi Bankası 1508 (Wolvox 8), 3853 (güncel).
 
 ## OctoPlus ve OctoCloud
 
