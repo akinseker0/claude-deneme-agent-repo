@@ -7,6 +7,8 @@ description: AKINSOFT ve WOLVOX bilgi tabanı (WOLVOX ERP, Kontrol Paneli, Genel
 
 Bu skill `references/` klasöründeki konu dosyalarından oluşur. Soruya uyan dosyayı oku, gereksiz dosyaları yükleme.
 
+**Dosyaların yeri.** Bu skill'in klasörü: `${CLAUDE_SKILL_DIR}`. Aşağıdaki `references/...` ve `scripts/...` yolları bu klasöre göredir, çalışma dizinine göre değil. Skill başka bir projeden (`--add-dir` veya `~/.claude/skills/` bağlantısı) kullanılıyorsa Read ve Grep'e tam yolu ver. Yukarıdaki yol boş ya da `${...}` olarak görünüyorsa klasörü Glob ile bul (`**/skills/wolvox/SKILL.md`) veya `~/.claude/skills/wolvox/` konumuna bak.
+
 | Dosya | İçerik |
 |---|---|
 | `references/urunler.md` | Şirket bilgisi, ürün ailesi, program kodları (WOO9, WOG9…), sürüm geçmişi (7/8/9/26), lisans modeli |
@@ -24,19 +26,21 @@ Bu skill `references/` klasöründeki konu dosyalarından oluşur. Soruya uyan d
 | `references/video-ozetleri.md` | **Eğitim videolarının altyazılarından çıkarılmış özetler**: Kontrol Paneli, ERP modülleri, Hızlı Satış, Restoran, yazarkasa/terazi entegrasyonları, İK, Otel, MRP II, Mobil Satış, WolvoxCloud (104 dakikalık resmi eğitim dahil). Kaynak `{YouTube ID}`. Önce `Grep` ile ara |
 | `references/kaynaklar.md` | Kaynak listesi, PDF'ler, bayi kaynakları ve işlenme durumu |
 
-**Tam metin aracı.** Özette ayrıntı yoksa makalenin tamamını oku (ağ erişimi gerekir, metin `.cache/` altına iner ve repoya girmez):
+**Tam metin aracı** (`scripts/bilgibankasi.py`, yalnız Python 3 standart kütüphanesi). Özette ayrıntı yoksa makalenin tamamını oku. Ağ erişimi gerekir. Metin repo kökündeki `.cache/` klasörüne (skill kopyalanarak kurulduysa `~/.cache/`) iner ve repoya girmez:
 
 ```bash
-python tools/bilgibankasi.py baslik "devir"      # başlıkta ara (dizinden, ağ gerekmez)
-python tools/bilgibankasi.py oku 3845            # tek makale (yoksa indirir)
-python tools/bilgibankasi.py indir               # tüm makaleleri önbelleğe indir (~15 dk)
-python tools/bilgibankasi.py ara "GETVALUE"      # önbellekteki tam metinlerde regex ara
+python "${CLAUDE_SKILL_DIR}/scripts/bilgibankasi.py" baslik "devir"   # başlıkta ara (dizinden, ağ gerekmez)
+python "${CLAUDE_SKILL_DIR}/scripts/bilgibankasi.py" oku 3845         # tek makale (yoksa indirir)
+python "${CLAUDE_SKILL_DIR}/scripts/bilgibankasi.py" indir            # tüm makaleleri önbelleğe indir (~15 dk)
+python "${CLAUDE_SKILL_DIR}/scripts/bilgibankasi.py" ara "GETVALUE"   # önbellekteki tam metinlerde regex ara
 ```
+
+Linux/macOS'ta `python` yoksa `python3` kullan. Bu repo açıkken `python tools/bilgibankasi.py ...` kısayolu da aynı işi yapar.
 
 ## Kullanım kuralları
 
 1. **Sürümü netleştir.** Menü yolları Wolvox 7, 8, 9 ve 26 arasında farklılaşabilir (26.02.01'den itibaren program dosyası `werp.exe`; öncesinde `werp9.exe`). Kullanıcının sürümünü ve veritabanını (Firebird/MSSQL) bilmeden kesin menü yolu verme.
-2. **Önce özetlere bak.** Konu için `Grep` ile `bilgibankasi-ozetleri.md` ve diğer referans dosyalarını ara. Gerekirse `tools/bilgibankasi.py oku <no>` ile tam metni aç.
+2. **Önce özetlere bak.** Konu için `Grep` ile `bilgibankasi-ozetleri.md` ve diğer referans dosyalarını ara. Gerekirse `scripts/bilgibankasi.py oku <no>` ile tam metni aç.
 3. **Kaynağı belirt.** Yanıtta dayandığın Bilgi Bankası makale numarasını veya kaynağı söyle, kullanıcı doğrulayabilsin.
 4. **Bilmediğini uydurma.** Bu tabanda olmayan bilgi (SDK fonksiyon adları, doğrulanmamış tablo adları, paket içerikleri) için web araştırması yap (bilgibankasi.akinsoft.net öncelikli) veya bilmediğini açıkça söyle.
 5. **Riskli işlemlerde önce yedek.** Devir, geri yükleme, Excel toplu aktarım, veritabanı transferi ve sürüm güncellemesinden önce yedek almayı hatırlat.
