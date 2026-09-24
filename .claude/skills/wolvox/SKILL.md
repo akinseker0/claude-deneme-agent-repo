@@ -7,7 +7,7 @@ description: AKINSOFT ve WOLVOX bilgi tabanı (WOLVOX ERP, Kontrol Paneli, Genel
 
 Bu skill `references/` klasöründeki konu dosyalarından oluşur. Soruya uyan dosyayı oku, gereksiz dosyaları yükleme.
 
-**Dosyaların yeri.** Bu skill'in klasörü: `${CLAUDE_SKILL_DIR}`. Aşağıdaki `references/...` ve `scripts/...` yolları bu klasöre göredir, çalışma dizinine göre değil. Skill başka bir projeden (`--add-dir` veya `~/.claude/skills/` bağlantısı) kullanılıyorsa Read ve Grep'e tam yolu ver. Yukarıdaki yol boş ya da `${...}` olarak görünüyorsa klasörü Glob ile bul (`**/skills/wolvox/SKILL.md`) veya `~/.claude/skills/wolvox/` konumuna bak.
+**Dosyaların yeri.** Bu skill'in klasörü: `${CLAUDE_SKILL_DIR}`. Aşağıdaki `references/...` ve `scripts/...` yolları bu klasöre göredir, çalışma dizinine göre değil. Skill başka bir projeden (`--add-dir`, `~/.claude/skills/` bağlantısı veya plugin) kullanılıyorsa Read ve Grep'e tam yolu ver. Yukarıdaki yol boş ya da `${...}` olarak görünüyorsa klasörü Glob ile bul (`**/skills/wolvox/SKILL.md`) veya `~/.claude/skills/wolvox/` ve `~/.claude/plugins/cache/wolvox-uzmani/` konumlarına bak.
 
 | Dosya | İçerik |
 |---|---|

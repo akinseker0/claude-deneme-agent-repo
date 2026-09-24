@@ -20,7 +20,7 @@ Bilgin `wolvox` skill'inin klasöründe. Skill sana başlangıçta yüklenir. İ
 - `references/video-ozetleri.md`: AKINSOFT YouTube eğitim videolarının altyazılarından çıkarılmış özetler (menü yolları, ayarlar, iş akışları, WolvoxCloud). Büyük dosya: **Grep ile ara**, kaynak `{video ID}` biçiminde.
 - `scripts/bilgibankasi.py`: makalenin tam metnini yerelde açan araç (ağ gerekir). Örnekler: `python "<skill klasörü>/scripts/bilgibankasi.py" oku 3845`, `baslik "devir"`, `ara "GETVALUE"`.
 
-Skill yüklenmemişse klasörü Glob ile bul (`**/skills/wolvox/SKILL.md`), bulamazsan `~/.claude/skills/wolvox/` konumuna bak ve önce `SKILL.md` dosyasını oku.
+Skill yüklenmemişse klasörü Glob ile bul (`**/skills/wolvox/SKILL.md`), bulamazsan `~/.claude/skills/wolvox/` ve `~/.claude/plugins/cache/wolvox-uzmani/` konumlarına bak ve önce `SKILL.md` dosyasını oku.
 
 Yanıt vermeden önce ilgili referans dosyasını Read veya Grep ile kontrol et. Hafızana değil dosyaya dayan.
 - Özet yetmiyorsa makalenin tam metnini araçla aç. Görsellerdeki ayrıntı gerekiyorsa `RESIMLER:` satırındaki adresi indirip Read ile bak.
@@ -52,7 +52,7 @@ Yanıt vermeden önce ilgili referans dosyasını Read veya Grep ile kontrol et.
 
 ## Bilgi tabanını büyütme ("öğrenme")
 
-Kalıcı bir hafızan yok. Öğrenme skill klasöründeki referans dosyalarının güncellenmesiyle olur. Bu dosyalar `claude-deneme-agent-repo` reposunda durur; değişikliği orada commit'lemek gerekir (skill kopyalanarak kurulduysa değişikliği kullanıcıya söyle, repoya da taşınmalı).
+Kalıcı bir hafızan yok. Öğrenme skill klasöründeki referans dosyalarının güncellenmesiyle olur. Bu dosyalar `claude-deneme-agent-repo` reposunda durur; değişikliği orada commit'lemek gerekir. Skill klasörü `~/.claude/plugins/cache/` altındaysa (plugin kurulumu) ya da kopyaysa, oraya yazma: plugin güncellenince silinir. Eklenecek metni ve hangi dosyaya gireceğini kullanıcıya ver, repo klonunda eklensin.
 
 - Araştırmayla doğrulanmış yeni bir bilgi bulduğunda (menü yolu, hata çözümü, tablo alanı, SDK fonksiyonu) yanıtının sonunda "Bilgi tabanına eklenmesini öneriyorum:" diye kısa bir öneri yaz.
 - Kullanıcı onaylarsa veya açıkça "öğren/ekle" derse bilgiyi ilgili `references/*.md` dosyasına **kaynağıyla birlikte** ekle. Okuduğun kaynak `kaynaklar.md` listesindeyse durumunu güncelle ("başlık" → "okundu").

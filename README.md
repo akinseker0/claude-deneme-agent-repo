@@ -5,6 +5,8 @@ Bu repo, AKINSOFT yazılımları ve WOLVOX ERP konusunda uzmanlaşmış bir **Cl
 ## İçerik
 
 ```
+.claude-plugin/
+└── marketplace.json              # Plugin olarak kurulum için (kaynak: .claude klasörü)
 .claude/
 ├── agents/
 │   └── wolvox-uzmani.md          # Agent tanımı (rol, çalışma yöntemi, güvenlik kuralları)
@@ -36,6 +38,32 @@ Agent, bilgi tabanını `skills: [wolvox]` ile başlangıçta yükler ve dosyala
 
 ## Kullanım
 
+### En kolayı: plugin olarak tek komutla kurmak
+
+Klonlamaya gerek yok. Herhangi bir terminalde (Claude Code kurulu olmalı):
+
+```bash
+claude plugin marketplace add akinseker0/claude-deneme-agent-repo
+claude plugin install wolvox@wolvox-uzmani
+```
+
+Aynı şey Claude Code oturumunun içinden de yapılabilir:
+
+```
+/plugin marketplace add akinseker0/claude-deneme-agent-repo
+/plugin install wolvox@wolvox-uzmani
+```
+
+Kurulum kullanıcı düzeyindedir, yani bu bilgisayardaki tüm projelerde ve VS Code'daki oturumlarda geçerlidir. Claude Code'u (veya VS Code'u) yeniden başlat. Agent `wolvox:wolvox-uzmani`, bilgi tabanı `/wolvox:wolvox` adıyla görünür.
+
+- **Güncelleme:** Claude Code repodaki yeni commit'leri kendisi kontrol edip kurar. Hemen almak için: `claude plugin marketplace update wolvox-uzmani`.
+- **Kaldırma:** `claude plugin uninstall wolvox@wolvox-uzmani`.
+- **npm gerekmez.** Claude Code agent ve skill'leri npm paketi olarak değil, plugin olarak dağıtır. Plugin GitHub'dan doğrudan indirilir.
+- **Not:** Plugin salt okunur bir kopyadır. Agent'ın "bilgi tabanına ekle" dediği yeni bilgiler kalıcı olsun istiyorsan repoyu klonlayıp aşağıdaki 1. yöntemle çalış ve değişikliği commit'le.
+- Bu repoyu açtığında hem proje agent'ı (`wolvox-uzmani`) hem plugin agent'ı (`wolvox:wolvox-uzmani`) listede görünür. İkisi aynı dosyadır, hangisi çağrılırsa çağrılsın aynı sonucu verir.
+
+### Diğer yollar (repoyu klonlayarak)
+
 Önce repoyu bilgisayarına klonla (Claude Code CLI veya VS Code eklentisi kurulu olmalı):
 
 ```bash
@@ -49,11 +77,11 @@ Agent'ı nasıl çağırırsın (her yöntemde aynı):
 - Veya açıkça çağır: "wolvox-uzmani agent'ını kullanarak şu hatayı çöz: …"
 - `/agents` listesinde `wolvox-uzmani`, `/wolvox` yazınca bilgi tabanı skill'i görünmeli.
 
-### 1. Bu klasörü açarak
+#### 1. Bu klasörü açarak
 
 Klasörü VS Code'da aç (veya bu klasörde `claude` çalıştır). Agent ve skill kendiliğinden yüklenir.
 
-### 2. Başka bir projede, o oturumluk: `--add-dir`
+#### 2. Başka bir projede, o oturumluk: `--add-dir`
 
 ```bash
 cd C:\projeler\baska-proje
@@ -62,9 +90,9 @@ claude --add-dir C:\projeler\claude-deneme-agent-repo
 
 Açık bir oturumda `/add-dir C:\projeler\claude-deneme-agent-repo` de olur. Eklenen klasörün `.claude/agents` ve `.claude/skills` içerikleri yüklenir. Agent dosyasını değiştirirsen oturumu yeniden başlat. `settings.json` içindeki `permissions.additionalDirectories` yalnız dosya izni verir, agent veya skill yüklemez.
 
-### 3. Tüm projelerde kalıcı: `~/.claude` altına bağlantı
+#### 3. Tüm projelerde kalıcı: `~/.claude` altına bağlantı
 
-Kopyalamak yerine **bağlantı** kur. Böylece `git pull` ile gelen güncellemeler her projede görünür, agent'ın öğrendikleri de repoya yazılır.
+Plugin yerine bunu seçersen agent'ın öğrendikleri doğrudan klondaki dosyalara yazılır. Kopyalamak yerine **bağlantı** kur. Böylece `git pull` ile gelen güncellemeler her projede görünür, agent'ın öğrendikleri de repoya yazılır.
 
 Windows (PowerShell):
 
@@ -86,13 +114,11 @@ ln -s "$REPO/.claude/skills/wolvox" ~/.claude/skills/wolvox
 ln -s "$REPO/.claude/agents/wolvox-uzmani.md" ~/.claude/agents/wolvox-uzmani.md
 ```
 
-Sonra herhangi bir projede Claude Code'u yeniden başlat. Bu repoyu açtığında aynı adlı proje agent'ı öncelik alır, çakışma olmaz. Agent veya skill görünmüyorsa bağlantı yerine klasörü kopyalamayı dene.
+Sonra herhangi bir projede Claude Code'u yeniden başlat. Bu repoyu açtığında aynı adlı proje agent'ı öncelik alır, çakışma olmaz. Plugin'i de kurduysan ikisinden birini kullan. Agent veya skill görünmüyorsa bağlantı yerine klasörü kopyalamayı dene.
 
-### 4. Bulut oturumları (claude.ai/code)
+#### 4. Bulut oturumları (claude.ai/code)
 
 Bulut oturumları bilgisayarındaki `~/.claude` klasörünü okumaz. Oturumu bu repo seçili olarak başlat; agent ve skill repodan yüklenir. Başka bir repoda bulut oturumu açacaksan ya `.claude/agents/wolvox-uzmani.md` ve `.claude/skills/wolvox/` klasörünü o repoya da koy, ya da skill'i claude.ai hesabının skill ayarlarından etkinleştir (bu yol yalnız skill'i getirir, agent'ı getirmez).
-
-Daha sonra istenirse bu repo bir plugin marketplace'e de çevrilebilir; o zaman `/plugin install` ile kurulup güncellenir.
 
 ## Bilgi tabanı nasıl büyür?
 
@@ -114,7 +140,7 @@ python tools/bilgibankasi.py ara "sysas.ask"     # tam metinlerde ara
 python tools/bilgibankasi.py dizin               # yeni makaleler için dizini yenile
 ```
 
-`.cache/` klasörü `.gitignore`'da, commit'lenmez. Skill `~/.claude/skills/` altına bağlantıyla kurulduysa önbellek yine bu repodaki `.cache/` klasörüne iner; kopyalanarak kurulduysa `~/.cache/bilgibankasi/` altına iner.
+`.cache/` klasörü `.gitignore`'da, commit'lenmez. Skill `~/.claude/skills/` altına bağlantıyla kurulduysa önbellek yine bu repodaki `.cache/` klasörüne iner; kopyalanarak kurulduysa `~/.cache/bilgibankasi/`, plugin olarak kurulduysa `~/.claude/plugins/cache/wolvox-uzmani/wolvox/.cache/` altına iner.
 
 ## Durum ve bilinen eksikler (2026-09-24)
 

@@ -1,0 +1,24 @@
+{
+  "name": "wolvox-uzmani",
+  "owner": {
+    "name": "akinseker0",
+    "url": "https://github.com/akinseker0"
+  },
+  "description": "AKINSOFT / WOLVOX uzman agent'ı için Claude Code plugin kaynağı. Topluluk projesidir, resmi AKINSOFT ürünü değildir.",
+  "plugins": [
+    {
+      "name": "wolvox",
+      "source": "./.claude",
+      "strict": false,
+      "displayName": "WOLVOX uzmanı",
+      "description": "AKINSOFT ve WOLVOX ERP uzman agent'ı (wolvox-uzmani) ve bilgi tabanı: Bilgi Bankası ve eğitim videosu özetleri, menü yolları, Firebird/MSSQL, SDK, e-Dönüşüm.",
+      "author": {
+        "name": "akinseker0",
+        "url": "https://github.com/akinseker0"
+      },
+      "homepage": "https://github.com/akinseker0/claude-deneme-agent-repo",
+      "repository": "https://github.com/akinseker0/claude-deneme-agent-repo",
+      "keywords": ["akinsoft", "wolvox", "erp", "firebird", "turkce"]
+    }
+  ]
+}
