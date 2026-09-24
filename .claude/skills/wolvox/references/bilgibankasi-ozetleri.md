@@ -271,3 +271,327 @@ Menü yolları Wolvox 8/9 masaüstü içindir. WOLVOX 26/WolvoxCloud farkları i
 - [1321] "Disable Task Manager" hatası: `reg add HKCU\...\Policies\System /v DisableTaskMgr /t REG_DWORD /d 0 /f`.
 - [1789] / [1792] URL log ve Steam otomatik giriş sorunları: KB3033929 veya Windows 10 1809 güncellemesi.
 - [265] Caller ID: test programı açıkken Caller ID Server numarayı alamaz, birini kapat.
+
+## Genel bilgiler (kurulum, veritabanı, özelleştirme, ipuçları)
+
+### Firebird ve veritabanı
+- **[434] "unsupported on-disk structure for file SIRKET.FDB; found 11.2, support 11.1":** Program **Firebird 2.5.6 (32 bit)** ister. Kurulum eskiden 2.1.3 kuruyordu; bilgisayar değişince yanlış sürüm kalabiliyor. 2.1.3'ü kaldır, `Program Files\Firebird` klasörünü sil, **2.5.6 32 bit** kur. (ODS 11.2 = Firebird 2.5.)
+- **[110]** Aynı hata DBUpdate sırasında da çıkar. Firebird Guardian ve Server servislerini durdur, kaldır, AKINSOFT sitesindeki Firebird'ü kur.
+- **[569] Firebird 2.1'den 2.5'e geçiş:** Yedek al → programları ve Kontrol Paneli'ni kapat → Denetim Masası → Firebird 2.1 Server Manager → Stop → kaldır ("Yes to all") → klasörü sil → 2.5 kur.
+- **[805] "Cannot attach to services manager":** Firebird Server Manager çalışmıyor. Denetim Masası → Firebird Server Manager → **Start**.
+- **[340] "Bad parameters on attach or create database, character set WIN1254 is not defined":** Firebird'ü kaldırıp yeniden kur. Bu hata, veritabanlarının **WIN1254** karakter setiyle çalıştığını da doğruluyor.
+- **[518] "Invalid request BLR at offset 56, function UPPERTR is not defined":** Program dizinindeki `Utils` klasöründen `WolvoxUDF7.dll` (ve `Wolvox7Udf_mssql.dll`) dosyalarını `Program Files\Firebird\Firebird_2_5\UDF` klasörüne kopyala. **Wolvox, Firebird'de özel UDF fonksiyonları kullanıyor** (ör. `UPPERTR`). Dış araçla sorgu yazarken bu fonksiyonlar UDF yüklü değilse çalışmaz.
+- **[445] Firebird portunu değiştirmek** (ör. modem 3050'yi kullanıyorsa):
+  1. `C:\Windows\System32\drivers\etc\services` dosyasına `gds_db 3051/tcp` ve `gds_db 3051/udp` satırlarını ekle.
+  2. `firebird.conf` içinde portu 3051 yap.
+  3. **Sunucuda ve bütün istemcilerde** yap, sonra yeniden başlat.
+- **[1506] / [3517] IB Onarım:**
+  - Bozulan Firebird/Interbase veritabanını onaran AKINSOFT aracı. akinsoft.com.tr'de "Onarım" diye aranır.
+  - Önce yedek al, bağlı kullanıcı olmasın. Veritabanını seç → Onar → SYSDBA parolası.
+  - Düzelmiyorsa genel merkez veya çözüm ortağı onarır. Bozulmanın tipik sebebi elektrik kesintisi veya ani kapanma.
+- **[2025] "SIRKETKODU widestring" hatası** (Unicode uyumsuzluğu): `KontrolPaneli\Settings\ini\Kontrolpanel.ini` içindeki `DB_UNICODE=True` değerini `False` yap, ya da SIRKET veritabanını Unicode olarak yeniden oluştur.
+- **[1916] Kontrol Paneli her program açılışında yeniden başlıyor:**
+  - Güvenlik duvarı, Windows Defender ve antivirüste AKINSOFT exe'lerine izin ver.
+  - `AKINSOFT` klasörüne izin ver, exe'leri yönetici olarak çalıştır, uyumluluk modunu doğru seç.
+  - MSSQL'de instance bilgisini doğrula.
+  - Firebird'de giriş ekranındaki **sunucu IP'si uzaktan bağlanılmıyorsa boş olmalı**.
+- **[1531] "Address already in use (#10048 in Bind)":** Port çakışması. Programın çalışma portunu değiştir.
+- **[3991] Kontrol Paneli sürüm güncelleme hatası (kod 1103):** Kontrol Paneli klasöründe `wupdater` ve `wupdater9` olmalı. `wupdater9` yoksa `wupdater` dosyasını kopyalayıp bu adı ver.
+- **[3865] XML sabitleri** (kesinti kodları, birim kodları vb.): Güncel XML dosyası `C:\AKINSOFT\Wolvox8|9\CommonData` altındakiyle değiştirilerek sürüm beklemeden güncellenebilir.
+
+### MSSQL
+- **[165] Statik IP üzerinden MSSQL bağlantısı:** SQL Server Configuration Manager → Network Configuration → "Protocols for <INSTANCE>" → TCP/IP **Enabled** → IP Addresses bölümünde tüm IP'ler için TCP Dynamic Ports = 0 ve kendi belirlediğin TCP port (güvenlik için 1433 dışı önerilir) → servisi yeniden başlat.
+- **[166] MSSQL güvenlik duvarı:** `sqlbrowser.exe` ve `...\MSSQL10_50.<INSTANCE>\MSSQL\Binn\sqlservr.exe` programlarını güvenlik duvarı istisnalarına ekle.
+- **[3710] Windows güvenlik duvarı port kuralları:**
+  - Gelen ve giden kural ayrı ayrı tanımlanır, **sunucuda ve her istemcide**.
+  - Firebird için **3050, 3055, 3056**. MSSQL için **3055, 3056, 1433, 1434**. Kural adı "AKINSOFT".
+  - Antivirüste de izin gerekir.
+- **[164] "Socket Error #10054 Connection reset by peer":** **SQL Server Browser** servisi durdurulmuş. Configuration Manager veya Hizmetler'den başlat.
+- **[567] MSSQL istemcisinde "Kullanıcı adı veya parolası yanlış":** Hem SSMS'te hem Kontrol Paneli'nde sunucu adını `SUNUCU\INSTANCE,port` gibi port ekleyerek gir (makalede `:port` biçimi gösteriliyor).
+- **[468] "Bağlantı diğer bir hstmt sonuçları ile meşgul"** (istemcide rapor alırken): İstemciye sunucu sürümüyle uyumlu **SQL Server Native Client** kur.
+- **[3434] "Login failed for user sa":**
+  1. SSMS → Security → sa → Status → Login **Enabled**.
+  2. Sunucu Properties → Security → **SQL Server and Windows Authentication mode**.
+  3. Servisi yeniden başlat.
+- **[398]** Tarih dönüştürme hatası `sa` oturumunun dilinin Türkçe olmasından kaynaklanır, English yap (bkz. 738).
+- **[3433] Unicode veritabanı** (Latin dışı alfabeler):
+  - SQL Server **İngilizce** kurulur, instance collation `..._CI_AI` olur (ör. `Latin1_General_100_CI_AI`).
+  - Kontrol Paneli açılışında Unicode seçilir.
+  - SQL 2019 32 bit desteklemez.
+- **[1816] / [2220]** SQL Server 2012 ve 2019 Express kurulum adımları: SSMS ayrı kurulur, en az 6.5 GB boş alan gerekir.
+- **[260]** İngilizce olmayan Windows'a SQL 2008 kurarken "Performance counter registry hive consistency" hatası Perflib kayıt değerleri düzeltilerek çözülür.
+
+### Kurulum, sürüm, destek
+- **[221] / [312] / [3655] / [3832] Installer:**
+  - Wolvox programlarını indirip kuran ve günceleyen araç. İlk kez sitedeki "Kur Dosyası" ile kurulur.
+  - **Kurulum şekli** seçilir: **Sunucu** ve **Sunucu-İstemci** Kontrol Paneli ile programları kurar, **İstemci** sadece programları kurar.
+  - Firebird kurulumunda yetkili şifresi başlangıçta `masterkey`.
+- **[351] Güncellemeden önce iki aşamalı yedek:**
+  1. Kontrol Paneli → Veritabanı İşlemleri → Yedekleme → Şimdi Yedekle.
+  2. Programlar kapalıyken bütün `AKINSOFT` klasörünü başka yere kopyala.
+  - Kontrol Paneli **Yetkili → Programdan Çık** ile kapatılmalı, yoksa güncellenmez ve sürüm uyuşmazlığı çıkar.
+- **[1346] Sektörel programlarda güncelleme:** `AKINSOFT` ve `AS_YEDEK` klasörlerini yedekle → Yardım → **Program Sürümünü Kontrol Et** → Güncelle → **aynı dizine** kur.
+- **[1145] / [3831] Upgrade:**
+  - **Kontrol Paneli'nde hiçbir şirket (demo dahil) oluşturmadan** upgrade yap. "Demo şirketi oluşturulsun mu?" sorusuna **İptal** de.
+  - Kaynak program klasörünü önceden yedekle.
+- **[3343] / [3610] / [3651] Müşteri paneli:**
+  - musteri.akinsoft.net'te lisans no, telefon veya e-posta ile **yeni güvenlik kodu** alınır. Lisanslamada bu kod kullanılır.
+  - "Ticket için tıklayınız" ile destek kaydı (LimonDesk) açılır. Ekler: zip, 7z, rar, jpg, png, gif, pdf.
+- **[158]** Eski sürümler müşteri girişi → "Eski Sürümler" bölümünde.
+
+### Yetki, güvenlik, KVKK
+- **[253] Ek yetkilerle cari görünürlüğünü kısıtlamak:**
+  - Kontrol Paneli → Kullanıcı Yetkilendirme → personel ve şirket → **Ek Yetkiler 1 → Cari** sekmesine SQL koşulu yazılır.
+  - Örnek: `COALESCE(CARI.GRUBU,'') NOT IN ('X') AND COALESCE(CARI.ARA_GRUBU,'') NOT IN ('Z')`.
+  - Ek yetkiler SQL `WHERE` parçasıdır.
+- **[1436] Wolvox 8 ile gelen bazı yenilikler:**
+  - Ek Yetkiler 2'de "farklı kullanıcıların kaydettiği veya değiştirdiği kayıtları değiştirme" yetkileri
+  - Genel arama, raporlarda Ctrl+C, TC ve VKN ile hızlı arama, özel raporlara sanal alan ve renklendirme
+- **[3009] KVKK anonimleştirme:**
+  - Belirtilen tarihten eski kayıtlarda kişisel veriler anonimleştirilir.
+  - Asgari sürümler: ERP (Restoran 8.15.07, Otel 8.08.02), Genel Muhasebe 8.04.02, İK 8.13.02.
+- **[1932] Yönetici ekranı:**
+  - Yetki: Kontrol Paneli → Kullanıcı Yetkilendirme → **ERP → Genel → Yönetici Ekranı**.
+  - Açılışta gösterim: Yetkili → Özel Tanımlar → Özel Ayarlar → Genel Ayarlar → **"Açılışta Yönetici Ekranını Göster"**.
+
+### Özelleştirme: script ve rapor tasarımı (geliştiriciler için)
+- **[1716] Pascal Form Script:**
+  - ERP, Genel Muhasebe ve İK'da her pencereye olay tabanlı Pascal Script kodu eklenebilir.
+  - Pencere açıkken **Yetkili → Tanımlar → Aktif Form Script Tasarımı**:
+    - solda bileşen ağacı ("Görsel Seçim" ile formdan bileşen seçilir)
+    - **Event Script** (her olay için "İşlem Öncesi" ve "İşlem Sonrası")
+    - **Genel Script** (ortak değişken ve procedure/function)
+    - "Yazılan Script Olayları", "Full Script"
+  - **Shift+Space** ile kullanılabilir sabit, değişken ve fonksiyon listesi açılır. **Ctrl+F9** "Scripti Hazırla" hata kontrolü yapar.
+  - Scriptler **XML olarak dışarı/içeri aktarılır**. İçeri aktarma mevcut scriptleri siler.
+- **Script paketleri (`.asspack`)** ([1905], [3561]):
+  - Fatura penceresinde Aktif Form Script → **Paket Yükle** → parametreleri bir kez gir.
+  - Örnekler: ÜTS/BKST/İTS için palet/koli karekod okuma (`Fatura_PaletKoliKarekodBarkodOkuma.asspack`), carinin sevk adresini faturaya otomatik ekleme (`Fatura_SevkAdresiSecimi.asspack`), konaklama vergisi.
+- **[739] Özel raporda çift tıklama scripti.** Özel Rapor → Script → Çift Tıklama:
+  ```pascal
+  begin
+    if SelectedField <> Nil then
+    begin
+      if SelectedField.FieldName = 'BLKODU' then
+        OpenOldInvoice(DataSet.FieldByName('BLKODU').AsInteger, '', 0);
+    end;
+  end;
+  ```
+  - Diğer açma komutları:
+    - `OpenOldDispatch(blkodu,'',0)`: irsaliye
+    - `OpenOldOffer(...)`: teklif
+    - `OpenOldOrder(...)`: sipariş
+    - `OpenForm('YCariTanimlari1', BLCRKODU)`: cari kartı
+    - `OpenForm('YStokTanimlari1', BLSTKODU)`: stok kartı
+- **İki rapor tasarım motoru var:**
+  - **ARP tasarımları** (QuickReport tarzı; `QRBand`, "Report2" sayfası; [466]). Standart tablo/alan listesinde olmayan alanlar **Expression** ile gösterilir, ör. `IF(ISK_ORAN_1=0,' ')`, karekodda `alan1+linebreak+alan2` ([1885]).
+    - Alt toplamları satırların bittiği yerde göstermek için "Detay Özeti = Var" ile **Summary Band** eklenir ([1423]).
+    - Yazıcıya gitmeyen alan için "Yazdırma" özelliği kullanılır ([30]).
+  - **FastReport** (yeni tasarımlar; [4006]): Data → **AKINSOFT Query** nesnesi eklenir, SQL yazılır, `:PARAM` ile master tabloya bağlanır. Örnek:
+    ```sql
+    SELECT C.* FROM STOK_TEDARIKCI ST
+    JOIN CARI C ON (C.BLKODU = ST.BLCRKODU)
+    WHERE BLMASKODU = :PARAM   -- master: STOKETIKET, PARAM = STOK.BLKODU (INTEGER)
+    ```
+    Master ve Params, Nesne Yöneticisi'nden ayarlanır. Parametre olarak sayısal alan bağlanmalı, string yavaşlatır.
+- **[1887] Stok kartı açıklamasını faturaya yazdırmak:** Özel Ayarlar → Fatura Ayarları → Fatura Genel → "Faturayı yazdırırken stok bilgilerini çek" + dizayna "Fatura Raporları – Fatura Stok Bilgileri" tablosundan `ACIKLAMA1` alanı.
+- **[3836] Hazır veritabanları ve dizaynlar** (Wolvox 9): e-Business hazır veritabanları (`Wolvox_...`), MRP 2 veritabanları, Argox etiket dizaynları (raf etiketi, 4'lü/5'li etiket…), fatura dizaynları (2'li/3'lü fatura, A4 dikey iskonto/seri/açıklama/tevkifat…).
+- **[1660] / [1659] Yerli üretim logolu etiket** (8.12.05+): "AKINSOFT-Yerli-Uretim" fontu (karakter "1"). Etikette fiyat değiştirme tarihi, birim fiyat ve üretim yeri otomatik gösterilir. Örnek tasarım makalede.
+
+### Stok, fiyat, cari ipuçları
+- **[13] / [1889] Toplu fiyat değiştirme:**
+  - Stok Yönetimi → Raporlar → Tanım Listeleri → **Fiyat Değiştirme/Fiyat Listesi** → filtrele → İşlemler → **Fiyat Yenile**.
+  - Oradan satış fiyatı oluşturma (baz fiyat + %), alış fiyatı, fiyat çevirme, yuvarlama, devir fiyatları. "Manuel Fiyat Değiştirme" de var.
+- **[1276] / [1876] Alış faturasıyla stok alış fiyatını güncellemek:** Genel Ayarlar → Stok Ayarları → Stok Hareket Ayarları → "Stok alış fiyatını otomatik değiştir" = Birim Fiyatından / İskontolu Fiyattan / Değiştirme.
+  - Alışta satış fiyatlarını da oluşturmak için: Özel Ayarlar → Fatura Ayarları → Alış Faturası → "Satış fiyatları oluşturma penceresini göster".
+- **[3084] Fiyatı değişen stoklar:** Stok listesi raporlarında **Filtre 2** → "Satış fiyatı değişenler" (fiyat no + tarih aralığı).
+- **[1888] Stokların eksiye düşmesini engellemek:**
+  - Tek stok için: Özel Ayarlar 1 → "Stok eksiye düşerse uyar".
+  - Toplu: Stok Tanımları Listesi → İşlemler → **Bilgi Güncelle** → Özel Bilgiler.
+  - "Bilgi Güncelle" filtrelenmiş tüm kayıtlara uygulanır. Carilerde de var, ör. "Döviz hesabı kullan" [1892]. **Önce yedek al.**
+- **[1891] İşlem görmeyen stokları pasife almak:** Analizler → İşlem Görmeyen Stoklar → İşlemler → Güncelle → Aktif işaretini kaldır.
+- **[772] Hareketsiz ve ölü stok farkı:** Hareketsiz stok, dönem içinde hiç işlem görmemiş eldeki stoktur. Ölü stok, uzun süre talep veya tüketim görmemiş stoktur.
+- **[1895] Envanterde birim fiyat ve tutar boş:** "Sadece miktar envanteri" işaretli, fiyat tanımı seçilmemiş veya stokta "Maliyetlerde eşleştirme yöntemi kullan" açık.
+- **[1515] Envanter maliyet yöntemleri:** Alış fiyatı 1–4, en son alış, ortalama alış (basit ortalama), ortalama ağırlıklı (toplam tutar / toplam miktar), LIFO, FIFO.
+- **[1717] Fiyat farkı, kur farkı ve iade faturalarını maliyete yansıtmak** (8.13.01+): Fatura tipi "fiyat farkı" seçilir, satırda ilgili alış faturası seçilir. Envanter maliyeti düzeltilir.
+- **[1873] Stok miktarına göre otomatik sipariş:** Genel Ayarlar → Stok Kart Ayarları → Otomatik Sipariş Oluştur → "Sipariş listesine ekle" (eşik ve sipariş miktarı; blokeler dahil olsun mu).
+- **[1874] Beklemedeki siparişi onaylamadan faturalamak:** Sipariş Durum Tanımları'nda "Muhasebelendirebilsin" işaretle → Sipariş Teslim Raporu → **Faturalandır**.
+- **[1027] Siparişte "Stok Bloke/Termin" görünmüyor:** Genel Ayarlar → Sipariş Ayarları'nda ve Sipariş Durum Tanımları'nda bloke/termin açık olmalı.
+- **[1041] Ek sistemler:**
+  - **Petrol sistemi:** tutar ve fiyat girilir, miktar hesaplanır; en az 3 basamak hassasiyet gerekir.
+  - **Toptancı sistemi:** tutar ve miktar girilir, fiyat hesaplanır.
+- **[1370] Stok arama penceresinde kalan miktar:** Sağ üstteki seçenekler → "Bakiyeleri göster" + "Birim bakiyelerini göster".
+- **[45] Fatura satırlarını kayıtta sıralamak:** Özel Ayarlar → Fatura Ayarları → Fatura Kayıt Formu → "Fatura hareket sıralaması".
+- **[1881] Zorunlu alanlar:** Yetkili → Tanımlar → **Zorunlu Alanlar** → modül, tablo, alan (ör. Cari → T.C. Kimlik No).
+- **[3085] Cari tahsilat/tediyede 2. döviz:** Genel Ayarlar → Cari Ayarları → Cari Hareket Ayarları → "2. Döviz Birimi Sistemini Kullan".
+- **[3086] Çek işlemlerinde banka görünmüyor:** Çek sekmesindeki bağlı hesap no elle yazılmış (ör. 88888). Ok butonuyla alt hesaplardan seçilmeli.
+- **[1311] Cari yaşlandırma raporu alanları:**
+  - "Açık Hesap Günü": borcun kaç gündür açık olduğu.
+  - "Gerç.Vade": kısmi ödemede kalan tutar için gün. Negatifse vadeye o kadar var, pozitifse vade o kadar geçmiş.
+  - "Valör" aynı mantıkla çalışır. Alttaki mavi satır ortalamaları gösterir.
+- **[1897] / [1898]** Ödenen/ödenmeyen taksitler: Finans Yönetimi → Raporlar → Taksit Raporları. İşlem türüne göre borç/alacak: Analizler → İşlem Türü Raporları.
+- **[126] Pazarlamacı prim raporu 2:** Ciro basamağına göre (ör. 1000 TL %5, 2000 TL %10) veya ortalama fiyata göre prim hesaplanır.
+- **[172] Durum değişince otomatik e-posta/SMS:**
+  - Cari limit değişimi, tahsilat, çek/senet tahsilatı ve kargo no pazarlamacıya bildirilebilir.
+  - Fatura kargo no cariye bildirilebilir.
+  - Servis ve sipariş durum değişiklikleri müşteriye bildirilebilir.
+- **[959] SMS:**
+  - Sağlayıcı Mutlucell. SMS → SMS Kullanıcı Hesabı → kullanıcı adı/şifre → Listele → originatör seç → kaydet.
+  - Posta Güvercini (Figensoft) de destekleniyor [2153]; orada "XML client uygulamaları kullanabilir" işaretli olmalı.
+  - [247] SMS Server programı ücretsiz, Excel'den toplu SMS gönderebilir.
+- **[332] Gmail gibi SSL e-posta gönderimi:** `libeay32.dll` ve `ssleay32.dll` (OpenSSL 0.9.8) program exe'sinin yanına konur. Gmail'de uygulama izni gerekebilir.
+- **[3412] Türkçe karakterler bozuk:** Windows → Bölge → Yönetimsel → **Sistem yerel ayarı = Türkçe**. Tarih ve ondalık ayırıcı sorunları için Biçimler → Ek Ayarlar.
+- **[1510] "Printer selected is not valid":** Varsayılan yazıcı yok, yazıcı çevrimdışı veya sürücü uyumsuz.
+- **[1300] Excel aktarımında "Data too large for variable max len=30":** Alan sınırı aşılmış (ör. GRUBU 30 karakter). Excel hücresini kısalt.
+- **[53] Eski programdan geçiş:** Cari ve stok kartları Excel'e alınıp Transfer modülüyle aktarılır. CRM aktiviteleri de aktarılabilir.
+- **[244] Fiyat gör cihazı (Perkon FG1200):** Firebird ODBC sürücüsü kurulur, DSN tanımlanır (SYSDBA/parola), sonra cihaz programında ağdaki cihazlar bulunur ve ayarlanır.
+- **[274] / [230] ₺ simgesi:** Windows 10'da ek kurulum gerekmez. Eski sistemlerde Microsoft KB2739286 gerekir, ERP 7.07.01+ olmalı.
+- **[1290] / [1875] Şubeler arası kasa transferi:**
+  1. Kaynak şube: Finans Yönetimi → İşlemler → Kasa İşlemleri → **Kasa Transferi** → Transferi Uygula.
+  2. Hedef şube: Finans Yönetimi → Raporlar → Kasa Raporları → **Kasa Transfer Havuzu** → onayla.
+- **[1294] / [1872] Şubeler arası stok transferi:**
+  1. Kaynak şube: **Transfer İrsaliyesi** oluşturur.
+  2. Hedef şube: Satın Alma (veya Satış) Yönetimi → Raporlar → İrsaliye Raporları → Transfer Raporları → Transfer İrsaliye Raporu → irsaliyeyi aç → durum **Onaylandı**, depo seç → Uygula.
+- **[727] Offline'da otomatik veri gönderme:** Ana bilgisayar Kontrol Paneli → Diğer İşlemler → Offline → Offline Ayarlar → "Otomatik veri alma sistemini kullan" + gönderilecek tablolar.
+- **[3133] Wolvox Reporter** (iOS/Android):
+  - "Bağlantı ayarlarını düzenle"de ana bilgisayar IP'si ve Kontrol Paneli **güncelleme portu** girilir, sonra Wolvox kullanıcısıyla giriş yapılır.
+  - Raporlar: yönetici ekranı, şube, fatura/çek/kasa analizleri. Dışarıdan erişim için port yönlendirme ve statik IP gerekir.
+- **[3217] / [1855] Karekod ayarları:**
+  - Genel Ayarlar → Stok Ayarları → Genel → Karekod Ayarları. Karekoddaki alanların uzunlukları tanımlanır (ör. barkod 14, seri/lot 5, SKT 6, açıklama 4).
+  - Farklı formatlar için "Grup Ekle". Okutulan karekod gruplara sırayla uydurulur, **ilk uyan grup** kullanılır.
+- **[3266] Avusturya RKSV:** Wolvox 9, Fiskaltrust middleware ile entegre. "Yazarkasa – Pos – Terazi" lisansı gerekir.
+
+## e-Dönüşüm (e-Fatura, e-Arşiv, e-İrsaliye, e-Defter, e-Müstahsil)
+
+### e-Fatura / e-Arşiv
+- **[3008] Program ve entegratör destek matrisi** (WolvoxCloud, Wolvox ERP, OctoPlus 7, OctoCloud, Otel 5, NetSürücü Plus):
+  - Entegratörler: Digital Planet, EDM, İzibiz, Süper Entegratör.
+  - Fatura tipleri: satış, iade, tevkifat, istisna, ihraç kayıtlı, SGK, özel matrah, şarj, (şarj) ajanlık.
+  - Senaryolar: temel, ticari, ihracat, yolcu beraber, kamu, enerji, ilaç/tıbbi cihaz, yatırım teşvik, IDIS.
+  - Gönderim: e-Arşiv, e-Fatura, internet satış. e-İrsaliye (temel, sevk), e-Müstahsil, e-Adisyon.
+  - Hangi programda hangisinin olduğu makaledeki tabloda.
+  - Not: **Digital Planet'te `DTP.XML` formatı** kullananlarda bazı özellikler (e-Fatura Script butonu, kamu faturası) çalışmaz. **UBL formatına geçiş** için destek kaydı açılır.
+- **[1741] EDM entegrasyonu:**
+  1. Kontrol Paneli → Şirket Kayıt → e-Devlet → "e-Fatura sistemi kullan".
+  2. EDM kullanıcı bilgileri ERP'de e-Fatura Ayarları → Kullanıcı Bilgileri'ne girilir.
+  3. EDM portalında aktif yıl için **Tanımlar → Fatura Seri No → Yeni Kayıt**. e-Fatura, e-Arşiv ve internet satış için **ayrı seri** açılır.
+  4. ERP'de sayaç tanımında **Şablon Kodu** alanına bu seri yazılır.
+- **[768] Digital Planet şablonları:** Şablonlar DP tarafında tanımlanır. ERP'de Yetkili → Sayaç İşlemleri → Sayaç Tanımları → e-Fatura/e-Arşiv altında **Şablon Kodu** olarak seçilir. Birden fazla tasarım veya farklı numara başlangıcı için gerekir.
+- **[3088] Eski tarihli e-Fatura gönderirken hata:**
+  1. Portalda yeni 3 harfli seri aç.
+  2. ERP'de sayaç tanımı ekle (şablon kodu = yeni seri).
+  3. Sayaç Seçimi → e-Fatura No → "Aktif Sayacı Kullan" + "Aktif Sayacı Varsayılan Yap".
+  4. Faturayı Düzenle → Kaydet.
+  - Sebep: GİB'de bir serideki numaralar tarih sırasını bozamaz.
+- **[474] Mükellef sorgusu otomatik:** e-Fatura ayarları yapılınca program açılışta cariler için VKN sorgusu yapar. Yeni carilerde de otomatik sorgular.
+- **[3305] "Geçersiz cbc:ProfileID" / mükellef listesi:**
+  - Carinin VKN/TCKN'si portalda aratılır; unvan ve posta kutusu ERP'ye kaydedilir.
+  - **Satış Yönetimi → İşlemler → Faturalar → Mükellef Listesi**'nden elle ekleme veya silme yapılır.
+- **[3012]** e-Fatura aktif şirkette carinin **TCKN ve VKN alanları aynı anda dolu olamaz** (8.19.01+).
+- **[475] Gelen e-Fatura entegrasyonu:**
+  - Önce **e-Fatura Eşleştirme**'de cari bazında fatura tipi (alış veya masraf) ve **hareket eşleştirme yöntemi** bir kez tanımlanır.
+  - Masraf seçilse bile ÖTV/ÖİV/tevkifat varsa alış faturası olarak alınır. Gelen faturada olmayan KDV/ÖİV oranları için tanımdaki oranlar kullanılır.
+- **[596] / [1966] Opsiyonel alanlar:**
+  - e-Fatura Ayarları → **Opsiyonel Alanlar** (Fatura ve Fatura Hareket sekmeleri).
+  - Veritabanındaki özel alanlar e-Fatura XML'ine eklenir; entegratör bunları görünüm tasarımına ekler.
+  - Gönderilen XML: `<program dizini>\Temp\<kullanıcı>\Efatura_Giden`.
+- **[3181] / [3182] Tedarikçi stok kodunu göndermek:**
+  - Stok → Tedarikçiler → Tedarikçi Ekle (belgedeki cari) → "Stok Kodu Gir".
+  - e-Fatura (veya e-İrsaliye) Ayarları → "Tedarikçi Stok Kodu Bilgisini Ekle".
+  - Değer `BuyersItemIdentification` alanında gider.
+- **[758] "InvoicedQuantity/UnitCode is invalid":** Stok birim tanımlarında **uluslararası birim kodu** yanlış veya boş. Düzelttikten sonra stok belgeye **yeniden eklenmeli**.
+- **[1743] "Geçersiz cbc:InvoiceTypeCode":** Faturada "Fatura Tipi" boş.
+- **[3351] Özel matrah faturası** (8.22.01+): e-Fatura/e-Arşiv alanındaki (?) → Fatura Tipi **Özel Matrah** → satırda özel matrah kodu seçilir.
+- **[719] e-İhracat faturası** (1 Temmuz 2017'den beri zorunlu):
+  - Sayaç tanımında şablon kodu **IHR**.
+  - GTİP no: stok → Özel Ayarlar 2.
+  - Yurt dışı faturada e-Fatura (?) → Senaryo **İhracat**. Satırda teslim/ödeme ülke-il-ilçe ve taşıma şekli alanları açılır.
+- **[2687] Otomatik e-Fatura gönderimi:**
+  - Kapsam: satış (e-Fatura/e-Arşiv), alıştan iade, alış (e-Müstahsil).
+  - Programlar: Hızlı Satış 8.09.04+, Restoran 8.15.04+. Kontrol Paneli 8.03.49+, ERP 8.18.06+ gerekir.
+  - Kontrol Paneli → Şirket → e-Devlet'te açılır, **en az 30 dakika** aralıkla çalışır.
+  - **Offline sistemde çalışmaz.** Kuyruktaki faturalar merkeze aktarılınca gönderilir.
+- **[3010] e-Arşiv gelen kutusu (İnteraktif Vergi Dairesi):**
+  - Lisans gerekir. Kontrol Paneli → Şirket Kayıt → **e-Devlet 2**'ye TC/VKN/giriş kodu ve şifre girilir.
+  - Hareket detayı gelmediği için tek bir stok veya hizmetle eşleştirilir. Tarih aralığı → Aktarıma Başla → İçeri Aktar.
+- **[3391] Kontör satın alma:** akinsoft.com.tr → Bayi ve Müşteri Girişi → Müşteri Girişi (lisans no/telefon/e-posta + güvenlik kodu) → **Ürün Yenile / Satın Al** → entegratöre göre e-Fatura/e-Arşiv/e-İrsaliye kontör paketi.
+- **[331]** e-Fatura zorunluluğu kapsamı (VUK 421 ve sonrası tebliğler) ve genel bilgilendirme. Güncel eşikler için GİB'e bak.
+
+### e-İrsaliye
+- **[3112] Posta kodu hatası:** 1 Eylül 2021'den beri ülke, il, ilçe ve posta kodu zorunlu. ERP 8.19.06+ ve Kontrol Paneli 8.03.64+ gerekir. Cari → Genel Bilgiler → **5 haneli posta kodu**.
+- **Şoför ve taşıyıcı hataları** (satış irsaliyesi → **Ek Bilgiler 2**):
+  - [3114] "DriverPerson NationalityID" → **Şoför TCKN** dolu olmalı.
+  - [3115] "DriverPerson" → **Şoför Adı Soyadı** ad ve soyad birlikte, arada boşlukla yazılmalı.
+  - [3116] "SchemeID VKN… 10 haneli" → **Taşıyıcı VKN/TCKN** geçerli olmalı.
+- **[2223] Firma/kişi kontrolü hatası:** Cari e-İrsaliye mükellefi değilken kartta "e-İrsaliye kullan = Evet" işaretlenmiş. Hayır yap, cariyi irsaliyeye yeniden ekle.
+- **[2229]** Windows Server'da Kontrol Paneli firma güncellemesi sırasında kapanıyor: İnternet Seçenekleri'nde entegratör siteleri güvenilir olarak tanımlanır.
+
+### e-Müstahsil
+- **[2124] Kurulum:**
+  1. Kontrol Paneli → Şirket Kayıt → e-Devlet → "e-Müstahsil Sistemi Kullan".
+  2. Genel Ayarlar → Fatura Ayarları → **Ek Kesintiler** → "Varsayılan e-Müstahsil kesintilerini yükle". Önceden elle kesinti tanımlandıysa uluslararası kodları seçilir.
+  3. Cari → Hesap Bilgileri → "e-Müstahsil Kullan = Evet".
+  4. Alış faturası kesilir. G.V. stopajı zorunlu.
+- **[2642] Borsa tescil ücreti formülü:**
+  - Formül: `TOPLAM_ARA_KPB - OZELALANTANIM_9 - OZELALANTANIM_12 - OZELALANTANIM_15`. Örnekte 9 G.V. stopajı, 12 mera fonu, 15 SGK prim kesintisi; numaralar veritabanına göre değişir.
+  - Formül Yetkili → Tanımlar → Formül Tanımları'nda yazılır, ek kesintide seçilir.
+
+### e-Defter
+- **[536] Wolvox 9 e-Defter oluşturma ve gönderme:**
+  - Kontrol Paneli → Şirket Kayıt → e-Devlet → **"e-Defter sistemi kullan"**. Kaydedildikten sonra **değiştirilemez**, bilgileri dikkatle gir.
+  - Alanlar: başlangıç yılı/ayı, şube (varsa), **NACE kodu**, veritabanı yöneticisi adı (SYSDBA/sa fişleri bu isimle aktarılır), iletişim bilgileri.
+- **[511] Ön koşullar:**
+  - Kontrol Paneli'nde muhasebeci kaydı yapılıp şirkete bağlanır.
+  - Mali mühür/e-imza sürücüleri (kamusm.gov.tr) ve **İmzager** kurulur.
+  - e-Defter uygulamasında: Ayarlar → oluşturma dizini, Mali Mühür PIN'i, kart sistemi, donanım tipi.
+- **Hatalar:**
+  - [1233] / [3026] "gl-bus:organizationDescription 'Adı Soyadı'…": Şirket tipi yanlış seçilmiş. Şahıs firmasıysa **Şahıs/Gerçek** olmalı.
+  - [1237] "Xml imzalama işlemi sırasında problem": PIN girilmemiş veya yanlış.
+  - [1238] "Sertifika zinciri sorunlu": Güncel **Java** ve **İmzager** kur, gerekirse AKİS'i yenile.
+  - [456] Kök sertifika uyarısı: `mmeshs-s1.crt` yüklenir; `C:\Users\<kullanıcı>\.sertifikadeposu` içindeki `.svt` dosyası kamusm'deki güncel sürümle değiştirilir.
+  - [457] "USB imzalama aygıtı bulunamadı": AKİS Akıllı Kart İzleme Aracı kaldırılıp yeniden kurulur.
+  - [454] 64 bit Windows uyarısı: Makale ekindeki DLL'ler `...\E-Defter\XmlSigner` klasörüne konur.
+  - [1299] "XML yapısında uygunsuzluk (şematron)": Borç/alacak dengesi bozuk fiş var, ya da hesap planında veya fişlerde bağlı üst/alt hesaplar yanlış.
+  - [1235] "Sistem belirtilen nesneyi konumlandıramıyor": Eski sürümdeki "Defteri Kebir" ve "Yevmiye Defteri" klasörleri yeni yapıda tek "Defterler" klasörüne taşınır (`...\E-Defter\Defterler\<VKN>\<dönem>\<ay>`).
+- **[459] / [450] / [451] / [3265] Mevzuat notları:**
+  - Her yevmiye kaydının belgeye dayanması şart değil (amortisman, virman).
+  - Toplu masraflar icmal belgesiyle ("other") kaydedilebilir.
+  - Tasfiye öncesi ve sonrası dönemler ayrı gönderilir.
+
+## Lisans, yedek, devir, Kontrol Paneli, MSSQL
+
+- **[1470] / [3829] Wolvox online lisans:**
+  1. Tüm programlar kapalıyken Kontrol Paneli → Yetkili → **Wolvox Lisans**.
+  2. (WOLVOX 26'da önce **paket seçimi**) → Online Lisans Al → "Lisans kartım veya numaram var" → lisans no + güvenlik kodu/müşteri şifresi.
+  3. Bitir → "Lisansınız tekrar aktifleştirilsin mi?" Evet.
+  - OctoPlus, CafePlus, NetSürücü ve Net Emlak'ta menü Yardım → Lisans/Aktivasyon ([1473], [1756], [1474], [1475]). İnternet yoksa 444 40 80.
+- **[3455] Demo sistemi** (Kontrol Paneli 8.04.01+):
+  - İlk açılışta **Lisanslı Kurulum** veya **Demo Kurulum** seçilir. Demo: "Yeni Demo Kaydı" veya "Demo Kaydım Var".
+  - Demo süresince **internet bağlantısı gerekir**.
+- **[369]** E-Ofis "Network Admin lisanslanan kayıt sayısı aşılmış": Network Admin → Bilgisayar Listesi'nden fazla kayıtları sil (Wolvox'taki client tanımları mantığı).
+- **Yedekleme (sektörel programlar)** ([1655] OctoPlus, [1661] NetSürücü, [1663] RentAgent, [1664] E-Ofis, [1665] Otel, [1667] CafePlus): Hepsinde Yetkili → Veritabanı İşlemleri → **Yedekleme/Geri Yükleme**. Kaynak program dizinindeki `data` klasörü, hedef yedek klasörüdür. Geri yüklemede bağlı kullanıcı olmamalı. OctoPlus'ta geri yükleme şirket başına ayrı yapılır.
+- **Devir:**
+  - [29] Wolvox 6, [650] Wolvox 7 ve [118] OctoPlus 7 için yıllık devir makaleleri var. OctoPlus'ta devir **Yetkili Kişi → Şirket İşlemleri → Çalışma Yılları → Çalışma Yılı Oluştur** ile yapılır.
+  - **[477] Durum tanımlarına göre devir:**
+    - Toplu devir, durum tanımlı modüllerde sabit durumları aktarır (ör. teklifte "Teklifte" ve "Onaylandı").
+    - Teklif, sipariş veya servis için **ek durum tanımı** oluşturduysan toplu devir yerine Kontrol Paneli → Şirket Kayıt İşlemleri → **Çalışma Yılı Oluştur** kullanılır ve aktarılacak durumlar seçilir.
+- **[1626] Kontrol Paneli'ni Windows servisi olarak çalıştırmak:**
+  - Sunucuda Windows oturumu açılmadan istemcilerin bağlanması için Kontrol Paneli → **Windows Servisi** → "Kontrol paneli servisini çalıştır" → çalışma portu (programın portuyla aynı) → Servisi Çalıştır.
+  - Sunucu kilitli odadaysa veya kimse oturum açmıyorsa önerilir.
+- **[1810] Girişte SMS doğrulaması:** Personel kaydında cep numarası olmalı. Kontrol Paneli → Yetkili → Özel Ayarlar → Kullanıcı Login → "SMS doğrulaması yap". SMS hesabı tanımlı olmalı.
+- **[1802] Hızlı yetkilendirme:** Kullanıcı Yetkilendirme ekranında **F7**.
+- **MSSQL:**
+  - **[162] / [164] "Socket Error #10054":** SQL Server Browser → Başlangıç türü **Automatic** + Start.
+  - **[2020] ".NET Framework… assembly ID 65536" (CLR):** Tüm kullanıcı veritabanlarına TRUSTWORTHY ON + sahibi `sa` uygulanır:
+    ```sql
+    EXEC sp_MSforeachdb 'IF ''?'' NOT IN (''master'',''model'',''msdb'',''tempdb'')
+    BEGIN USE [?]
+      DECLARE @sql NVARCHAR(MAX)
+      SET @sql = N''ALTER DATABASE '' + QUOTENAME(DB_NAME()) + N'' SET TRUSTWORTHY ON;''
+      EXEC sp_executesql @sql
+      SET @sql = N''EXEC sp_changedbowner ''''sa'''';''
+      EXEC sp_executesql @sql
+    END'
+    ```
+    SQL 2019+'da ayrıca `C:\AKINSOFT\Wolvox9\Utils\Wolvox7Udf_mssql.dll` dosyası SQL Server'ın `...\MSSQL\Binn` klasörüne kopyalanır.
+  - **[4034] "TRY_CONVERT" hatası:** SQL Server **2012+** ve veritabanı **compatibility level en az 2012 (110)** olmalı.
