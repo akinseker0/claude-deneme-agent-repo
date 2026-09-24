@@ -1,6 +1,6 @@
 # AKINSOFT / WOLVOX uzman agent'ı
 
-Bu repo, AKINSOFT yazılımları ve WOLVOX ERP konusunda uzmanlaşmış bir **Claude Code agent'ı** ve onun **bilgi tabanını** içerir.
+Bu repo, AKINSOFT yazılımları ve WOLVOX ERP konusunda uzmanlaşmış bir **Claude Code agent'ı** ve onun **bilgi tabanını** içerir. FDB dosyalarını localden kullandığım için buraya eklenmemiştir.
 
 ## İçerik
 
