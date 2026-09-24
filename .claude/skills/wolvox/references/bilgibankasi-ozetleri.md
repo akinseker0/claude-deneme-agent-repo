@@ -1425,3 +1425,113 @@ Diğer ürünlerin sürüm notları:
   - 9.02.01 [3823]: zimmet devri.
   - 9.02.04 [3959]: GM yetkisi olmadan kullanılabiliyor, ek harcama yetkisi, enflasyon filtresi.
 - **OctoPers 5 / OctoPlus 6 devri [3749]:** Server'da Yetkili Kişi → Şirket İşlemleri → Çalışma Yılları → Çalışma Yılı Oluştur.
+
+## OctoPlus / OctoPers ve OctoCloud
+- **OctoPlus 7 (masaüstü ön muhasebe, Firebird):**
+  - Kurulum [356][3661] `Kur\setup.exe` ile yapılır ve demo olarak başlar. Yeni demo/lisans sistemi 7.04.12'den itibaren geçerli [3505].
+  - Güncellemeden önce `C:\AKINSOFT` klasörü kopyalanır [368][3904].
+  - Yedekleme ve geri yükleme: Yetkili Kişi → Veritabanı İşlemleri [3686]. Eski Octo ürünlerinde geri yükleme `Octopers.exe -g` ile açılır [55].
+  - Server/client [478]: personel kaydındaki sistem kullanıcısıyla bağlanılır. Eski sürümler müşteri panelinden indirilir [1380].
+  - Wolvox'a veya OctoPlus 7'ye taşıma: Yardım → **UPGRADE** → kaynak program ve `DATA` klasörü seçilir [3443].
+  - UDF hataları: `function ENDECRYPT/UPPERTR is not defined` [3497][52] → `WolvoxUDF7.dll` ve `UDF_TRUP.DLL` `Firebird_2_5\UDF` klasörüne kopyalanır.
+  - "Could not convert variant of type (String) into type (Double)" [1277]: bölge ve tarih ayarları sıfırlanır.
+  - Terazi barkodu [505]: stok barkoduna terazi barkodunun ilk 7 hanesi yazılır.
+  - Cari bilgisi değişince hareketlere aktarmak için Cari hareket ayarlarında eşitleme butonu kullanılır [1217].
+  - e-Fatura: şirket kaydında e-Devlet → entegratör → bağlantı testi [3439]. Kamu faturası için s7.04.02+ gerekir, banka IBAN'ı "TR" ile bitişik yazılır [3148]. KDV 2023 [3642]. Yardım dosyası [3697].
+- **OctoCloud (bulut ön muhasebe):**
+  - Yardım indeksi [2093]. Özel alanlar [3702], etiketler [3761].
+  - Fatura tasarımında stok resmi `{VoucherLines.product_image}` [3553]. Tasarım değişkenleri [3966]: `custom_field_1`, `brand_name`, `brand_model_name`, `barcode`.
+  - e-Fatura, e-Arşiv, e-İrsaliye: İşletme Ayarları → Diğer → e-Devlet Ayarları; entegratörler EDM, Digital Planet, İzibiz [3763][3722]. e-İhracat sayacının şablon kodu `IHR` [3837]. Tevkifat [3711].
+  - Banka: Akbank (Apigate) ve VakıfBank online veri [3060][3753]; bankaya bildirilecek çıkış IP'si makalede yazılı. **Ödüyo** açık bankacılık 1.11.01'de geldi [3911][3918].
+  - Online tahsilat: Nestpay (İş Bankası, Ziraat, Akbank). Online Tahsilat ve B2B modülleri gerekir [3714].
+  - B2B müşteri portalı `octocloudapp.akinsoft.com.tr/b2b`: firma kendi VKN'si, satıcının VKN'si ve e-posta doğrulamasıyla girer [3552].
+  - Sürüm notları: 1.09.02 [3896], 1.12.04 [4029] (birden fazla irsaliye tek faturada), 1.13.01 [4091] (2FA).
+- **e-Ticaret ↔ OctoCloud [3774][3775][3777][3778][3780]:**
+  - OctoCloud'da **API yetkili** bir kullanıcı açılır. e-Ticaret panelinde Entegrasyonlar → OctoCloud Yönetimi → bağlantı bilgileri → Test Et.
+  - Senkronizasyon açılır. Satış fiyat grupları eşleştirilir. "Kargo Hizmeti Oluştur" ile kargo ürünü bir kez oluşturulur.
+  - Manuel eşitleme sırası: marka → model → kategori → stok → miktar → görsel.
+  - Siparişler "Muhasebeye gönderilecek" durumundaysa OctoCloud'a alınan sipariş ya da satış faturası olarak gider.
+
+## Bulut ve diğer AKINSOFT ürünleri (kısa)
+- **QR Menü** (temassız menü, bulut):
+  - Kategori ve ürün tanımı [2187][3318][3971], Excel'den ürün aktarımı [3464], masa bazlı QR kod (masa şifresiyle) [3466].
+  - WhatsApp'tan sipariş [3143][3335], ekstra seçenekler [3342], etiketler [3346].
+  - Garson, hesap ve vale çağırma [3456], dil seçenekleri (EN, AR, ZH, RU, KK, DE) [3399], dinamik tema [4002], kendi alan adı [3374].
+  - **Wolvox Restoran entegrasyonu [3893]** (Restoran 9.03.01 / QR 1.05.05):
+    - Restoranda QR Menü bağlantı bilgileri girilir.
+    - Kategoriler = **Adisyon Ürün Grupları**.
+    - Menü → Ekranlar → **"QR Menü Stok Gönderimi"** ile stok kodu, adı, birim, fiyat, resim ve açıklama 1 gönderilir.
+  - Sürüm notları: 1.04.01 alerjen ve kalori [3696], 1.05.01 wifi paylaşımı [3751], 1.05.02 servis ücreti [3812], 1.06.02 [4062], 1.07.01 [4092]. Mobil uygulama [3894].
+- **MyRezzta** (online sipariş sitesi ve uygulaması, `panel.rezzta.com`):
+  - Firma, sipariş yönetimi ve ayarlar [2373][2374][2378]. Kategori, malzeme, katalog, ürün ve menü tanımları [2693–2695][3449–3451]. CMS tema [3445]. Mobil uygulama başvurusu (en az 5 ürün) [3796].
+  - **Restoran entegrasyonu [3867]:**
+    - Restoran → Program Ayarları → MyRezzta/Online Sipariş Ent.'e panel e-postası ve şifresi girilir, şube seçilir.
+    - **Ürün–sipariş eşleştirme** ve **ödeme eşleştirme** yapılır.
+    - Seçenekler: sipariş vereni cari kaydet, kontrol sıklığı, otomatik onay ve mutfağa yazdırma, vale/hesap/garson bildirimleri.
+  - Online yemek platformları MyRezzta üzerinden de bağlanabilir [3885]: Getir [3954], Trendyol [3955], Migros [3956], Yemeksepeti [3957]. Vigo kurye [3949]. 2026'dan itibaren sanal yemek ödemeleri ayrı ödeme tipleriyle geliyor [4070].
+  - Diğer: randevulu satış [4057], garson ekranı (yalnız sipariş alır) [4072], çekiliş ve bilet [4086].
+  - **Kiosk [3898][4020]:**
+    - Lisans: Wolvox Paket 1 + Restoran + e-Fatura/e-Arşiv. Yazarkasa modülü gerekmez. MyRezzta'da Kiosk modülü alınır.
+    - Donanım: her kiosk için **PAVO Android (VUK507) POS** (kiosk modunda, REST entegrasyon) ve dahili yazıcılı bir Windows kiosk.
+    - En düşük sürüm: Restoran 9.03.04.
+- **TaskPano** (görev ve proje yönetimi):
+  - Organizasyon → çalışma alanı → proje → liste → görev hiyerarşisi [3268–3275][3784]. Tekrarlayan görev ve şablon, etiket, arşiv, bildirimler [3421][3435].
+  - **API token** Hesabım → API Tokenları'ndan alınır (bir kez gösterilir). **Webhook** görev oluşturma, güncelleme, silme ve durum değişikliği olaylarında tetiklenir [3976]. **n8n'de hazır "TaskPano API" credential'ı** var [4010].
+  - Proje özel alanları (1.06.01) [3811], proje misafiri [4005], task puanlama [4025]. Sürüm notları [3398][3407][3446][3721][4051][4080].
+- **LimonDesk** (canlı destek, `app.limondesk.com`):
+  - Kullanım [2677], sohbet butonunun siteye eklenmesi [2688] ya da doğrudan link [3277], departman [2689], operatör [2690], mobil uygulama [3015].
+  - WhatsApp yönlendirme [3016], AKINSOFT e-Ticaret ve e-Ticaret mobil uygulamasıyla entegrasyon [3019][3323], proaktif mesaj [3024], mail [3028], dil [3459], ücretli VIP destek paketleri [3723], KVKK onay kutusu [3979].
+- **MyFranchise** (franchise restoranların merkezi raporlaması) [2254][2981–2984][2997]:
+  - Veriler şubelerdeki **Wolvox Restoran**'dan API kullanıcısıyla gönderilir. Şube bazında veri alma sıklığı ayarlanır.
+  - Web panelde rol, kullanıcı ve şube eşleştirmesi yapılır.
+- **NetSürücü Plus** (sürücü kursu): server/client [485], e-Fatura [3861], MEBBİS sağlık raporu için "Mebbis Referans No Kullan" [3990]. Sürüm notları [3003][3578][4007] (SRC geçme notu 60, teorik sınav hakkı 7) [4095].
+- **RentAgent 2** (araç kiralama):
+  - Kurulum `wra2setup.exe` [3698], server/client [3699].
+  - "Request BLR at offset 367" [493]: `WolvoxUDF7.dll` Firebird UDF klasörüne kopyalanır.
+  - "I/O error 32" [1425]: arka planda açık kalan exe kapatılır.
+  - "Could not convert variant of type (Null)": parasal ayarlar silinmiş [154].
+- **CafePlus 12** (internet kafe): mobil uygulama 12.04.01+ [3214]. Oyun istisnaları için "Client Exe Dosya Sınırlandırma" (ör. LoL [3808]). Ayrıca bkz. "CafePlus (internet kafe)" bölümü.
+
+## AKINSOFT e-Ticaret: ERP entegrasyonu (ek) ve panel konuları
+- **[3240] Entegrasyon Yönetimi (bakiye sorgulama, cari ödeme, ERP'deki sipariş durumu):** e-Ticaret panelinde Entegrasyonlar → Ticari Program Yönetimi'nde şunlar girilir:
+  - Sürüm (Wolvox 8/9) ve Kontrol Paneli makinesinin **statik IP**'si.
+  - **Kontrol Paneli yetkili kullanıcısı ve şifresi** (varsayılanlar Firebird'de `SYSDBA`, MSSQL'de `sa`).
+  - Açılacak portlar: 3050–3056 (MSSQL'de ayrıca 1433/1434).
+  - Şirket kodu, şube kodu ve **güncel çalışma yılı** (devirden sonra değiştirilmeli).
+  - Önce Kaydet, sonra Test Et. Üyelik ayarlarında gösterilecek cari işlem başlıkları seçilir.
+  - **Güvenlik uyarısı (bizim notumuz):** Bu kurulumda veritabanı yöneticisinin şifresi üçüncü taraf bir sisteme veriliyor ve veritabanı portları internete açılıyor.
+    - Mümkünse yalnız gereken yetkileri olan ayrı bir kullanıcı açılmalı.
+    - Modemde kaynak IP kısıtlaması yapılmalı.
+    - Varsayılan `masterkey` asla kullanılmamalı.
+- **ERP'den e-Ticaret'e giden bilgiler:**
+  - SEO bilgisi [1310].
+  - Fiyat: cari kartındaki "Kullanılacak Stok Fiyatı" üyeye özel fiyat olarak gider, **e-Ticaret yalnız ilk 4 fiyatı kullanır** [288].
+  - Cari iskontosu: Kaynak iskonto = CARİ [2681].
+  - **Gelişmiş fiyat listesi**: ERP'de Stok 2, e-Ticaret'te Gelişmiş Fiyatlama modülü gerekir. Listede geçerlilik tarihi, açıklama ve cari grubu seçilmeli. Bu açıkken üyeliksiz alışverişte fiyat görünmez [3510][3200][896].
+  - Birim gönderimi üç yoldan biriyle yapılır: yalnız varsayılan birim, bütün birimler ve fiyatları, ya da özel alanla seçilen birimler [3627].
+  - Reçete ile paket ürün [3375]: Üretim modülü gerekir, paket içindeki stoklar düşer.
+  - Mal fazlası (MF) gösterimi: Ek Alan 1–5 ve Ek Alan 10 = "Mf li Ürün" [3378].
+  - Ürün–üye eşleştirmesi (kime hangi ürün görünsün) [3422].
+- **e-Ticaret'ten ERP'ye gelenler:**
+  - Kredi kartı ödemeleri [3562]: panelde "Ödeme Bilgisi Gönder" açılır, ERP'de Banka modülü ve POS tanımı olmalı, taksitler eşleştirilir.
+  - Cari ödemeler [1255][3233]: taksit tanımında "Ticari Program Eşleştirme".
+  - Kapıda ödeme [3564]: tutar kargo firmasının carisine virmanlanır.
+  - Promosyon kodu [1817]: sipariş ve fatura özel alanlarına (ör. `OZELALANTANIM_9`/`_11`) eşlenir, Sipariş Ayarları'nda "Fatura Özel Tanım Aktarım Ayarları" yapılır.
+  - Üyeliksiz alışverişte e-Fatura için "Gönderim bilgilerini fatura kartından al" açılır [2322].
+  - Sitede ERP'deki sipariş ve teslim durumu gösterilebilir [3730].
+  - e-Fatura/e-Arşiv PDF linkleri e-Ticaret ve sanal pazarlara otomatik gider (EDM, İzibiz, Digital Planet; Web Entegrasyon 8.06.11+) [3629].
+- **Taksit entegrasyonu [3473]:** ERP'deki cari taksitleri sitede görünür ve ödenir. e-Ticaret'te Online Tahsilat, ERP'de Banka ve Taksit Takip modülleri gerekir. En düşük sürümler: Kontrol Paneli s8.03.96, ERP s8.22.12.
+- **Vadesi geçmiş borç kontrolü [2357]:** Online Tahsilat, B2B, B2C ve "açık hesap kredi limiti" modülleri gerekir.
+- **Devir sonrası [3242]:** Web Entegrasyon'da "Varsayılan Şirketi Temizle" ile yeni çalışma yılı seçilir ve Entegrasyon Yönetimi'ndeki yıl güncellenir.
+- "Wolvox senkronizasyonuna izin verilmelidir" [497] ve kurulum [492][2215]: panelde **Tam Senkronizasyon** seçilir, muhasebe kullanıcısı açılır.
+- **Panel konu haritası** (ayrıntı için `python tools/bilgibankasi.py baslik "<konu>"`):
+  - **Sanal POS ve ödeme:**
+    - Bankalar: Garanti, Halkbank, VakıfBank, Yapı Kredi, Türkiye Finans, Akbank V1/V2, Ziraat, İş Bankası, Kuveyt Türk, QNB, Şekerbank, Denizbank, TEB, Albaraka.
+    - Ödeme kuruluşları: iPara, iyzico, PayU, PayTR, Param, Paynet, Moka, Paratika, İşyerimPos, Netahsilat, Sipay, Payten MSU, TAMİ, Ziraat Pay, Posfix, QNB Pay, Halköde, VakıfPayS.
+    - Ortak ve direkt ödeme farkı [2347]. Başvuruda istenen bilgiler [2114]. EST Hash3 [3776]. Kategori bazlı taksit [4023].
+  - **Kargo:** Aras, Sürat, DHL, Yurtiçi, MNG, PTT, Hepsijet, Sendeo. Çalışma mantığı [3081], desi [3619], limit [2381].
+  - **Sanal pazarlar** (genel, fiyat ve diğer ayarlar; ürün gönderimi toplu kategori ya da ürün bazlı): Trendyol (Export Center, Buybox, mikro ihracat), Hepsiburada (Buybox, kampanya), N11, PTTAVM, Çiçeksepeti, Modanisa, Flo, Morhipo, Pazarama, Teknosa, Koçtaş, İdefix, Cimri. Başlangıç [2057]. Taşıyıcı gelmiyor [3213].
+  - **Temalar:** Şablon 1–10, 13, Market 1, Premium 1–3, CMS. Her biri için resim ölçüleri ve üst/orta/alt/liste/detay ayarları. V1 → V2 geçişi [3180]. CSS özelleştirme [3623].
+  - **SEO ve pazarlama:** meta alanlar, GA/GTM/Pixel/Conversion API, robots.txt, site haritası, Search Console, Merchant Center (Content API, v2) [3617][4039].
+  - **Diğer:** mail ve SMS (sistem maili, Gmail, spam) [2212][3965], mobil uygulama başvurusu ve bildirimler [2370][2323], XML import/export [501][3097][1581], kumaş sistemi [2317], online market [2287], 2FA [3933], ETBİS kaydı [2115], Cloudflare `ERR_TOO_MANY_REDIRECTS` [4087].
+  - **Otomotiv parça tedarikçileri:** Eryaz [3462], Başbuğ [3930], Oto İsmail [4052], Dinamik Otomotiv [4053], Etkin Promosyon API [3616].
